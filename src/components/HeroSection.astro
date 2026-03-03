@@ -1,0 +1,43 @@
+---
+import CategoryBadge from './CategoryBadge.astro';
+
+interface Props {
+  title: string;
+  slug: string;
+  coverImage: string;
+  categoryName: string;
+  categorySlug: string;
+  authorName: string;
+  publishedAt: Date;
+}
+
+const { title, slug, coverImage, categoryName, categorySlug, authorName, publishedAt } = Astro.props;
+
+const dateStr = publishedAt.toLocaleDateString('en-US', {
+  month: 'long',
+  day: 'numeric',
+  year: 'numeric',
+}).toUpperCase();
+
+const initials = authorName.split(' ').map(w => w[0]).join('');
+---
+
+<section class="hero">
+  <img src={coverImage} alt={title} class="hero__image" loading="eager" />
+  <div class="hero__overlay"></div>
+  <div class="hero__content">
+    <div class="hero__badge">
+      <span class="category-badge" style="background: var(--accent);">FEATURED STORY</span>
+    </div>
+    <a href={`/blog/${slug}`}>
+      <h1 class="hero__title">{title}</h1>
+    </a>
+    <div class="hero__author">
+      <div class="hero__author-avatar">{initials}</div>
+      <div class="hero__author-info">
+        <span class="hero__author-name">{authorName}</span>
+        <span class="hero__author-date">{dateStr}</span>
+      </div>
+    </div>
+  </div>
+</section>

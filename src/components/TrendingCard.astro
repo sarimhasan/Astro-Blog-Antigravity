@@ -1,0 +1,35 @@
+---
+import CategoryBadge from './CategoryBadge.astro';
+
+interface Props {
+  title: string;
+  slug: string;
+  excerpt: string;
+  coverImage: string;
+  categoryName: string;
+  categorySlug: string;
+}
+
+const { title, slug, excerpt, coverImage, categoryName, categorySlug } = Astro.props;
+---
+
+<article class="trending-card">
+  <a href={`/blog/${slug}`}>
+    <div class="trending-card__image-wrapper">
+      <CategoryBadge name={categoryName} slug={categorySlug} />
+      <img src={coverImage} alt={title} class="trending-card__image" loading="lazy" />
+    </div>
+  </a>
+  <div class="trending-card__body">
+    <a href={`/blog/${slug}`}>
+      <h3 class="trending-card__title">{title}</h3>
+    </a>
+    <p class="trending-card__excerpt">{excerpt}</p>
+    <a href={`/blog/${slug}`} class="trending-card__link">
+      Read More
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M5 12h14M12 5l7 7-7 7" />
+      </svg>
+    </a>
+  </div>
+</article>

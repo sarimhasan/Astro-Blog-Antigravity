@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="500" viewBox="0 0 800 500">
+  <rect width="800" height="500" fill="#ff4a1c"/>
+  <g transform="translate(120, 180)">
+    <!-- Left arrow -->
+    <polygon points="40,50 80,20 80,80" fill="none" stroke="#000" stroke-width="4"/>
+    <!-- Right arrow -->
+    <polygon points="130,50 90,20 90,80" fill="none" stroke="#000" stroke-width="4"/>
+  </g>
+</svg>

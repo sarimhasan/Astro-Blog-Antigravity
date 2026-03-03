@@ -1,0 +1,132 @@
+---
+---
+
+<header class="site-header">
+  <div class="container">
+    <div class="site-header__inner">
+      <a href="/" class="site-logo">
+        <span class="site-logo__icon">■</span>
+        <span class="site-logo__text">Sarim's Pensieve.</span>
+      </a>
+
+      <div class="site-search">
+        <svg class="site-search__icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <circle cx="11" cy="11" r="8" />
+          <path d="m21 21-4.35-4.35" />
+        </svg>
+        <input type="text" placeholder="Search articles..." class="site-search__input" id="search-input" />
+      </div>
+
+      <div class="site-header__actions">
+        <button id="theme-toggle" class="theme-toggle" onclick="toggleTheme()">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
+          </svg>
+          Dark
+        </button>
+      </div>
+    </div>
+  </div>
+</header>
+
+<style>
+  .site-header {
+    border-bottom: 1px solid var(--border-color);
+    padding: 14px 0;
+    background: var(--bg-primary);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    backdrop-filter: blur(12px);
+    transition: background-color var(--transition);
+  }
+
+  .site-header__inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px;
+  }
+
+  .site-logo {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-family: var(--font-heading);
+    font-weight: 900;
+    font-size: 1.25rem;
+    color: var(--text-primary);
+    letter-spacing: -0.02em;
+    flex-shrink: 0;
+  }
+
+  .site-logo__icon {
+    color: var(--accent);
+    font-size: 1rem;
+  }
+
+  .site-search {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: var(--bg-secondary);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    padding: 8px 16px;
+    max-width: 340px;
+    width: 100%;
+    transition: border-color var(--transition);
+  }
+
+  .site-search:focus-within {
+    border-color: var(--accent);
+  }
+
+  .site-search__icon {
+    color: var(--text-muted);
+    flex-shrink: 0;
+  }
+
+  .site-search__input {
+    background: none;
+    border: none;
+    outline: none;
+    font-family: var(--font-primary);
+    font-size: 0.85rem;
+    color: var(--text-primary);
+    width: 100%;
+  }
+
+  .site-search__input::placeholder {
+    color: var(--text-muted);
+  }
+
+  .site-header__actions {
+    flex-shrink: 0;
+  }
+
+  .theme-toggle {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 8px 16px;
+    border-radius: 8px;
+    border: 1px solid var(--border-color);
+    font-size: 0.82rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    background: var(--bg-secondary);
+    transition: all var(--transition);
+  }
+
+  .theme-toggle:hover {
+    border-color: var(--text-muted);
+    background: var(--bg-card);
+  }
+
+  @media (max-width: 640px) {
+    .site-search {
+      display: none;
+    }
+  }
+</style>

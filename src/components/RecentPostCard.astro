@@ -1,0 +1,37 @@
+---
+import CategoryBadge from './CategoryBadge.astro';
+
+interface Props {
+  title: string;
+  slug: string;
+  excerpt: string;
+  coverImage: string;
+  categoryName: string;
+  categorySlug: string;
+  authorName: string;
+  readTime: string;
+}
+
+const { title, slug, excerpt, coverImage, categoryName, categorySlug, authorName, readTime } = Astro.props;
+const initials = authorName.split(' ').map(w => w[0]).join('');
+---
+
+<article class="recent-card">
+  <a href={`/blog/${slug}`} class="recent-card__image-wrapper">
+    <img src={coverImage} alt={title} class="recent-card__image" loading="lazy" />
+  </a>
+  <div class="recent-card__body">
+    <div class="recent-card__meta">
+      <CategoryBadge name={categoryName} slug={categorySlug} />
+      <span class="recent-card__read-time">{readTime}</span>
+    </div>
+    <a href={`/blog/${slug}`}>
+      <h3 class="recent-card__title">{title}</h3>
+    </a>
+    <p class="recent-card__excerpt">{excerpt}</p>
+    <div class="recent-card__author">
+      <div class="recent-card__author-avatar">{initials}</div>
+      <span class="recent-card__author-name">{authorName}</span>
+    </div>
+  </div>
+</article>
