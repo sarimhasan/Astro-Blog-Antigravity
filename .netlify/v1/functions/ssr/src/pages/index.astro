@@ -21,9 +21,10 @@ const CATEGORIES: Record<string, string> = {
 
 // Get featured post (for hero background image source)
 const featuredPost = allPosts.find((p: any) => p.featured) || allPosts[0];
+const featuredSlug = featuredPost?.slug;
 
-// Get recent posts: latest 4 based on array slice logic (or just take first 4 after featured logic)
-const recentPosts = allPosts.filter((p: any) => p !== featuredPost).slice(0, 4);
+// Get recent posts: exclude the one used as hero, take next 4
+const recentPosts = allPosts.filter((p: any) => p.slug !== featuredSlug).slice(0, 4);
 ---
 
 <MainLayout title="The Wandering Mind">

@@ -1,6 +1,6 @@
 import { c as createComponent, r as renderComponent, a as renderTemplate, b as createAstro, m as maybeRenderHead, d as addAttribute } from '../chunks/astro/server_pxGUv0Nq.mjs';
 import 'piccolore';
-import { g as getEntry, $ as $$MainLayout, a as $$Header, b as $$CategoryBadge, c as $$Footer } from '../chunks/_astro_content_CK7Fl52g.mjs';
+import { g as getEntry, $ as $$MainLayout, a as $$Header, b as $$CategoryBadge, c as $$Footer } from '../chunks/_astro_content_BsYvqmqb.mjs';
 /* empty css                                  */
 export { renderers } from '../renderers.mjs';
 

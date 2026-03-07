@@ -1,9 +1,9 @@
 import { c as createComponent, m as maybeRenderHead, d as addAttribute, a as renderTemplate, b as createAstro, r as renderComponent } from '../chunks/astro/server_pxGUv0Nq.mjs';
 import 'piccolore';
-import { d as getCollection, $ as $$MainLayout, a as $$Header, c as $$Footer } from '../chunks/_astro_content_CK7Fl52g.mjs';
+import { d as getCollection, $ as $$MainLayout, a as $$Header, c as $$Footer } from '../chunks/_astro_content_BsYvqmqb.mjs';
 import 'clsx';
 /* empty css                                 */
-import { $ as $$RecentPostCard } from '../chunks/RecentPostCard_CAQeMLr6.mjs';
+import { $ as $$RecentPostCard } from '../chunks/RecentPostCard_DRXW2l1g.mjs';
 export { renderers } from '../renderers.mjs';
 
 const $$Astro = createAstro();
@@ -36,7 +36,8 @@ const $$Index = createComponent(async ($$result, $$props, $$slots) => {
     travel: "Travel"
   };
   const featuredPost = allPosts.find((p) => p.featured) || allPosts[0];
-  const recentPosts = allPosts.filter((p) => p !== featuredPost).slice(0, 4);
+  const featuredSlug = featuredPost?.slug;
+  const recentPosts = allPosts.filter((p) => p.slug !== featuredSlug).slice(0, 4);
   return renderTemplate`${renderComponent($$result, "MainLayout", $$MainLayout, { "title": "The Wandering Mind", "data-astro-cid-j7pv25f6": true }, { "default": async ($$result2) => renderTemplate` ${renderComponent($$result2, "Header", $$Header, { "data-astro-cid-j7pv25f6": true })} ${maybeRenderHead()}<main class="container" style="padding-top: 32px; padding-bottom: 32px;" data-astro-cid-j7pv25f6> ${featuredPost && renderTemplate`${renderComponent($$result2, "HeroSection", $$HeroSection, { "slug": featuredPost.slug, "coverImage": featuredPost.coverImage, "data-astro-cid-j7pv25f6": true })}`} <section class="latest-reflections" data-astro-cid-j7pv25f6> <h2 class="section-title" data-astro-cid-j7pv25f6>Latest Reflections</h2> <div class="cards-grid" data-astro-cid-j7pv25f6> ${recentPosts.map((post) => {
     const catName = CATEGORIES[post.category] || "General";
     return renderTemplate`${renderComponent($$result2, "RecentPostCard", $$RecentPostCard, { "title": post.title, "slug": post.slug, "excerpt": post.excerpt, "coverImage": post.coverImage, "categoryName": catName, "categorySlug": post.category, "authorName": post.authorName, "readTime": post.readTime, "data-astro-cid-j7pv25f6": true })}`;
