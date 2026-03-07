@@ -1,9 +1,9 @@
 import { c as createComponent, m as maybeRenderHead, d as addAttribute, a as renderTemplate, b as createAstro, r as renderComponent } from '../chunks/astro/server_pxGUv0Nq.mjs';
 import 'piccolore';
-import { d as getCollection, $ as $$MainLayout, a as $$Header, c as $$Footer } from '../chunks/_astro_content_BnGm0M_8.mjs';
+import { d as getCollection, $ as $$MainLayout, a as $$Header, c as $$Footer } from '../chunks/_astro_content_D03keNTN.mjs';
 import 'clsx';
 /* empty css                                 */
-import { $ as $$RecentPostCard } from '../chunks/RecentPostCard_CPIJHLd3.mjs';
+import { $ as $$RecentPostCard } from '../chunks/RecentPostCard_B20OmicV.mjs';
 export { renderers } from '../renderers.mjs';
 
 const $$Astro = createAstro();

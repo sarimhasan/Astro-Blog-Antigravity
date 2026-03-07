@@ -17,7 +17,6 @@ import Logo from './Logo.astro';
           <li><a href="/category/science" class="nav-link">Science</a></li>
           <li><a href="/category/thoughts" class="nav-link">Thoughts</a></li>
           <li><a href="/category/miscellaneous" class="nav-link">Miscellaneous</a></li>
-          <li><a href="/about" class="nav-link">About</a></li>
         </ul>
       </nav>
 
@@ -48,7 +47,6 @@ import Logo from './Logo.astro';
         <li><a href="/category/science" class="mobile-nav-link">Science</a></li>
         <li><a href="/category/thoughts" class="mobile-nav-link">Thoughts</a></li>
         <li><a href="/category/miscellaneous" class="mobile-nav-link">Miscellaneous</a></li>
-        <li><a href="/about" class="mobile-nav-link">About</a></li>
       </ul>
     </nav>
   </div>
@@ -192,16 +190,17 @@ import Logo from './Logo.astro';
   .mobile-menu {
     display: none;
     background: #F5F4EF;
-    border-top: 1px solid var(--border-color);
+    border-top: 1px solid transparent; /* Prevents double line when closed */
     padding: 0;
     max-height: 0;
     overflow: hidden;
-    transition: max-height 0.3s ease, padding 0.3s ease;
+    transition: max-height 0.3s ease, padding 0.3s ease, border-color 0.3s ease;
   }
 
   .mobile-menu.is-open {
     max-height: 400px;
     padding: 12px 0 20px;
+    border-top-color: var(--border-color);
   }
 
   .mobile-nav-list {
