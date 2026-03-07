@@ -8,9 +8,9 @@ import ThemeIcons from '../components/ThemeIcons.astro';
 import AboutAuthor from '../components/AboutAuthor.astro';
 import { getCollection } from 'astro:content';
 
-// Fetch all posts from content collections
+// Fetch all posts — reverse so Keystatic-added posts (appended last) appear first
 const _allPosts = await getCollection('posts');
-const allPosts = _allPosts.map(p => ({ slug: p.slug, ...p.data }));
+const allPosts = _allPosts.map(p => ({ slug: p.slug, ...p.data })).reverse();
 
 const CATEGORIES: Record<string, string> = {
   philosophy: 'Philosophy',

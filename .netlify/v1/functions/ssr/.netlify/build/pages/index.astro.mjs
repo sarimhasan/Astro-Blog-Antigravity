@@ -1,9 +1,9 @@
 import { c as createComponent, m as maybeRenderHead, d as addAttribute, a as renderTemplate, b as createAstro, r as renderComponent } from '../chunks/astro/server_pxGUv0Nq.mjs';
 import 'piccolore';
-import { d as getCollection, $ as $$MainLayout, a as $$Header, c as $$Footer } from '../chunks/_astro_content_BsYvqmqb.mjs';
+import { d as getCollection, $ as $$MainLayout, a as $$Header, c as $$Footer } from '../chunks/_astro_content_Dl8-Nboq.mjs';
 import 'clsx';
 /* empty css                                 */
-import { $ as $$RecentPostCard } from '../chunks/RecentPostCard_DRXW2l1g.mjs';
+import { $ as $$RecentPostCard } from '../chunks/RecentPostCard_BGLGRzky.mjs';
 export { renderers } from '../renderers.mjs';
 
 const $$Astro = createAstro();
@@ -28,7 +28,7 @@ Through these essays, I hope to spark curiosity and inspire others to wander thr
 
 const $$Index = createComponent(async ($$result, $$props, $$slots) => {
   const _allPosts = await getCollection("posts");
-  const allPosts = _allPosts.map((p) => ({ slug: p.slug, ...p.data }));
+  const allPosts = _allPosts.map((p) => ({ slug: p.slug, ...p.data })).reverse();
   const CATEGORIES = {
     philosophy: "Philosophy",
     science: "Science",
