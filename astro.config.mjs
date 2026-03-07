@@ -1,7 +1,7 @@
 // @ts-check
 import { defineConfig } from 'astro/config';
 
-import node from '@astrojs/node';
+import netlify from '@astrojs/netlify';
 
 import react from '@astrojs/react';
 import markdoc from '@astrojs/markdoc';
@@ -11,9 +11,7 @@ import keystatic from '@keystatic/astro';
 export default defineConfig({
   output: 'server',
   integrations: [react(), markdoc(), keystatic()],
-  adapter: node({
-    mode: 'standalone'
-  }),
+  adapter: netlify(),
   vite: {
     optimizeDeps: {
       include: ['tslib', '@formatjs/icu-messageformat-parser']

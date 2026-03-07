@@ -1,0 +1,94 @@
+---
+import MainLayout from '../layouts/MainLayout.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import HeroSection from '../components/HeroSection.astro';
+import TrendingCard from '../components/TrendingCard.astro';
+import RecentPostCard from '../components/RecentPostCard.astro';
+import { getCollection } from 'astro:content';
+
+// Fetch all posts from content collections
+const _allPosts = await getCollection('posts');
+const allPosts = _allPosts.map(p => ({ slug: p.slug, ...p.data }));
+
+const CATEGORIES: Record<string, string> = {
+  productivity: 'Productivity',
+  finance: 'Finance',
+  climate: 'Climate',
+  design: 'Design',
+  development: 'Development',
+  strategy: 'Strategy',
+};
+
+// Get featured post
+const featuredPost = allPosts.find((p: any) => p.featured);
+
+// Get trending posts (non-featured, take first 3)
+const trendingPosts = allPosts.filter((p: any) => !p.featured).slice(0, 3);
+
+// Get recent posts (non-featured, skip trending, or take remaining)
+const recentPosts = allPosts.filter((p: any) => !p.featured).slice(3);
+---
+
+<MainLayout title="Sarim's Pensieve — A Thinking Space">
+  <Header />
+
+  <main class="container" style="padding-top: 32px; padding-bottom: 32px;">
+    {featuredPost && (() => {
+      const catName = CATEGORIES[featuredPost.category] || 'General';
+      return (
+        <HeroSection
+          title={featuredPost.title}
+          slug={featuredPost.slug}
+          coverImage={featuredPost.coverImage}
+          categoryName={catName}
+          categorySlug={featuredPost.category}
+          authorName={featuredPost.authorName}
+          publishedAt={new Date()}
+        />
+      );
+    })()}
+
+    <section>
+      <h2 class="section-title">Trending Now</h2>
+      <div class="trending-grid">
+        {trendingPosts.map((post: any) => {
+          const catName = CATEGORIES[post.category] || 'General';
+          return (
+            <TrendingCard
+              title={post.title}
+              slug={post.slug}
+              excerpt={post.excerpt}
+              coverImage={post.coverImage}
+              categoryName={catName}
+              categorySlug={post.category}
+            />
+          );
+        })}
+      </div>
+    </section>
+
+    <section>
+      <h2 class="section-title">Recent Posts</h2>
+      <div class="recent-posts">
+        {recentPosts.map((post: any) => {
+          const catName = CATEGORIES[post.category] || 'General';
+          return (
+            <RecentPostCard
+              title={post.title}
+              slug={post.slug}
+              excerpt={post.excerpt}
+              coverImage={post.coverImage}
+              categoryName={catName}
+              categorySlug={post.category}
+              authorName={post.authorName}
+              readTime={post.readTime}
+            />
+          );
+        })}
+      </div>
+    </section>
+  </main>
+
+  <Footer />
+</MainLayout>
