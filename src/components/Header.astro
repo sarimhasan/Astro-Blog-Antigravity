@@ -189,18 +189,23 @@ import Logo from './Logo.astro';
   /* ── Mobile Menu Drawer ── */
   .mobile-menu {
     display: none;
-    background: #F5F4EF;
-    border-top: 1px solid transparent; /* Prevents double line when closed */
+    background: rgba(245, 244, 239, 0.95);
+    backdrop-filter: blur(12px);
+    border-top: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: 100%;
     padding: 0;
     max-height: 0;
     overflow: hidden;
-    transition: max-height 0.3s ease, padding 0.3s ease, border-color 0.3s ease;
+    transition: max-height 0.3s ease, padding 0.3s ease;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.05);
   }
 
   .mobile-menu.is-open {
     max-height: 400px;
-    padding: 12px 0 20px;
-    border-top-color: var(--border-color);
+    padding: 8px 0 16px;
   }
 
   .mobile-nav-list {
