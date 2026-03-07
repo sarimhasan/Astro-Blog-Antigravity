@@ -1,43 +1,87 @@
 ---
-import CategoryBadge from './CategoryBadge.astro';
-
 interface Props {
-  title: string;
-  slug: string;
-  coverImage: string;
-  categoryName: string;
-  categorySlug: string;
-  authorName: string;
-  publishedAt: Date;
+  title?: string;
+  slug?: string;
+  coverImage?: string;
+  categoryName?: string;
+  categorySlug?: string;
+  authorName?: string;
+  publishedAt?: Date;
 }
-
-const { title, slug, coverImage, categoryName, categorySlug, authorName, publishedAt } = Astro.props;
-
-const dateStr = publishedAt.toLocaleDateString('en-US', {
-  month: 'long',
-  day: 'numeric',
-  year: 'numeric',
-}).toUpperCase();
-
-const initials = authorName.split(' ').map(w => w[0]).join('');
+const { coverImage = '/images/posts/default.jpg', slug } = Astro.props;
 ---
 
-<section class="hero">
-  <img src={coverImage} alt={title} class="hero__image" loading="eager" />
-  <div class="hero__overlay"></div>
-  <div class="hero__content">
-    <div class="hero__badge">
-      <span class="category-badge" style="background: var(--accent);">FEATURED STORY</span>
-    </div>
-    <a href={`/blog/${slug}`}>
-      <h1 class="hero__title">{title}</h1>
-    </a>
-    <div class="hero__author">
-      <div class="hero__author-avatar">{initials}</div>
-      <div class="hero__author-info">
-        <span class="hero__author-name">{authorName}</span>
-        <span class="hero__author-date">{dateStr}</span>
-      </div>
-    </div>
+<section class="hero-section">
+  <div class="hero-bg">
+    <img src={coverImage} alt="Hero background" class="hero-img" loading="eager" />
+    <div class="hero-overlay"></div>
+  </div>
+  <div class="hero-content">
+    <h1 class="hero-quote">"Exploring the cosmos without<br/>and the universe within."</h1>
+    <!-- If we have a featured post slug, use it, else # -->
+    <a href={slug ? `/blog/${slug}` : '#'} class="hero-btn">Begin the Journey</a>
   </div>
 </section>
+
+<style>
+  .hero-section {
+    position: relative;
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    min-height: 480px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 80px;
+  }
+  .hero-bg {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+  }
+  .hero-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  .hero-overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(30,35,32,0.6);
+  }
+  .hero-content {
+    position: relative;
+    z-index: 2;
+    text-align: center;
+    padding: 40px;
+  }
+  .hero-quote {
+    font-family: var(--font-heading);
+    color: white;
+    font-size: 3rem;
+    font-weight: 500;
+    line-height: 1.25;
+    margin-bottom: 32px;
+  }
+  .hero-btn {
+    display: inline-block;
+    background: var(--bg-secondary);
+    color: var(--text-primary);
+    font-family: var(--font-primary);
+    font-size: 0.95rem;
+    font-weight: 600;
+    padding: 14px 32px;
+    border-radius: 30px;
+    text-decoration: none;
+    transition: transform 0.2s, background 0.2s;
+  }
+  .hero-btn:hover {
+    background: white;
+    transform: translateY(-2px);
+  }
+  @media (max-width: 768px) {
+    .hero-quote {
+      font-size: 2rem;
+    }
+  }
+</style>

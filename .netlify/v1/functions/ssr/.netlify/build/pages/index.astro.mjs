@@ -1,66 +1,54 @@
 import { c as createComponent, m as maybeRenderHead, d as addAttribute, a as renderTemplate, b as createAstro, r as renderComponent } from '../chunks/astro/server_BcKQPrgQ.mjs';
 import 'piccolore';
-import { b as $$CategoryBadge, d as getCollection, $ as $$MainLayout, a as $$Header, c as $$Footer } from '../chunks/_astro_content_B1hRpF3z.mjs';
+import { b as $$CategoryBadge, d as getCollection, $ as $$MainLayout, a as $$Header, c as $$Footer } from '../chunks/_astro_content_Byuk1gUS.mjs';
 import 'clsx';
+/* empty css                                 */
 export { renderers } from '../renderers.mjs';
 
-const $$Astro$2 = createAstro();
-const $$HeroSection = createComponent(($$result, $$props, $$slots) => {
-  const Astro2 = $$result.createAstro($$Astro$2, $$props, $$slots);
-  Astro2.self = $$HeroSection;
-  const { title, slug, coverImage, categoryName, categorySlug, authorName, publishedAt } = Astro2.props;
-  const dateStr = publishedAt.toLocaleDateString("en-US", {
-    month: "long",
-    day: "numeric",
-    year: "numeric"
-  }).toUpperCase();
-  const initials = authorName.split(" ").map((w) => w[0]).join("");
-  return renderTemplate`${maybeRenderHead()}<section class="hero"> <img${addAttribute(coverImage, "src")}${addAttribute(title, "alt")} class="hero__image" loading="eager"> <div class="hero__overlay"></div> <div class="hero__content"> <div class="hero__badge"> <span class="category-badge" style="background: var(--accent);">FEATURED STORY</span> </div> <a${addAttribute(`/blog/${slug}`, "href")}> <h1 class="hero__title">${title}</h1> </a> <div class="hero__author"> <div class="hero__author-avatar">${initials}</div> <div class="hero__author-info"> <span class="hero__author-name">${authorName}</span> <span class="hero__author-date">${dateStr}</span> </div> </div> </div> </section>`;
-}, "D:/Main/04 Archive/Astro Blog Antigravity/src/components/HeroSection.astro", void 0);
-
 const $$Astro$1 = createAstro();
-const $$TrendingCard = createComponent(($$result, $$props, $$slots) => {
+const $$HeroSection = createComponent(($$result, $$props, $$slots) => {
   const Astro2 = $$result.createAstro($$Astro$1, $$props, $$slots);
-  Astro2.self = $$TrendingCard;
-  const { title, slug, excerpt, coverImage, categoryName, categorySlug } = Astro2.props;
-  return renderTemplate`${maybeRenderHead()}<article class="trending-card"> <a${addAttribute(`/blog/${slug}`, "href")}> <div class="trending-card__image-wrapper"> ${renderComponent($$result, "CategoryBadge", $$CategoryBadge, { "name": categoryName, "slug": categorySlug })} <img${addAttribute(coverImage, "src")}${addAttribute(title, "alt")} class="trending-card__image" loading="lazy"> </div> </a> <div class="trending-card__body"> <a${addAttribute(`/blog/${slug}`, "href")}> <h3 class="trending-card__title">${title}</h3> </a> <p class="trending-card__excerpt">${excerpt}</p> <a${addAttribute(`/blog/${slug}`, "href")} class="trending-card__link">
-Read More
-<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"> <path d="M5 12h14M12 5l7 7-7 7"></path> </svg> </a> </div> </article>`;
-}, "D:/Main/04 Archive/Astro Blog Antigravity/src/components/TrendingCard.astro", void 0);
+  Astro2.self = $$HeroSection;
+  const { coverImage = "/images/posts/default.jpg", slug } = Astro2.props;
+  return renderTemplate`${maybeRenderHead()}<section class="hero-section" data-astro-cid-nlow4r3u> <div class="hero-bg" data-astro-cid-nlow4r3u> <img${addAttribute(coverImage, "src")} alt="Hero background" class="hero-img" loading="eager" data-astro-cid-nlow4r3u> <div class="hero-overlay" data-astro-cid-nlow4r3u></div> </div> <div class="hero-content" data-astro-cid-nlow4r3u> <h1 class="hero-quote" data-astro-cid-nlow4r3u>"Exploring the cosmos without<br data-astro-cid-nlow4r3u>and the universe within."</h1> <!-- If we have a featured post slug, use it, else # --> <a${addAttribute(slug ? `/blog/${slug}` : "#", "href")} class="hero-btn" data-astro-cid-nlow4r3u>Begin the Journey</a> </div> </section> `;
+}, "D:/Main/04 Archive/Astro Blog Antigravity/src/components/HeroSection.astro", void 0);
 
 const $$Astro = createAstro();
 const $$RecentPostCard = createComponent(($$result, $$props, $$slots) => {
   const Astro2 = $$result.createAstro($$Astro, $$props, $$slots);
   Astro2.self = $$RecentPostCard;
-  const { title, slug, excerpt, coverImage, categoryName, categorySlug, authorName, readTime } = Astro2.props;
-  const initials = authorName.split(" ").map((w) => w[0]).join("");
-  return renderTemplate`${maybeRenderHead()}<article class="recent-card"> <a${addAttribute(`/blog/${slug}`, "href")} class="recent-card__image-wrapper"> <img${addAttribute(coverImage, "src")}${addAttribute(title, "alt")} class="recent-card__image" loading="lazy"> </a> <div class="recent-card__body"> <div class="recent-card__meta"> ${renderComponent($$result, "CategoryBadge", $$CategoryBadge, { "name": categoryName, "slug": categorySlug })} <span class="recent-card__read-time">${readTime}</span> </div> <a${addAttribute(`/blog/${slug}`, "href")}> <h3 class="recent-card__title">${title}</h3> </a> <p class="recent-card__excerpt">${excerpt}</p> <div class="recent-card__author"> <div class="recent-card__author-avatar">${initials}</div> <span class="recent-card__author-name">${authorName}</span> </div> </div> </article>`;
+  const { title, slug, coverImage, categoryName, categorySlug, readTime } = Astro2.props;
+  const dateStr = "Apr 3, 2024";
+  return renderTemplate`${maybeRenderHead()}<article class="post-card" data-astro-cid-54ggkhau> <a${addAttribute(`/blog/${slug}`, "href")} class="post-card__img-link" data-astro-cid-54ggkhau> <img${addAttribute(coverImage, "src")}${addAttribute(title, "alt")} class="post-card__img" loading="lazy" data-astro-cid-54ggkhau> </a> <div class="post-card__content" data-astro-cid-54ggkhau> <div class="post-card__badge-wrapper" data-astro-cid-54ggkhau> ${renderComponent($$result, "CategoryBadge", $$CategoryBadge, { "name": categoryName, "slug": categorySlug, "data-astro-cid-54ggkhau": true })} </div> <a${addAttribute(`/blog/${slug}`, "href")} class="post-card__title-link" data-astro-cid-54ggkhau> <h3 class="post-card__title" data-astro-cid-54ggkhau>${title}</h3> </a> <div class="post-card__footer" data-astro-cid-54ggkhau> <div class="post-card__date" data-astro-cid-54ggkhau> <svg fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24" data-astro-cid-54ggkhau><rect width="18" height="18" x="3" y="4" rx="2" ry="2" data-astro-cid-54ggkhau></rect><line x1="16" x2="16" y1="2" y2="6" data-astro-cid-54ggkhau></line><line x1="8" x2="8" y1="2" y2="6" data-astro-cid-54ggkhau></line><line x1="3" x2="21" y1="10" y2="10" data-astro-cid-54ggkhau></line></svg> ${dateStr} </div> <div class="post-card__read-time" data-astro-cid-54ggkhau> <svg fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24" data-astro-cid-54ggkhau><circle cx="12" cy="12" r="10" data-astro-cid-54ggkhau></circle><polyline points="12 6 12 12 16 14" data-astro-cid-54ggkhau></polyline></svg> ${readTime} </div> </div> </div> </article> `;
 }, "D:/Main/04 Archive/Astro Blog Antigravity/src/components/RecentPostCard.astro", void 0);
+
+const $$ThemeIcons = createComponent(($$result, $$props, $$slots) => {
+  return renderTemplate`${maybeRenderHead()}<div class="theme-section" data-astro-cid-5bjhvnjs> <h3 class="theme-title" data-astro-cid-5bjhvnjs>Browse by Theme</h3> <div class="theme-grid" data-astro-cid-5bjhvnjs> <a href="/category/philosophy" class="theme-item group" data-astro-cid-5bjhvnjs> <div class="theme-circle bg-[#33383B]" data-astro-cid-5bjhvnjs> <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" data-astro-cid-5bjhvnjs> <path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6" data-astro-cid-5bjhvnjs></path> </svg> </div> <span class="theme-label" data-astro-cid-5bjhvnjs>Philosophy</span> </a> <a href="/category/science" class="theme-item group" data-astro-cid-5bjhvnjs> <div class="theme-circle bg-[#6F889B]" data-astro-cid-5bjhvnjs> <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" data-astro-cid-5bjhvnjs> <circle cx="12" cy="12" r="3" data-astro-cid-5bjhvnjs></circle> <ellipse cx="12" cy="12" rx="10" ry="4" transform="rotate(45 12 12)" data-astro-cid-5bjhvnjs></ellipse> <ellipse cx="12" cy="12" rx="10" ry="4" transform="rotate(-45 12 12)" data-astro-cid-5bjhvnjs></ellipse> </svg> </div> <span class="theme-label" data-astro-cid-5bjhvnjs>Science</span> </a> <a href="/category/nature" class="theme-item group" data-astro-cid-5bjhvnjs> <div class="theme-circle bg-[#4E6A55]" data-astro-cid-5bjhvnjs> <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" data-astro-cid-5bjhvnjs> <path d="m8 14-5 6h18l-5-6M12 14l-4-5-4 5" data-astro-cid-5bjhvnjs></path> <path d="M12 14V4l4 5" data-astro-cid-5bjhvnjs></path> </svg> </div> <span class="theme-label" data-astro-cid-5bjhvnjs>Nature</span> </a> <a href="/category/travel" class="theme-item group" data-astro-cid-5bjhvnjs> <div class="theme-circle bg-[#D4AA85]" data-astro-cid-5bjhvnjs> <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" data-astro-cid-5bjhvnjs> <path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z" data-astro-cid-5bjhvnjs></path> <circle cx="12" cy="10" r="3" data-astro-cid-5bjhvnjs></circle> </svg> </div> <span class="theme-label" data-astro-cid-5bjhvnjs>Travel</span> </a> </div> </div> `;
+}, "D:/Main/04 Archive/Astro Blog Antigravity/src/components/ThemeIcons.astro", void 0);
+
+const $$AboutAuthor = createComponent(($$result, $$props, $$slots) => {
+  return renderTemplate`${maybeRenderHead()}<section class="about-author" data-astro-cid-jy2ec4tz> <div class="author-image-wrapper" data-astro-cid-jy2ec4tz> <img src="/images/posts/default.jpg" alt="Author" class="author-image" loading="lazy" data-astro-cid-jy2ec4tz> </div> <div class="author-info" data-astro-cid-jy2ec4tz> <h2 class="author-heading" data-astro-cid-jy2ec4tz>About the Author</h2> <p class="author-bio" data-astro-cid-jy2ec4tz>
+Welcome to my digital space. I'm a writer, thinker, and lifelong learner exploring the intersection of philosophy, science, and the human experience.
+<br data-astro-cid-jy2ec4tz><br data-astro-cid-jy2ec4tz>
+Through these essays, I hope to spark curiosity and inspire others to wander through the landscape of ideas with an open mind.
+</p> <div class="author-socials" data-astro-cid-jy2ec4tz> <a href="#" aria-label="Twitter" data-astro-cid-jy2ec4tz> <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-astro-cid-jy2ec4tz><path d="M22 4s-.7 2.1-2 3.4c1.6 10-9.4 17.3-18 11.6 2.2.1 4.4-.6 6-2C3 15.5.5 9.6 3 5c2.2 2.6 5.6 4.1 9 4-.9-4.2 4-6.6 7-3.8 1.1 0 3-1.2 3-1.2z" data-astro-cid-jy2ec4tz></path></svg> </a> <a href="#" aria-label="LinkedIn" data-astro-cid-jy2ec4tz> <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-astro-cid-jy2ec4tz><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z" data-astro-cid-jy2ec4tz></path><rect width="4" height="12" x="2" y="9" data-astro-cid-jy2ec4tz></rect><circle cx="4" cy="4" r="2" data-astro-cid-jy2ec4tz></circle></svg> </a> <a href="#" aria-label="Instagram" data-astro-cid-jy2ec4tz> <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-astro-cid-jy2ec4tz><rect width="20" height="20" x="2" y="2" rx="5" ry="5" data-astro-cid-jy2ec4tz></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z" data-astro-cid-jy2ec4tz></path><line x1="17.5" x2="17.51" y1="6.5" y2="6.5" data-astro-cid-jy2ec4tz></line></svg> </a> </div> </div> </section> `;
+}, "D:/Main/04 Archive/Astro Blog Antigravity/src/components/AboutAuthor.astro", void 0);
 
 const $$Index = createComponent(async ($$result, $$props, $$slots) => {
   const _allPosts = await getCollection("posts");
   const allPosts = _allPosts.map((p) => ({ slug: p.slug, ...p.data }));
   const CATEGORIES = {
-    productivity: "Productivity",
-    finance: "Finance",
-    climate: "Climate",
-    design: "Design",
-    development: "Development",
-    strategy: "Strategy"
+    philosophy: "Philosophy",
+    science: "Science",
+    nature: "Nature",
+    travel: "Travel"
   };
-  const featuredPost = allPosts.find((p) => p.featured);
-  const trendingPosts = allPosts.filter((p) => !p.featured).slice(0, 3);
-  const recentPosts = allPosts.filter((p) => !p.featured).slice(3);
-  return renderTemplate`${renderComponent($$result, "MainLayout", $$MainLayout, { "title": "Sarim's Pensieve \u2014 A Thinking Space" }, { "default": async ($$result2) => renderTemplate` ${renderComponent($$result2, "Header", $$Header, {})} ${maybeRenderHead()}<main class="container" style="padding-top: 32px; padding-bottom: 32px;"> ${featuredPost && (() => {
-    const catName = CATEGORIES[featuredPost.category] || "General";
-    return renderTemplate`${renderComponent($$result2, "HeroSection", $$HeroSection, { "title": featuredPost.title, "slug": featuredPost.slug, "coverImage": featuredPost.coverImage, "categoryName": catName, "categorySlug": featuredPost.category, "authorName": featuredPost.authorName, "publishedAt": /* @__PURE__ */ new Date() })}`;
-  })()} <section> <h2 class="section-title">Trending Now</h2> <div class="trending-grid"> ${trendingPosts.map((post) => {
+  const featuredPost = allPosts.find((p) => p.featured) || allPosts[0];
+  const recentPosts = allPosts.filter((p) => p !== featuredPost).slice(0, 4);
+  return renderTemplate`${renderComponent($$result, "MainLayout", $$MainLayout, { "title": "The Wandering Mind", "data-astro-cid-j7pv25f6": true }, { "default": async ($$result2) => renderTemplate` ${renderComponent($$result2, "Header", $$Header, { "data-astro-cid-j7pv25f6": true })} ${maybeRenderHead()}<main class="container" style="padding-top: 32px; padding-bottom: 32px;" data-astro-cid-j7pv25f6> ${featuredPost && renderTemplate`${renderComponent($$result2, "HeroSection", $$HeroSection, { "slug": featuredPost.slug, "coverImage": featuredPost.coverImage, "data-astro-cid-j7pv25f6": true })}`} <section class="latest-reflections" data-astro-cid-j7pv25f6> <h2 class="section-title" data-astro-cid-j7pv25f6>Latest Reflections</h2> <div class="cards-grid" data-astro-cid-j7pv25f6> ${recentPosts.map((post) => {
     const catName = CATEGORIES[post.category] || "General";
-    return renderTemplate`${renderComponent($$result2, "TrendingCard", $$TrendingCard, { "title": post.title, "slug": post.slug, "excerpt": post.excerpt, "coverImage": post.coverImage, "categoryName": catName, "categorySlug": post.category })}`;
-  })} </div> </section> <section> <h2 class="section-title">Recent Posts</h2> <div class="recent-posts"> ${recentPosts.map((post) => {
-    const catName = CATEGORIES[post.category] || "General";
-    return renderTemplate`${renderComponent($$result2, "RecentPostCard", $$RecentPostCard, { "title": post.title, "slug": post.slug, "excerpt": post.excerpt, "coverImage": post.coverImage, "categoryName": catName, "categorySlug": post.category, "authorName": post.authorName, "readTime": post.readTime })}`;
-  })} </div> </section> </main> ${renderComponent($$result2, "Footer", $$Footer, {})} ` })}`;
+    return renderTemplate`${renderComponent($$result2, "RecentPostCard", $$RecentPostCard, { "title": post.title, "slug": post.slug, "excerpt": post.excerpt, "coverImage": post.coverImage, "categoryName": catName, "categorySlug": post.category, "authorName": post.authorName, "readTime": post.readTime, "data-astro-cid-j7pv25f6": true })}`;
+  })} </div> </section> ${renderComponent($$result2, "ThemeIcons", $$ThemeIcons, { "data-astro-cid-j7pv25f6": true })} <div class="divider" data-astro-cid-j7pv25f6></div> ${renderComponent($$result2, "AboutAuthor", $$AboutAuthor, { "data-astro-cid-j7pv25f6": true })} </main> ${renderComponent($$result2, "Footer", $$Footer, { "data-astro-cid-j7pv25f6": true })} ` })} `;
 }, "D:/Main/04 Archive/Astro Blog Antigravity/src/pages/index.astro", void 0);
 
 const $$file = "D:/Main/04 Archive/Astro Blog Antigravity/src/pages/index.astro";

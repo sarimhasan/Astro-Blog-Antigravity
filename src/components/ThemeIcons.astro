@@ -1,0 +1,113 @@
+---
+---
+
+<div class="theme-section">
+  <h3 class="theme-title">Browse by Theme</h3>
+  
+  <div class="theme-grid">
+    <a href="/category/philosophy" class="theme-item group">
+      <div class="theme-circle bg-[#33383B]">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>
+        </svg>
+      </div>
+      <span class="theme-label">Philosophy</span>
+    </a>
+    
+    <a href="/category/science" class="theme-item group">
+      <div class="theme-circle bg-[#6F889B]">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="3"/>
+          <ellipse cx="12" cy="12" rx="10" ry="4" transform="rotate(45 12 12)"/>
+          <ellipse cx="12" cy="12" rx="10" ry="4" transform="rotate(-45 12 12)"/>
+        </svg>
+      </div>
+      <span class="theme-label">Science</span>
+    </a>
+    
+    <a href="/category/nature" class="theme-item group">
+      <div class="theme-circle bg-[#4E6A55]">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+          <path d="m8 14-5 6h18l-5-6M12 14l-4-5-4 5"/>
+          <path d="M12 14V4l4 5"/>
+        </svg>
+      </div>
+      <span class="theme-label">Nature</span>
+    </a>
+    
+    <a href="/category/travel" class="theme-item group">
+      <div class="theme-circle bg-[#D4AA85]">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/>
+          <circle cx="12" cy="10" r="3"/>
+        </svg>
+      </div>
+      <span class="theme-label">Travel</span>
+    </a>
+  </div>
+</div>
+
+<style>
+  .theme-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 60px 0;
+  }
+  
+  .theme-title {
+    font-family: var(--font-heading);
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin-bottom: 40px;
+  }
+  
+  .theme-grid {
+    display: flex;
+    justify-content: center;
+    gap: 48px;
+    flex-wrap: wrap;
+  }
+  
+  .theme-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
+    text-decoration: none;
+  }
+  
+  .theme-circle {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+  
+  .theme-circle svg {
+    width: 32px;
+    height: 32px;
+  }
+  
+  .theme-item:hover .theme-circle {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-md);
+  }
+  
+  .theme-label {
+    font-family: var(--font-primary);
+    font-size: 0.95rem;
+    font-weight: 500;
+    color: var(--text-primary);
+  }
+  
+  .bg-\[\#33383B\] { background-color: #33383B; }
+  .bg-\[\#6F889B\] { background-color: #6F889B; }
+  .bg-\[\#4E6A55\] { background-color: #4E6A55; }
+  .bg-\[\#D4AA85\] { background-color: #D4AA85; }
+</style>

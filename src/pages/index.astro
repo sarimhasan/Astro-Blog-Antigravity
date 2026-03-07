@@ -3,8 +3,9 @@ import MainLayout from '../layouts/MainLayout.astro';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 import HeroSection from '../components/HeroSection.astro';
-import TrendingCard from '../components/TrendingCard.astro';
 import RecentPostCard from '../components/RecentPostCard.astro';
+import ThemeIcons from '../components/ThemeIcons.astro';
+import AboutAuthor from '../components/AboutAuthor.astro';
 import { getCollection } from 'astro:content';
 
 // Fetch all posts from content collections
@@ -12,65 +13,33 @@ const _allPosts = await getCollection('posts');
 const allPosts = _allPosts.map(p => ({ slug: p.slug, ...p.data }));
 
 const CATEGORIES: Record<string, string> = {
-  productivity: 'Productivity',
-  finance: 'Finance',
-  climate: 'Climate',
-  design: 'Design',
-  development: 'Development',
-  strategy: 'Strategy',
+  philosophy: 'Philosophy',
+  science: 'Science',
+  nature: 'Nature',
+  travel: 'Travel',
 };
 
-// Get featured post
-const featuredPost = allPosts.find((p: any) => p.featured);
+// Get featured post (for hero background image source)
+const featuredPost = allPosts.find((p: any) => p.featured) || allPosts[0];
 
-// Get trending posts (non-featured, take first 3)
-const trendingPosts = allPosts.filter((p: any) => !p.featured).slice(0, 3);
-
-// Get recent posts (non-featured, skip trending, or take remaining)
-const recentPosts = allPosts.filter((p: any) => !p.featured).slice(3);
+// Get recent posts: latest 4 based on array slice logic (or just take first 4 after featured logic)
+const recentPosts = allPosts.filter((p: any) => p !== featuredPost).slice(0, 4);
 ---
 
-<MainLayout title="Sarim's Pensieve — A Thinking Space">
+<MainLayout title="The Wandering Mind">
   <Header />
 
   <main class="container" style="padding-top: 32px; padding-bottom: 32px;">
-    {featuredPost && (() => {
-      const catName = CATEGORIES[featuredPost.category] || 'General';
-      return (
-        <HeroSection
-          title={featuredPost.title}
-          slug={featuredPost.slug}
-          coverImage={featuredPost.coverImage}
-          categoryName={catName}
-          categorySlug={featuredPost.category}
-          authorName={featuredPost.authorName}
-          publishedAt={new Date()}
-        />
-      );
-    })()}
+    {featuredPost && (
+      <HeroSection
+        slug={featuredPost.slug}
+        coverImage={featuredPost.coverImage}
+      />
+    )}
 
-    <section>
-      <h2 class="section-title">Trending Now</h2>
-      <div class="trending-grid">
-        {trendingPosts.map((post: any) => {
-          const catName = CATEGORIES[post.category] || 'General';
-          return (
-            <TrendingCard
-              title={post.title}
-              slug={post.slug}
-              excerpt={post.excerpt}
-              coverImage={post.coverImage}
-              categoryName={catName}
-              categorySlug={post.category}
-            />
-          );
-        })}
-      </div>
-    </section>
-
-    <section>
-      <h2 class="section-title">Recent Posts</h2>
-      <div class="recent-posts">
+    <section class="latest-reflections">
+      <h2 class="section-title">Latest Reflections</h2>
+      <div class="cards-grid">
         {recentPosts.map((post: any) => {
           const catName = CATEGORIES[post.category] || 'General';
           return (
@@ -88,7 +57,42 @@ const recentPosts = allPosts.filter((p: any) => !p.featured).slice(3);
         })}
       </div>
     </section>
+
+    <ThemeIcons />
+
+    <div class="divider"></div>
+
+    <AboutAuthor />
   </main>
 
   <Footer />
 </MainLayout>
+
+<style>
+  .latest-reflections {
+    margin-bottom: 80px;
+  }
+  .cards-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 24px;
+  }
+  .divider {
+    height: 1px;
+    background: var(--border-color);
+    margin: 80px 0;
+    width: 60%;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  @media (max-width: 1024px) {
+    .cards-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+  @media (max-width: 640px) {
+    .cards-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

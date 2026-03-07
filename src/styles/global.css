@@ -1,29 +1,29 @@
 /* ===== DESIGN TOKENS ===== */
 :root {
   --font-primary: 'Outfit', 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-  --font-heading: 'Outfit', sans-serif;
+  --font-heading: 'Playfair Display', serif;
 
   /* Light Theme */
-  --bg-primary: #f2f7ec;
-  --bg-secondary: #e6edd9;
+  --bg-primary: #f5f4ef;
+  --bg-secondary: #eae8df;
   --bg-card: #ffffff;
-  --bg-hero-overlay: linear-gradient(180deg, rgba(0, 0, 0, 0.2) 0%, rgba(24, 78, 119, 0.75) 100%);
-  --text-primary: #184E77;
-  --text-secondary: #1E6091;
-  --text-muted: #1A759F;
-  --border-color: #D9ED92;
-  --border-light: #F4FAC8;
-  --accent: #168AAD;
-  --accent-hover: #34A0A4;
+  --bg-hero-overlay: linear-gradient(180deg, rgba(0, 0, 0, 0.1) 0%, rgba(30, 35, 32, 0.6) 100%);
+  --text-primary: #2b302c;
+  --text-secondary: #4a504c;
+  --text-muted: #7e8581;
+  --border-color: #e2e0d7;
+  --border-light: #f0eee6;
+  --accent: #d4c9a8;
+  --accent-hover: #c2b591;
   --white: #ffffff;
-  --black: #184E77;
-  --shadow-sm: 0 1px 3px rgba(24, 78, 119, 0.06);
-  --shadow-md: 0 4px 12px rgba(24, 78, 119, 0.08);
-  --shadow-lg: 0 8px 30px rgba(24, 78, 119, 0.12);
-  --radius-sm: 6px;
-  --radius-md: 12px;
-  --radius-lg: 16px;
-  --transition: 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  --black: #1a1c1a;
+  --shadow-sm: 0 2px 4px rgba(43, 48, 44, 0.04);
+  --shadow-md: 0 8px 16px rgba(43, 48, 44, 0.06);
+  --shadow-lg: 0 16px 32px rgba(43, 48, 44, 0.08);
+  --radius-sm: 8px;
+  --radius-md: 16px;
+  --radius-lg: 24px;
+  --transition: 0.3s ease;
 }
 
 [data-theme="dark"] {
@@ -127,34 +127,24 @@ button {
   line-height: 1.4;
 }
 
-.category-badge--productivity {
-  background-color: #1E6091;
+.category-badge--philosophy {
+  background-color: #33383B;
   color: #ffffff;
 }
 
-.category-badge--finance {
-  background-color: #34A0A4;
+.category-badge--science {
+  background-color: #6F889B;
   color: #ffffff;
 }
 
-.category-badge--climate {
-  background-color: #52B69A;
-  color: #184E77;
+.category-badge--nature {
+  background-color: #4E6A55;
+  color: #ffffff;
 }
 
-.category-badge--design {
-  background-color: #76C893;
-  color: #184E77;
-}
-
-.category-badge--development {
-  background-color: #99D98C;
-  color: #184E77;
-}
-
-.category-badge--strategy {
-  background-color: #B5E48C;
-  color: #184E77;
+.category-badge--travel {
+  background-color: #D4AA85;
+  color: #ffffff;
 }
 
 /* ===== HERO SECTION ===== */

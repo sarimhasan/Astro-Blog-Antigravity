@@ -104,14 +104,12 @@ const config = config$1({
         category: fields.select({
           label: "Category",
           options: [
-            { label: "Productivity", value: "productivity" },
-            { label: "Finance", value: "finance" },
-            { label: "Climate", value: "climate" },
-            { label: "Design", value: "design" },
-            { label: "Development", value: "development" },
-            { label: "Strategy", value: "strategy" }
+            { label: "Philosophy", value: "philosophy" },
+            { label: "Science", value: "science" },
+            { label: "Nature", value: "nature" },
+            { label: "Travel", value: "travel" }
           ],
-          defaultValue: "productivity"
+          defaultValue: "philosophy"
         }),
         readTime: fields.text({ label: "Read Time", defaultValue: "5 MIN READ" }),
         featured: fields.checkbox({ label: "Featured Post", defaultValue: false }),
