@@ -112,8 +112,19 @@ import Logo from './Logo.astro';
   }
 
   @media (max-width: 768px) {
+    .site-header__inner {
+      flex-wrap: wrap;
+      justify-content: center;
+    }
     .site-nav {
-      display: none;
+      order: 3;
+      width: 100%;
+      margin-top: 12px;
+    }
+    .nav-list {
+      gap: 16px;
+      flex-wrap: wrap;
+      justify-content: center;
     }
   }
 </style>
