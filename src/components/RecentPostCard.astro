@@ -18,14 +18,14 @@ const dateStr = "Apr 3, 2024";
 ---
 
 <article class="post-card">
-  <a href={`/blog/${slug}`} class="post-card__img-link">
+  <a href={`/${slug}`} class="post-card__img-link">
     <img src={coverImage} alt={title} class="post-card__img" loading="lazy" />
   </a>
   <div class="post-card__content">
     <div class="post-card__badge-wrapper">
       <CategoryBadge name={categoryName} slug={categorySlug} />
     </div>
-    <a href={`/blog/${slug}`} class="post-card__title-link">
+    <a href={`/${slug}`} class="post-card__title-link">
       <h3 class="post-card__title">{title}</h3>
     </a>
     <div class="post-card__footer">

@@ -19,7 +19,7 @@ const { coverImage = '/images/posts/default.jpg', slug } = Astro.props;
   <div class="hero-content">
     <h1 class="hero-quote">"Exploring the cosmos without<br/>and the universe within."</h1>
     <!-- If we have a featured post slug, use it, else # -->
-    <a href={slug ? `/blog/${slug}` : '#'} class="hero-btn">Begin the Journey</a>
+    <a href={slug ? `/${slug}` : '#'} class="hero-btn">Begin the Journey</a>
   </div>
 </section>
 

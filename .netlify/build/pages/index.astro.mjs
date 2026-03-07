@@ -1,9 +1,9 @@
-import { c as createComponent, m as maybeRenderHead, d as addAttribute, a as renderTemplate, b as createAstro, r as renderComponent } from '../chunks/astro/server_BcKQPrgQ.mjs';
+import { c as createComponent, m as maybeRenderHead, d as addAttribute, a as renderTemplate, b as createAstro, r as renderComponent } from '../chunks/astro/server_pxGUv0Nq.mjs';
 import 'piccolore';
-import { d as getCollection, $ as $$MainLayout, a as $$Header, c as $$Footer } from '../chunks/_astro_content_vr-M3J7g.mjs';
+import { d as getCollection, $ as $$MainLayout, a as $$Header, c as $$Footer } from '../chunks/_astro_content_D6hAVgh0.mjs';
 import 'clsx';
 /* empty css                                 */
-import { $ as $$RecentPostCard } from '../chunks/RecentPostCard_ChknkjhL.mjs';
+import { $ as $$RecentPostCard } from '../chunks/RecentPostCard_BUou957o.mjs';
 export { renderers } from '../renderers.mjs';
 
 const $$Astro = createAstro();
@@ -11,7 +11,7 @@ const $$HeroSection = createComponent(($$result, $$props, $$slots) => {
   const Astro2 = $$result.createAstro($$Astro, $$props, $$slots);
   Astro2.self = $$HeroSection;
   const { coverImage = "/images/posts/default.jpg", slug } = Astro2.props;
-  return renderTemplate`${maybeRenderHead()}<section class="hero-section" data-astro-cid-nlow4r3u> <div class="hero-bg" data-astro-cid-nlow4r3u> <img${addAttribute(coverImage, "src")} alt="Hero background" class="hero-img" loading="eager" data-astro-cid-nlow4r3u> <div class="hero-overlay" data-astro-cid-nlow4r3u></div> </div> <div class="hero-content" data-astro-cid-nlow4r3u> <h1 class="hero-quote" data-astro-cid-nlow4r3u>"Exploring the cosmos without<br data-astro-cid-nlow4r3u>and the universe within."</h1> <!-- If we have a featured post slug, use it, else # --> <a${addAttribute(slug ? `/blog/${slug}` : "#", "href")} class="hero-btn" data-astro-cid-nlow4r3u>Begin the Journey</a> </div> </section> `;
+  return renderTemplate`${maybeRenderHead()}<section class="hero-section" data-astro-cid-nlow4r3u> <div class="hero-bg" data-astro-cid-nlow4r3u> <img${addAttribute(coverImage, "src")} alt="Hero background" class="hero-img" loading="eager" data-astro-cid-nlow4r3u> <div class="hero-overlay" data-astro-cid-nlow4r3u></div> </div> <div class="hero-content" data-astro-cid-nlow4r3u> <h1 class="hero-quote" data-astro-cid-nlow4r3u>"Exploring the cosmos without<br data-astro-cid-nlow4r3u>and the universe within."</h1> <!-- If we have a featured post slug, use it, else # --> <a${addAttribute(slug ? `/${slug}` : "#", "href")} class="hero-btn" data-astro-cid-nlow4r3u>Begin the Journey</a> </div> </section> `;
 }, "D:/Main/04 Archive/Astro Blog Antigravity/src/components/HeroSection.astro", void 0);
 
 const $$ThemeIcons = createComponent(($$result, $$props, $$slots) => {
