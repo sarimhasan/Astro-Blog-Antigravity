@@ -89,8 +89,8 @@ function tryOrUndefined(fn) {
 const config = config$1({
   storage: {
     kind: "github",
-    repo: "owner/repo"
-    // update this to your GitHub repo (e.g., 'your-username/my-blog')
+    repo: "sarimhasan/Astro-Blog-Antigravity"
+    // update this to your GitHub repo
   } ,
   collections: {
     posts: collection({

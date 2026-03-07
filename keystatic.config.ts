@@ -3,7 +3,7 @@ import { config, fields, collection } from '@keystatic/core';
 export default config({
     storage: import.meta.env.MODE === 'production' ? {
         kind: 'github',
-        repo: 'owner/repo', // update this to your GitHub repo (e.g., 'your-username/my-blog')
+        repo: 'sarimhasan/Astro-Blog-Antigravity', // update this to your GitHub repo
     } : {
         kind: 'local',
     },
