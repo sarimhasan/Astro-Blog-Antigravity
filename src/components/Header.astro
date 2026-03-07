@@ -21,10 +21,14 @@ import Logo from './Logo.astro';
       </nav>
 
       <div class="site-header__actions">
-        <button class="search-btn" aria-label="Search">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <button class="search-toggle-btn" id="search-toggle-btn" aria-label="Open search" aria-expanded="false">
+          <svg class="search-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
             <circle cx="11" cy="11" r="8" />
             <path d="m21 21-4.35-4.35" />
+          </svg>
+          <svg class="close-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:none">
+            <line x1="18" y1="6" x2="6" y2="18"/>
+            <line x1="6" y1="6" x2="18" y2="18"/>
           </svg>
         </button>
 
@@ -34,6 +38,30 @@ import Logo from './Logo.astro';
           <span class="burger-line"></span>
           <span class="burger-line"></span>
         </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Search overlay -->
+  <div class="search-overlay" id="search-overlay" aria-hidden="true">
+    <div class="container">
+      <div class="search-bar">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="search-bar__icon">
+          <circle cx="11" cy="11" r="8" /><path d="m21 21-4.35-4.35" />
+        </svg>
+        <input
+          type="search"
+          id="search-input"
+          class="search-bar__input"
+          placeholder="Search articles..."
+          autocomplete="off"
+          aria-label="Search articles"
+        />
+        <span class="search-bar__hint">Press <kbd>Esc</kbd> to close</span>
+      </div>
+
+      <div class="search-results" id="search-results" role="listbox" aria-label="Search results">
+        <!-- Populated by JS -->
       </div>
     </div>
   </div>
@@ -53,31 +81,138 @@ import Logo from './Logo.astro';
 </header>
 
 <script>
+  // ── Burger menu ──────────────────────────────────────────────
   const burger = document.getElementById('burger-btn')!;
-  const menu = document.getElementById('mobile-menu')!;
+  const mobileMenu = document.getElementById('mobile-menu')!;
 
   burger.addEventListener('click', () => {
-    const open = menu.classList.toggle('is-open');
+    const open = mobileMenu.classList.toggle('is-open');
     burger.classList.toggle('is-open', open);
     burger.setAttribute('aria-expanded', String(open));
-    menu.setAttribute('aria-hidden', String(!open));
+    mobileMenu.setAttribute('aria-hidden', String(!open));
   });
 
-  // Close menu when a link is clicked
-  menu.querySelectorAll('a').forEach(link => {
+  mobileMenu.querySelectorAll('a').forEach(link => {
     link.addEventListener('click', () => {
-      menu.classList.remove('is-open');
+      mobileMenu.classList.remove('is-open');
       burger.classList.remove('is-open');
       burger.setAttribute('aria-expanded', 'false');
-      menu.setAttribute('aria-hidden', 'true');
+      mobileMenu.setAttribute('aria-hidden', 'true');
     });
   });
+
+  // ── Search ───────────────────────────────────────────────────
+  const searchToggle = document.getElementById('search-toggle-btn')!;
+  const searchOverlay = document.getElementById('search-overlay')!;
+  const searchInput = document.getElementById('search-input') as HTMLInputElement;
+  const searchResults = document.getElementById('search-results')!;
+  const searchIcon = searchToggle.querySelector('.search-icon') as HTMLElement;
+  const closeIcon = searchToggle.querySelector('.close-icon') as HTMLElement;
+
+  const CATEGORY_LABELS: Record<string, string> = {
+    philosophy: 'Philosophy',
+    science: 'Science',
+    thoughts: 'Thoughts',
+    miscellaneous: 'Miscellaneous',
+  };
+
+  const CATEGORY_COLORS: Record<string, string> = {
+    philosophy: '#33383B',
+    science: '#6F889B',
+    thoughts: '#7C6B8A',
+    miscellaneous: '#A87B5A',
+  };
+
+  let allPosts: any[] = [];
+  let dataFetched = false;
+
+  async function fetchPosts() {
+    if (dataFetched) return;
+    const res = await fetch('/api/search.json');
+    allPosts = await res.json();
+    dataFetched = true;
+  }
+
+  function openSearch() {
+    searchOverlay.classList.add('is-open');
+    searchOverlay.setAttribute('aria-hidden', 'false');
+    searchToggle.setAttribute('aria-expanded', 'true');
+    searchIcon.style.display = 'none';
+    closeIcon.style.display = 'block';
+    searchInput.value = '';
+    searchResults.innerHTML = '';
+    // Close burger if open
+    mobileMenu.classList.remove('is-open');
+    burger.classList.remove('is-open');
+    setTimeout(() => searchInput.focus(), 50);
+    fetchPosts();
+  }
+
+  function closeSearch() {
+    searchOverlay.classList.remove('is-open');
+    searchOverlay.setAttribute('aria-hidden', 'true');
+    searchToggle.setAttribute('aria-expanded', 'false');
+    searchIcon.style.display = 'block';
+    closeIcon.style.display = 'none';
+    searchResults.innerHTML = '';
+  }
+
+  searchToggle.addEventListener('click', () => {
+    const isOpen = searchOverlay.classList.contains('is-open');
+    isOpen ? closeSearch() : openSearch();
+  });
+
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') closeSearch();
+  });
+
+  // Close when clicking outside
+  searchOverlay.addEventListener('click', (e) => {
+    if (e.target === searchOverlay) closeSearch();
+  });
+
+  function renderResults(query: string) {
+    const q = query.trim().toLowerCase();
+    if (!q) {
+      searchResults.innerHTML = '';
+      return;
+    }
+
+    const matches = allPosts.filter(p =>
+      p.title.toLowerCase().includes(q) ||
+      p.excerpt.toLowerCase().includes(q) ||
+      CATEGORY_LABELS[p.category]?.toLowerCase().includes(q)
+    ).slice(0, 6);
+
+    if (matches.length === 0) {
+      searchResults.innerHTML = `<div class="search-empty">No results for "<strong>${query}</strong>"</div>`;
+      return;
+    }
+
+    searchResults.innerHTML = matches.map(p => {
+      const catLabel = CATEGORY_LABELS[p.category] || p.category;
+      const catColor = CATEGORY_COLORS[p.category] || '#33383B';
+      const excerpt = p.excerpt.length > 90 ? p.excerpt.slice(0, 90) + '…' : p.excerpt;
+      return `
+        <a href="/${p.slug}" class="search-result-item" role="option">
+          ${p.coverImage ? `<img src="${p.coverImage}" alt="" class="search-result-item__img" loading="lazy" />` : '<div class="search-result-item__img search-result-item__img--placeholder"></div>'}
+          <div class="search-result-item__body">
+            <span class="search-result-item__badge" style="background:${catColor}">${catLabel}</span>
+            <p class="search-result-item__title">${p.title}</p>
+            ${p.excerpt ? `<p class="search-result-item__excerpt">${excerpt}</p>` : ''}
+          </div>
+          <span class="search-result-item__time">${p.readTime}</span>
+        </a>`;
+    }).join('');
+  }
+
+  searchInput.addEventListener('input', () => renderResults(searchInput.value));
 </script>
 
 <style>
   .site-header {
     padding: 16px 0;
-    background: rgba(245, 244, 239, 0.85);
+    background: rgba(245, 244, 239, 0.9);
     position: sticky;
     top: 0;
     z-index: 200;
@@ -132,21 +267,186 @@ import Logo from './Logo.astro';
     flex-shrink: 0;
     display: flex;
     align-items: center;
-    gap: 8px;
+    gap: 4px;
   }
 
-  .search-btn {
+  /* ── Search Toggle ── */
+  .search-toggle-btn {
     color: var(--text-secondary);
     background: transparent;
     border: none;
     cursor: pointer;
-    transition: color 0.2s ease;
     display: flex;
+    align-items: center;
+    justify-content: center;
     padding: 8px;
+    border-radius: 8px;
+    transition: color 0.2s, background 0.2s;
   }
 
-  .search-btn:hover {
+  .search-toggle-btn:hover {
     color: var(--text-primary);
+    background: rgba(0,0,0,0.05);
+  }
+
+  /* ── Search Overlay ── */
+  .search-overlay {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: 100%;
+    background: rgba(245, 244, 239, 0.98);
+    backdrop-filter: blur(16px);
+    border-bottom: 1px solid var(--border-color);
+    box-shadow: 0 8px 24px rgba(0,0,0,0.08);
+    padding: 0;
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease, padding 0.3s ease;
+    z-index: 199;
+  }
+
+  .search-overlay.is-open {
+    max-height: 80vh;
+    padding: 20px 0 24px;
+    overflow: visible;
+  }
+
+  .search-bar {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    background: white;
+    border: 1.5px solid var(--border-color);
+    border-radius: 10px;
+    padding: 10px 16px;
+    transition: border-color 0.2s;
+  }
+
+  .search-bar:focus-within {
+    border-color: var(--text-primary);
+  }
+
+  .search-bar__icon {
+    color: var(--text-muted);
+    flex-shrink: 0;
+  }
+
+  .search-bar__input {
+    flex-grow: 1;
+    border: none;
+    background: transparent;
+    font-family: var(--font-primary);
+    font-size: 1rem;
+    color: var(--text-primary);
+    outline: none;
+  }
+
+  .search-bar__input::placeholder {
+    color: var(--text-muted);
+  }
+
+  .search-bar__hint {
+    font-size: 0.72rem;
+    color: var(--text-muted);
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+
+  kbd {
+    background: var(--bg-secondary);
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    padding: 1px 5px;
+    font-size: 0.7rem;
+    font-family: inherit;
+  }
+
+  /* ── Results ── */
+  .search-results {
+    margin-top: 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    max-height: 60vh;
+    overflow-y: auto;
+  }
+
+  .search-result-item {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 10px 12px;
+    border-radius: 8px;
+    text-decoration: none;
+    transition: background 0.15s;
+  }
+
+  .search-result-item:hover {
+    background: var(--bg-secondary);
+  }
+
+  .search-result-item__img {
+    width: 52px;
+    height: 52px;
+    border-radius: 6px;
+    object-fit: cover;
+    flex-shrink: 0;
+  }
+
+  .search-result-item__img--placeholder {
+    background: var(--bg-secondary);
+    border: 1px solid var(--border-color);
+  }
+
+  .search-result-item__body {
+    flex-grow: 1;
+    min-width: 0;
+  }
+
+  .search-result-item__badge {
+    display: inline-block;
+    font-size: 0.62rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: white;
+    padding: 2px 8px;
+    border-radius: 3px;
+    margin-bottom: 4px;
+  }
+
+  .search-result-item__title {
+    font-weight: 600;
+    font-size: 0.9rem;
+    color: var(--text-primary);
+    margin: 0 0 2px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .search-result-item__excerpt {
+    font-size: 0.78rem;
+    color: var(--text-muted);
+    margin: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .search-result-item__time {
+    font-size: 0.72rem;
+    color: var(--text-muted);
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+
+  .search-empty {
+    padding: 24px 12px;
+    text-align: center;
+    color: var(--text-muted);
+    font-size: 0.9rem;
   }
 
   /* ── Burger Button ── */
@@ -173,23 +473,14 @@ import Logo from './Logo.astro';
     transform-origin: center;
   }
 
-  .burger-btn.is-open .burger-line:nth-child(1) {
-    transform: translateY(7px) rotate(45deg);
-  }
-
-  .burger-btn.is-open .burger-line:nth-child(2) {
-    opacity: 0;
-    transform: scaleX(0);
-  }
-
-  .burger-btn.is-open .burger-line:nth-child(3) {
-    transform: translateY(-7px) rotate(-45deg);
-  }
+  .burger-btn.is-open .burger-line:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+  .burger-btn.is-open .burger-line:nth-child(2) { opacity: 0; transform: scaleX(0); }
+  .burger-btn.is-open .burger-line:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
 
   /* ── Mobile Menu Drawer ── */
   .mobile-menu {
     display: none;
-    background: rgba(245, 244, 239, 0.95);
+    background: rgba(245, 244, 239, 0.97);
     backdrop-filter: blur(12px);
     border-top: none;
     position: absolute;
@@ -225,6 +516,10 @@ import Logo from './Logo.astro';
     transition: color 0.2s, background 0.2s;
   }
 
+  .mobile-nav-link:last-child {
+    border-bottom: none;
+  }
+
   .mobile-nav-link:hover {
     color: var(--text-primary);
     background: rgba(0,0,0,0.03);
@@ -232,14 +527,10 @@ import Logo from './Logo.astro';
 
   /* ── Responsive ── */
   @media (max-width: 768px) {
-    .site-nav {
-      display: none;
-    }
-    .burger-btn {
-      display: flex;
-    }
-    .mobile-menu {
-      display: block;
-    }
+    .site-nav { display: none; }
+    .burger-btn { display: flex; }
+    .mobile-menu { display: block; }
+
+    .search-bar__hint { display: none; }
   }
 </style>
