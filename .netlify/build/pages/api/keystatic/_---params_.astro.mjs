@@ -106,8 +106,8 @@ const config = config$1({
           options: [
             { label: "Philosophy", value: "philosophy" },
             { label: "Science", value: "science" },
-            { label: "Nature", value: "nature" },
-            { label: "Travel", value: "travel" }
+            { label: "Thoughts", value: "thoughts" },
+            { label: "Miscellaneous", value: "miscellaneous" }
           ],
           defaultValue: "philosophy"
         }),

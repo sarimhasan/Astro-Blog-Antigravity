@@ -138,13 +138,13 @@ button {
   color: #ffffff;
 }
 
-.category-badge--nature {
-  background-color: #4E6A55;
+.category-badge--thoughts {
+  background-color: #7C6B8A;
   color: #ffffff;
 }
 
-.category-badge--travel {
-  background-color: #D4AA85;
+.category-badge--miscellaneous {
+  background-color: #A87B5A;
   color: #ffffff;
 }
 

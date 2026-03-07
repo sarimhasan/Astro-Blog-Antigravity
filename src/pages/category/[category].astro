@@ -10,8 +10,8 @@ const { category } = Astro.params;
 const CATEGORIES: Record<string, string> = {
   philosophy: 'Philosophy',
   science: 'Science',
-  nature: 'Nature',
-  travel: 'Travel',
+  thoughts: 'Thoughts',
+  miscellaneous: 'Miscellaneous',
 };
 
 const title = category ? CATEGORIES[category as string] || category : 'Category';

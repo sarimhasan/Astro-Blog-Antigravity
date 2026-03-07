@@ -1,7 +1,7 @@
 import { c as createComponent, r as renderComponent, a as renderTemplate, b as createAstro, m as maybeRenderHead } from '../../chunks/astro/server_pxGUv0Nq.mjs';
 import 'piccolore';
-import { d as getCollection, $ as $$MainLayout, a as $$Header, c as $$Footer } from '../../chunks/_astro_content_Dl8-Nboq.mjs';
-import { $ as $$RecentPostCard } from '../../chunks/RecentPostCard_BGLGRzky.mjs';
+import { d as getCollection, $ as $$MainLayout, a as $$Header, c as $$Footer } from '../../chunks/_astro_content_BnGm0M_8.mjs';
+import { $ as $$RecentPostCard } from '../../chunks/RecentPostCard_CPIJHLd3.mjs';
 /* empty css                                         */
 export { renderers } from '../../renderers.mjs';
 
@@ -13,8 +13,8 @@ const $$category = createComponent(async ($$result, $$props, $$slots) => {
   const CATEGORIES = {
     philosophy: "Philosophy",
     science: "Science",
-    nature: "Nature",
-    travel: "Travel"
+    thoughts: "Thoughts",
+    miscellaneous: "Miscellaneous"
   };
   const title = category ? CATEGORIES[category] || category : "Category";
   const _allPosts = await getCollection("posts");

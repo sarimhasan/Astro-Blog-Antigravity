@@ -9,13 +9,14 @@ import Logo from './Logo.astro';
         <Logo />
       </a>
 
-      <nav class="site-nav">
+      <!-- Desktop nav -->
+      <nav class="site-nav" id="site-nav" aria-label="Main navigation">
         <ul class="nav-list">
-          <li><a href="/" class="nav-link active">Home</a></li>
+          <li><a href="/" class="nav-link">Home</a></li>
           <li><a href="/category/philosophy" class="nav-link">Philosophy</a></li>
           <li><a href="/category/science" class="nav-link">Science</a></li>
-          <li><a href="/category/nature" class="nav-link">Nature</a></li>
-          <li><a href="/category/travel" class="nav-link">Travel</a></li>
+          <li><a href="/category/thoughts" class="nav-link">Thoughts</a></li>
+          <li><a href="/category/miscellaneous" class="nav-link">Miscellaneous</a></li>
           <li><a href="/about" class="nav-link">About</a></li>
         </ul>
       </nav>
@@ -27,21 +28,63 @@ import Logo from './Logo.astro';
             <path d="m21 21-4.35-4.35" />
           </svg>
         </button>
+
+        <!-- Burger button (mobile only) -->
+        <button class="burger-btn" id="burger-btn" aria-label="Toggle menu" aria-expanded="false" aria-controls="mobile-menu">
+          <span class="burger-line"></span>
+          <span class="burger-line"></span>
+          <span class="burger-line"></span>
+        </button>
       </div>
     </div>
   </div>
+
+  <!-- Mobile menu drawer -->
+  <div class="mobile-menu" id="mobile-menu" aria-hidden="true">
+    <nav>
+      <ul class="mobile-nav-list">
+        <li><a href="/" class="mobile-nav-link">Home</a></li>
+        <li><a href="/category/philosophy" class="mobile-nav-link">Philosophy</a></li>
+        <li><a href="/category/science" class="mobile-nav-link">Science</a></li>
+        <li><a href="/category/thoughts" class="mobile-nav-link">Thoughts</a></li>
+        <li><a href="/category/miscellaneous" class="mobile-nav-link">Miscellaneous</a></li>
+        <li><a href="/about" class="mobile-nav-link">About</a></li>
+      </ul>
+    </nav>
+  </div>
 </header>
+
+<script>
+  const burger = document.getElementById('burger-btn')!;
+  const menu = document.getElementById('mobile-menu')!;
+
+  burger.addEventListener('click', () => {
+    const open = menu.classList.toggle('is-open');
+    burger.classList.toggle('is-open', open);
+    burger.setAttribute('aria-expanded', String(open));
+    menu.setAttribute('aria-hidden', String(!open));
+  });
+
+  // Close menu when a link is clicked
+  menu.querySelectorAll('a').forEach(link => {
+    link.addEventListener('click', () => {
+      menu.classList.remove('is-open');
+      burger.classList.remove('is-open');
+      burger.setAttribute('aria-expanded', 'false');
+      menu.setAttribute('aria-hidden', 'true');
+    });
+  });
+</script>
 
 <style>
   .site-header {
     padding: 16px 0;
-    background: transparent;
+    background: rgba(245, 244, 239, 0.85);
     position: sticky;
     top: 0;
-    z-index: 100;
+    z-index: 200;
     backdrop-filter: blur(12px);
-    transition: background-color var(--transition);
-    border-bottom: 1px solid rgba(0,0,0,0.05);
+    border-bottom: 1px solid rgba(0,0,0,0.06);
   }
 
   .site-header__inner {
@@ -81,10 +124,7 @@ import Logo from './Logo.astro';
     border-bottom: 2px solid transparent;
   }
 
-  .nav-link:hover {
-    color: var(--text-primary);
-  }
-
+  .nav-link:hover,
   .nav-link.active {
     color: var(--text-primary);
     border-bottom-color: var(--text-primary);
@@ -94,7 +134,7 @@ import Logo from './Logo.astro';
     flex-shrink: 0;
     display: flex;
     align-items: center;
-    gap: 16px;
+    gap: 8px;
   }
 
   .search-btn {
@@ -111,20 +151,91 @@ import Logo from './Logo.astro';
     color: var(--text-primary);
   }
 
+  /* ── Burger Button ── */
+  .burger-btn {
+    display: none;
+    flex-direction: column;
+    justify-content: center;
+    gap: 5px;
+    width: 36px;
+    height: 36px;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    padding: 4px;
+  }
+
+  .burger-line {
+    display: block;
+    width: 100%;
+    height: 2px;
+    background: var(--text-primary);
+    border-radius: 2px;
+    transition: transform 0.25s ease, opacity 0.25s ease;
+    transform-origin: center;
+  }
+
+  .burger-btn.is-open .burger-line:nth-child(1) {
+    transform: translateY(7px) rotate(45deg);
+  }
+
+  .burger-btn.is-open .burger-line:nth-child(2) {
+    opacity: 0;
+    transform: scaleX(0);
+  }
+
+  .burger-btn.is-open .burger-line:nth-child(3) {
+    transform: translateY(-7px) rotate(-45deg);
+  }
+
+  /* ── Mobile Menu Drawer ── */
+  .mobile-menu {
+    display: none;
+    background: #F5F4EF;
+    border-top: 1px solid var(--border-color);
+    padding: 0;
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease, padding 0.3s ease;
+  }
+
+  .mobile-menu.is-open {
+    max-height: 400px;
+    padding: 12px 0 20px;
+  }
+
+  .mobile-nav-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .mobile-nav-link {
+    display: block;
+    padding: 12px 24px;
+    font-size: 1rem;
+    font-weight: 500;
+    color: var(--text-secondary);
+    text-decoration: none;
+    border-bottom: 1px solid var(--border-light);
+    transition: color 0.2s, background 0.2s;
+  }
+
+  .mobile-nav-link:hover {
+    color: var(--text-primary);
+    background: rgba(0,0,0,0.03);
+  }
+
+  /* ── Responsive ── */
   @media (max-width: 768px) {
-    .site-header__inner {
-      flex-wrap: wrap;
-      justify-content: center;
-    }
     .site-nav {
-      order: 3;
-      width: 100%;
-      margin-top: 12px;
+      display: none;
     }
-    .nav-list {
-      gap: 16px;
-      flex-wrap: wrap;
-      justify-content: center;
+    .burger-btn {
+      display: flex;
+    }
+    .mobile-menu {
+      display: block;
     }
   }
 </style>

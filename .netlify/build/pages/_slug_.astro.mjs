@@ -1,6 +1,6 @@
 import { c as createComponent, r as renderComponent, a as renderTemplate, b as createAstro, m as maybeRenderHead, d as addAttribute } from '../chunks/astro/server_pxGUv0Nq.mjs';
 import 'piccolore';
-import { g as getEntry, $ as $$MainLayout, a as $$Header, b as $$CategoryBadge, c as $$Footer } from '../chunks/_astro_content_Dl8-Nboq.mjs';
+import { g as getEntry, $ as $$MainLayout, a as $$Header, b as $$CategoryBadge, c as $$Footer } from '../chunks/_astro_content_BnGm0M_8.mjs';
 /* empty css                                  */
 export { renderers } from '../renderers.mjs';
 
@@ -20,8 +20,8 @@ const $$slug = createComponent(async ($$result, $$props, $$slots) => {
   const CATEGORIES = {
     philosophy: "Philosophy",
     science: "Science",
-    nature: "Nature",
-    travel: "Travel"
+    thoughts: "Thoughts",
+    miscellaneous: "Miscellaneous"
   };
   const categoryName = CATEGORIES[post.data.category] || "General";
   const dateStr = (/* @__PURE__ */ new Date()).toLocaleDateString("en-US", {

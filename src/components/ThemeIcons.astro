@@ -5,17 +5,20 @@
   <h3 class="theme-title">Browse by Theme</h3>
   
   <div class="theme-grid">
-    <a href="/category/philosophy" class="theme-item group">
-      <div class="theme-circle bg-[#33383B]">
+    <a href="/category/philosophy" class="theme-item">
+      <div class="theme-circle c-philosophy">
+        <!-- Lightbulb / idea -->
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>
+          <path d="M15 14c.2-1 .7-1.7 1.5-2.5A7 7 0 1 0 6.1 8.5C5 10 4.6 11 4.6 13a6 6 0 0 0 3.4 5.4V20a2 2 0 0 0 2 2h4a2 2 0 0 0 2-2v-1.6c.9-.4 1.7-1.2 2-2.4"/>
+          <line x1="12" y1="2" x2="12" y2="4"/>
         </svg>
       </div>
       <span class="theme-label">Philosophy</span>
     </a>
     
-    <a href="/category/science" class="theme-item group">
-      <div class="theme-circle bg-[#6F889B]">
+    <a href="/category/science" class="theme-item">
+      <div class="theme-circle c-science">
+        <!-- Atom -->
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
           <circle cx="12" cy="12" r="3"/>
           <ellipse cx="12" cy="12" rx="10" ry="4" transform="rotate(45 12 12)"/>
@@ -25,24 +28,27 @@
       <span class="theme-label">Science</span>
     </a>
     
-    <a href="/category/nature" class="theme-item group">
-      <div class="theme-circle bg-[#4E6A55]">
+    <a href="/category/thoughts" class="theme-item">
+      <div class="theme-circle c-thoughts">
+        <!-- Speech bubble / thought -->
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-          <path d="m8 14-5 6h18l-5-6M12 14l-4-5-4 5"/>
-          <path d="M12 14V4l4 5"/>
+          <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
         </svg>
       </div>
-      <span class="theme-label">Nature</span>
+      <span class="theme-label">Thoughts</span>
     </a>
     
-    <a href="/category/travel" class="theme-item group">
-      <div class="theme-circle bg-[#D4AA85]">
+    <a href="/category/miscellaneous" class="theme-item">
+      <div class="theme-circle c-miscellaneous">
+        <!-- Grid / misc -->
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/>
-          <circle cx="12" cy="10" r="3"/>
+          <rect x="3" y="3" width="7" height="7" rx="1"/>
+          <rect x="14" y="3" width="7" height="7" rx="1"/>
+          <rect x="3" y="14" width="7" height="7" rx="1"/>
+          <rect x="14" y="14" width="7" height="7" rx="1"/>
         </svg>
       </div>
-      <span class="theme-label">Travel</span>
+      <span class="theme-label">Miscellaneous</span>
     </a>
   </div>
 </div>
@@ -106,8 +112,8 @@
     color: var(--text-primary);
   }
   
-  .bg-\[\#33383B\] { background-color: #33383B; }
-  .bg-\[\#6F889B\] { background-color: #6F889B; }
-  .bg-\[\#4E6A55\] { background-color: #4E6A55; }
-  .bg-\[\#D4AA85\] { background-color: #D4AA85; }
+  .c-philosophy     { background-color: #33383B; }
+  .c-science        { background-color: #6F889B; }
+  .c-thoughts       { background-color: #7C6B8A; }
+  .c-miscellaneous  { background-color: #A87B5A; }
 </style>
