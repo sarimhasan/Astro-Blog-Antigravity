@@ -1,7 +1,7 @@
 import { c as createComponent, r as renderComponent, a as renderTemplate, b as createAstro, m as maybeRenderHead, d as addAttribute } from '../../chunks/astro/server_pxGUv0Nq.mjs';
 import 'piccolore';
-import { $ as $$MainLayout, a as $$Header, b as $$CategoryBadge, c as $$Footer } from '../../chunks/CategoryBadge_8-O9Qb6u.mjs';
-import { a as getEntry } from '../../chunks/_astro_content_CoqnmaX-.mjs';
+import { $ as $$MainLayout, a as $$Header, b as $$CategoryBadge, c as $$Footer } from '../../chunks/CategoryBadge_BERY0piJ.mjs';
+import { a as getEntry } from '../../chunks/_astro_content_DjltGCDy.mjs';
 export { renderers } from '../../renderers.mjs';
 
 const $$Astro = createAstro();

@@ -1,8 +1,8 @@
 import { c as createComponent, r as renderComponent, a as renderTemplate, b as createAstro, m as maybeRenderHead } from '../../chunks/astro/server_pxGUv0Nq.mjs';
 import 'piccolore';
-import { $ as $$MainLayout, a as $$Header, c as $$Footer } from '../../chunks/CategoryBadge_8-O9Qb6u.mjs';
-import { $ as $$RecentPostCard } from '../../chunks/RecentPostCard_0r1JG6uz.mjs';
-import { g as getCollection } from '../../chunks/_astro_content_CoqnmaX-.mjs';
+import { $ as $$MainLayout, a as $$Header, c as $$Footer } from '../../chunks/CategoryBadge_BERY0piJ.mjs';
+import { $ as $$RecentPostCard } from '../../chunks/RecentPostCard_OD6rKrwi.mjs';
+import { g as getCollection } from '../../chunks/_astro_content_DjltGCDy.mjs';
 /* empty css                                         */
 export { renderers } from '../../renderers.mjs';
 
