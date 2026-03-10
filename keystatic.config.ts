@@ -1,21 +1,41 @@
 import { config, fields, collection } from '@keystatic/core';
 
+/**
+ * Keystatic configuration for the blog project.
+ * This file defines the CMS structure, storage strategy, and content schemas.
+ */
 export default config({
+    /**
+     * Storage configuration:
+     * - In production: Uses GitHub for content storage, enabling cloud-based CMS.
+     * - In development: Uses local filesystem for faster iteration.
+     */
     storage: import.meta.env.MODE === 'production' ? {
         kind: 'github',
-        repo: 'sarimhasan/Astro-Blog-Antigravity', // update this to your GitHub repo
+        repo: 'sarimhasan/Astro-Blog-Antigravity', // Reference to the GitHub repository where content is stored
     } : {
         kind: 'local',
     },
+
+    /**
+     * Content Collections:
+     * Defines the groups of content (e.g., blog posts) managed by Keystatic.
+     */
     collections: {
+        // 'posts' collection for blog entries
         posts: collection({
             label: 'Posts',
-            slugField: 'title',
-            path: 'src/content/posts/*',
-            format: { contentField: 'content' },
+            slugField: 'title', // Uses the title as the base for the file name/URL slug
+            path: 'src/content/posts/*', // Where the post files are saved
+            format: { contentField: 'content' }, // Specifies which field holds the main body content
             schema: {
+                // Title of the post, also used for the slug
                 title: fields.slug({ name: { label: 'Title' } }),
+
+                // Short summary shown in previews
                 excerpt: fields.text({ label: 'Excerpt', multiline: true }),
+
+                // Categorization for filtering and organization
                 category: fields.select({
                     label: 'Category',
                     options: [
@@ -26,14 +46,24 @@ export default config({
                     ],
                     defaultValue: 'philosophy',
                 }),
+
+                // Manual input for estimated reading time
                 readTime: fields.text({ label: 'Read Time', defaultValue: '5 MIN READ' }),
+
+                // Flag to highlight this post in the UI (e.g., hero section)
                 featured: fields.checkbox({ label: 'Featured Post', defaultValue: false }),
+
+                // Name of the author
                 authorName: fields.text({ label: 'Author Name' }),
+
+                // Main visual for the post preview/header
                 coverImage: fields.image({
                     label: 'Cover Image',
                     directory: 'public/images',
                     publicPath: '/images/',
                 }),
+
+                // Rich text content using Markdoc for flexible formatting
                 content: fields.markdoc({
                     label: 'Content',
                     options: {
@@ -47,3 +77,4 @@ export default config({
         }),
     },
 });
+

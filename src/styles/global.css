@@ -1,9 +1,14 @@
-/* ===== DESIGN TOKENS ===== */
+/* 
+ * ===== DESIGN TOKENS & SYSTEM VARIABLES ===== 
+ * This file defines the core visual language of the project.
+ * It uses CSS Variables (Custom Properties) for easy theme management and consistency.
+ */
 :root {
+  /* Typography Tokens */
   --font-primary: 'Outfit', 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
   --font-heading: 'Playfair Display', serif;
 
-  /* Light Theme */
+  /* Theme Tokens: Light Mode (Default) */
   --bg-primary: #f5f4ef;
   --bg-secondary: #eae8df;
   --bg-card: #ffffff;
@@ -17,6 +22,8 @@
   --accent-hover: #c2b591;
   --white: #ffffff;
   --black: #1a1c1a;
+
+  /* Elevation & Spacing Tokens */
   --shadow-sm: 0 2px 4px rgba(43, 48, 44, 0.04);
   --shadow-md: 0 8px 16px rgba(43, 48, 44, 0.06);
   --shadow-lg: 0 16px 32px rgba(43, 48, 44, 0.08);
@@ -26,6 +33,7 @@
   --transition: 0.3s ease;
 }
 
+/* Dark Mode Overrides: Applied when [data-theme="dark"] is set on <html> */
 [data-theme="dark"] {
   --bg-primary: #071724;
   --bg-secondary: #0b2336;
@@ -39,6 +47,7 @@
   --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.4);
   --shadow-lg: 0 8px 30px rgba(0, 0, 0, 0.5);
 }
+
 
 /* ===== RESET & BASE ===== */
 *,
@@ -311,6 +320,7 @@ button {
   line-height: 1.5;
   margin-bottom: 16px;
   display: -webkit-box;
+  line-clamp: 2;
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
   overflow: hidden;
@@ -420,6 +430,7 @@ button {
   line-height: 1.55;
   margin-bottom: 18px;
   display: -webkit-box;
+  line-clamp: 2;
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
   overflow: hidden;

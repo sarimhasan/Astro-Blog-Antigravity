@@ -1,43 +1,104 @@
-# Astro Starter Kit: Minimal
+# 🌌 Astro Blog Antigravity
 
-```sh
-npm create astro@latest -- --template minimal
-```
+**Sarim's Pensieve — A Thinking Space.**
 
-> 🧑‍🚀 **Seasoned astronaut?** Delete this file. Have fun!
+Aسٹunning, high-performance blog built with **Astro**, **Keystatic**, and **Vanilla CSS**. This project is designed for thinkers and writers who want a premium, fast, and easily manageable digital garden.
 
-## 🚀 Project Structure
+---
 
-Inside of your Astro project, you'll see the following folders and files:
+## ✨ Key Features
+
+-   **🚀 Fast & Light**: Built with Astro for minimal JavaScript and maximum performance.
+-   **📝 Keystatic CMS Integration**: A local-first, Git-based CMS that allows you to manage content directly from your browser.
+-   **🔍 Live Search**: Lightning-fast client-side search for articles by title, excerpt, or category.
+-   **🌓 Dark Mode**: A sleek, persistent dark theme with smooth transitions.
+-   **📱 Fully Responsive**: Optimized for everything from large desktops to mobile phones.
+-   **🎨 Premium Design**: Modern typography (Outfit & Playfair Display), subtle micro-animations, and a curated color palette.
+-   **📂 Organized Categorization**: Easily filter thoughts into Philosophy, Science, Thoughts, and Miscellaneous.
+
+---
+
+## 🛠️ Tech Stack
+
+-   **Framework**: [Astro](https://astro.build/)
+-   **CMS**: [Keystatic](https://keystatic.com/)
+-   **Styling**: Vanilla CSS (Modern CSS Variables & Logic)
+-   **Fonts**: [Google Fonts](https://fonts.google.com/) (Outfit, Playfair Display)
+-   **Search**: Client-side fetch + API Routes
+-   **Deployment**: Optimized for [Netlify](https://www.netlify.com/)
+
+---
+
+## 📂 Project Structure
 
 ```text
 /
-├── public/
+├── public/              # Static assets (Favicons, static images)
 ├── src/
-│   └── pages/
-│       └── index.astro
-└── package.json
+│   ├── components/      # Reusable Astro components (Header, Cards, etc.)
+│   ├── content/         # Markdown/Markdoc files (Managed by Keystatic)
+│   ├── layouts/         # Base templates for pages (MainLayout.astro)
+│   ├── pages/           # Route definitions (Home, Single Post, API)
+│   │   ├── api/         # JSON endpoints for search
+│   │   └── [slug].astro # Dynamic post routing
+│   └── styles/          # Global styles and design system tokens
+├── keystatic.config.ts  # CMS configuration & schema definitions
+└── astro.config.mjs     # Astro framework settings
 ```
 
-Astro looks for `.astro` or `.md` files in the `src/pages/` directory. Each page is exposed as a route based on its file name.
+---
 
-There's nothing special about `src/components/`, but that's where we like to put any Astro/React/Vue/Svelte/Preact components.
+## 🚀 Getting Started
 
-Any static assets, like images, can be placed in the `public/` directory.
+### 1. Clone the repository
+```sh
+git clone https://github.com/sarimhasan/Astro-Blog-Antigravity.git
+cd Astro-Blog-Antigravity
+```
 
-## 🧞 Commands
+### 2. Install dependencies
+```sh
+npm install
+```
 
-All commands are run from the root of the project, from a terminal:
+### 3. Run development server
+```sh
+npm run dev
+```
+Your site will be available at `http://localhost:4321`.
 
-| Command                   | Action                                           |
-| :------------------------ | :----------------------------------------------- |
-| `npm install`             | Installs dependencies                            |
-| `npm run dev`             | Starts local dev server at `localhost:4321`      |
-| `npm run build`           | Build your production site to `./dist/`          |
-| `npm run preview`         | Preview your build locally, before deploying     |
-| `npm run astro ...`       | Run CLI commands like `astro add`, `astro check` |
-| `npm run astro -- --help` | Get help using the Astro CLI                     |
+### 4. Access the CMS
+While the dev server is running, visit:
+`http://localhost:4321/keystatic`
+This will open the local Keystatic interface where you can create and edit posts.
 
-## 👀 Want to learn more?
+### 5. Build for production
+```sh
+npm run build
+```
 
-Feel free to check [our documentation](https://docs.astro.build) or jump into our [Discord server](https://astro.build/chat).
+---
+
+## ⚙️ Configuration
+
+### Keystatic Storage
+The project is configured to use:
+-   **Local Storage** in development (faster).
+-   **GitHub Storage** in production (so content is saved back to your repo automatically).
+
+Ensure you update the `repo` field in `keystatic.config.ts` to point to your own repository if you fork this project.
+
+### Environment Variables
+Check `.env.example` for required variables (especially if using GitHub Auth for Keystatic).
+
+---
+
+## 🤝 Contributing
+
+Feel free to fork this project and adapt it to your own needs! If you find any issues or have suggestions, please open an issue or pull request.
+
+---
+
+## 📄 License
+
+This project is open-source and available under the MIT License.

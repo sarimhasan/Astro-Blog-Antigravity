@@ -1,24 +1,35 @@
 ---
+/**
+ * Single Post View Component [slug].astro
+ * This dynamic route handles the display of individual blog posts.
+ * It uses the 'slug' parameter from the URL to fetch corresponding content from Keystatic collections.
+ */
 import MainLayout from '../layouts/MainLayout.astro';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 import CategoryBadge from '../components/CategoryBadge.astro';
 import { getEntry } from 'astro:content';
 
+// Extract the slug from the URL parameters
 const { slug } = Astro.params;
 
+// Redirect to home if slug is missing
 if (!slug) {
   return Astro.redirect('/');
 }
 
+// Fetch the post entry from the 'posts' collection using the slug
 const post = await getEntry('posts', slug);
 
+// Redirect to home if no matching post is found
 if (!post) {
   return Astro.redirect('/');
 }
 
+// Render the Markdoc content into a usable Astro component
 const { Content } = await post.render();
 
+// Mapping of internal category slugs to display names
 const CATEGORIES: Record<string, string> = {
   philosophy: 'Philosophy',
   science: 'Science',
@@ -28,12 +39,15 @@ const CATEGORIES: Record<string, string> = {
 
 const categoryName = CATEGORIES[post.data.category] || 'General';
 
+// Format the current date for display (Note: usually we'd use post date if available, 
+// but here we use current date as a fallback or if not specifically tracked)
 const dateStr = new Date().toLocaleDateString('en-US', {
   month: 'long',
   day: 'numeric',
   year: 'numeric',
 });
 
+// Generate initials for the author avatar
 const initials = post.data.authorName
   ? post.data.authorName.split(' ').map((w: string) => w[0]).join('')
   : '?';
@@ -43,6 +57,7 @@ const initials = post.data.authorName
   <Header />
 
   <article class="post-page container">
+    <!-- Breadcrumb / Back button -->
     <a href="/" class="post-page__back">
       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
         <path d="M19 12H5M12 19l-7-7 7-7" />
@@ -50,16 +65,20 @@ const initials = post.data.authorName
       Back to Home
     </a>
 
+    <!-- Top metadata: Category and Read time -->
     <div class="post-page__meta">
       <CategoryBadge name={categoryName} slug={post.data.category} />
       <span class="post-page__read-time">{post.data.readTime}</span>
     </div>
 
+    <!-- Main Headings -->
     <h1 class="post-page__title">{post.data.title}</h1>
     <p class="post-page__excerpt">{post.data.excerpt}</p>
 
+    <!-- Post Cover Image -->
     {post.data.coverImage && <img src={post.data.coverImage} alt={post.data.title} class="post-page__cover" />}
 
+    <!-- Author information section -->
     <div class="post-page__author">
       <div class="post-page__author-avatar">{initials}</div>
       <div class="post-page__author-info">
@@ -68,6 +87,7 @@ const initials = post.data.authorName
       </div>
     </div>
 
+    <!-- Main Post Content (Rendered Markdoc) -->
     <div class="post-content">
       <Content />
     </div>
@@ -77,11 +97,13 @@ const initials = post.data.authorName
 </MainLayout>
 
 <style>
+  /* Base layout for the post page */
   .post-page {
     padding-top: 48px;
     padding-bottom: 80px;
   }
 
+  /* Back button styling with hover effect */
   .post-page__back {
     display: inline-flex;
     align-items: center;
@@ -98,6 +120,7 @@ const initials = post.data.authorName
     color: var(--text-primary);
   }
 
+  /* Metadata row */
   .post-page__meta {
     display: flex;
     align-items: center;
@@ -113,6 +136,7 @@ const initials = post.data.authorName
     color: var(--text-muted);
   }
 
+  /* Typography for titles and excerpts */
   .post-page__title {
     font-family: var(--font-heading);
     font-size: clamp(2rem, 4vw, 3.2rem);
@@ -139,6 +163,7 @@ const initials = post.data.authorName
     margin-bottom: 40px;
   }
 
+  /* Author block styles */
   .post-page__author {
     display: flex;
     align-items: center;
@@ -177,6 +202,7 @@ const initials = post.data.authorName
     margin-top: 2px;
   }
 
+  /* Typography for the rendered content inside the post */
   .post-content {
     max-width: 720px;
     font-size: 1.05rem;
@@ -184,6 +210,7 @@ const initials = post.data.authorName
     color: var(--text-secondary);
   }
 
+  /* Global targeting for components injected via Content component */
   .post-content :global(h2),
   .post-content :global(h3) {
     font-family: var(--font-heading);
@@ -221,3 +248,4 @@ const initials = post.data.authorName
     margin: 1.5rem 0;
   }
 </style>
+

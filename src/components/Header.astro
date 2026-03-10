@@ -1,15 +1,21 @@
 ---
+/**
+ * Header Component
+ * Contains the main navigation, logo, search toggle, and mobile menu.
+ * Implements client-side search logic and responsive navigation behaviors.
+ */
 import Logo from './Logo.astro';
 ---
 
 <header class="site-header">
   <div class="container">
     <div class="site-header__inner">
+      <!-- Logo linking back to homepage -->
       <a href="/" class="site-logo-link">
         <Logo />
       </a>
 
-      <!-- Desktop nav -->
+      <!-- Desktop Navigation - Hidden on mobile via CSS -->
       <nav class="site-nav" id="site-nav" aria-label="Main navigation">
         <ul class="nav-list">
           <li><a href="/" class="nav-link">Home</a></li>
@@ -20,7 +26,9 @@ import Logo from './Logo.astro';
         </ul>
       </nav>
 
+      <!-- Action Buttons: Search and Mobile Burger -->
       <div class="site-header__actions">
+        <!-- Search Toggle Button -->
         <button class="search-toggle-btn" id="search-toggle-btn" aria-label="Open search" aria-expanded="false">
           <svg class="search-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
             <circle cx="11" cy="11" r="8" />
@@ -32,7 +40,7 @@ import Logo from './Logo.astro';
           </svg>
         </button>
 
-        <!-- Burger button (mobile only) -->
+        <!-- Burger button (mobile only) - Displays drawer menu -->
         <button class="burger-btn" id="burger-btn" aria-label="Toggle menu" aria-expanded="false" aria-controls="mobile-menu">
           <span class="burger-line"></span>
           <span class="burger-line"></span>
@@ -42,7 +50,7 @@ import Logo from './Logo.astro';
     </div>
   </div>
 
-  <!-- Search overlay -->
+  <!-- Search Overlay: Expands from top of the page -->
   <div class="search-overlay" id="search-overlay" aria-hidden="true">
     <div class="container">
       <div class="search-bar">
@@ -60,13 +68,14 @@ import Logo from './Logo.astro';
         <span class="search-bar__hint">Press <kbd>Esc</kbd> to close</span>
       </div>
 
+      <!-- Container for asynchronous search results -->
       <div class="search-results" id="search-results" role="listbox" aria-label="Search results">
-        <!-- Populated by JS -->
+        <!-- Populated by client-side JS -->
       </div>
     </div>
   </div>
 
-  <!-- Mobile menu drawer -->
+  <!-- Mobile menu drawer: Slides down on small screens -->
   <div class="mobile-menu" id="mobile-menu" aria-hidden="true">
     <nav>
       <ul class="mobile-nav-list">
@@ -81,10 +90,13 @@ import Logo from './Logo.astro';
 </header>
 
 <script>
-  // ── Burger menu ──────────────────────────────────────────────
+  /**
+   * ── Mobile Navigation Logic ─────────────────────────────────
+   */
   const burger = document.getElementById('burger-btn')!;
   const mobileMenu = document.getElementById('mobile-menu')!;
 
+  // Toggle mobile menu visibility
   burger.addEventListener('click', () => {
     const open = mobileMenu.classList.toggle('is-open');
     burger.classList.toggle('is-open', open);
@@ -92,6 +104,7 @@ import Logo from './Logo.astro';
     mobileMenu.setAttribute('aria-hidden', String(!open));
   });
 
+  // Close menu when a link is clicked (important for same-page anchors or redirection)
   mobileMenu.querySelectorAll('a').forEach(link => {
     link.addEventListener('click', () => {
       mobileMenu.classList.remove('is-open');
@@ -101,7 +114,11 @@ import Logo from './Logo.astro';
     });
   });
 
-  // ── Search ───────────────────────────────────────────────────
+  /**
+   * ── Client-Side Search Logic ────────────────────────────────
+   * This logic fetches a JSON index of all posts and performs 
+   * live searching on input without a full page reload.
+   */
   const searchToggle = document.getElementById('search-toggle-btn')!;
   const searchOverlay = document.getElementById('search-overlay')!;
   const searchInput = document.getElementById('search-input') as HTMLInputElement;
@@ -109,6 +126,7 @@ import Logo from './Logo.astro';
   const searchIcon = searchToggle.querySelector('.search-icon') as HTMLElement;
   const closeIcon = searchToggle.querySelector('.close-icon') as HTMLElement;
 
+  // Labels for rendering badges in search results
   const CATEGORY_LABELS: Record<string, string> = {
     philosophy: 'Philosophy',
     science: 'Science',
@@ -116,6 +134,7 @@ import Logo from './Logo.astro';
     miscellaneous: 'Miscellaneous',
   };
 
+  // Colors for category badges
   const CATEGORY_COLORS: Record<string, string> = {
     philosophy: '#33383B',
     science: '#6F889B',
@@ -126,13 +145,24 @@ import Logo from './Logo.astro';
   let allPosts: any[] = [];
   let dataFetched = false;
 
+  /**
+   * Fetches the search index from the API.
+   * Only called once when search is first opened.
+   */
   async function fetchPosts() {
     if (dataFetched) return;
-    const res = await fetch('/api/search.json');
-    allPosts = await res.json();
-    dataFetched = true;
+    try {
+      const res = await fetch('/api/search.json');
+      allPosts = await res.json();
+      dataFetched = true;
+    } catch (err) {
+      console.error('Failed to fetch search data:', err);
+    }
   }
 
+  /**
+   * UI: Open Search Overlay
+   */
   function openSearch() {
     searchOverlay.classList.add('is-open');
     searchOverlay.setAttribute('aria-hidden', 'false');
@@ -141,13 +171,19 @@ import Logo from './Logo.astro';
     closeIcon.style.display = 'block';
     searchInput.value = '';
     searchResults.innerHTML = '';
-    // Close burger if open
+    
+    // Auto-close mobile menu if it was open
     mobileMenu.classList.remove('is-open');
     burger.classList.remove('is-open');
+    
+    // Focus the input fields with a slight delay for transition smoothness
     setTimeout(() => searchInput.focus(), 50);
     fetchPosts();
   }
 
+  /**
+   * UI: Close Search Overlay
+   */
   function closeSearch() {
     searchOverlay.classList.remove('is-open');
     searchOverlay.setAttribute('aria-hidden', 'true');
@@ -157,20 +193,25 @@ import Logo from './Logo.astro';
     searchResults.innerHTML = '';
   }
 
+  // Handle toggle button click
   searchToggle.addEventListener('click', () => {
     const isOpen = searchOverlay.classList.contains('is-open');
     isOpen ? closeSearch() : openSearch();
   });
 
+  // Handle global Escape key to close search
   document.addEventListener('keydown', (e) => {
     if (e.key === 'Escape') closeSearch();
   });
 
-  // Close when clicking outside
+  // Close search when clicking outside of the search bar content
   searchOverlay.addEventListener('click', (e) => {
     if (e.target === searchOverlay) closeSearch();
   });
 
+  /**
+   * Performs the filtering logic and renders HTML for search results.
+   */
   function renderResults(query: string) {
     const q = query.trim().toLowerCase();
     if (!q) {
@@ -178,17 +219,20 @@ import Logo from './Logo.astro';
       return;
     }
 
+    // Filter posts by title, excerpt, or category
     const matches = allPosts.filter(p =>
       p.title.toLowerCase().includes(q) ||
       p.excerpt.toLowerCase().includes(q) ||
       CATEGORY_LABELS[p.category]?.toLowerCase().includes(q)
-    ).slice(0, 6);
+    ).slice(0, 6); // Limit results to 6 for performance and UI clarity
 
+    // Empty state
     if (matches.length === 0) {
       searchResults.innerHTML = `<div class="search-empty">No results for "<strong>${query}</strong>"</div>`;
       return;
     }
 
+    // Map matched posts to HTML strings
     searchResults.innerHTML = matches.map(p => {
       const catLabel = CATEGORY_LABELS[p.category] || p.category;
       const catColor = CATEGORY_COLORS[p.category] || '#33383B';
@@ -206,8 +250,10 @@ import Logo from './Logo.astro';
     }).join('');
   }
 
+  // Bind input event to live rendering
   searchInput.addEventListener('input', () => renderResults(searchInput.value));
 </script>
+
 
 <style>
   .site-header {
