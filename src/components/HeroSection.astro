@@ -1,25 +1,18 @@
 ---
 interface Props {
-  title?: string;
-  slug?: string;
   coverImage?: string;
-  categoryName?: string;
-  categorySlug?: string;
-  authorName?: string;
-  publishedAt?: Date;
 }
-const { coverImage = '/images/posts/default.jpg', slug } = Astro.props;
+const { coverImage = '/images/trending-climate.jpg' } = Astro.props;
 ---
 
 <section class="hero-section">
   <div class="hero-bg">
-    <img src={coverImage} alt="Hero background" class="hero-img" loading="eager" />
+    <img src={coverImage} alt="Nature background" class="hero-img" loading="eager" />
     <div class="hero-overlay"></div>
   </div>
   <div class="hero-content">
-    <h1 class="hero-quote">"Exploring the cosmos without<br/>and the universe within."</h1>
-    <!-- If we have a featured post slug, use it, else # -->
-    <a href={slug ? `/${slug}` : '#'} class="hero-btn">Begin the Journey</a>
+    <h1 class="hero-quote">"I don't let my education<br/>get in the way of my learning."</h1>
+    <p class="hero-attribution">— Mark Twain</p>
   </div>
 </section>
 
@@ -47,41 +40,34 @@ const { coverImage = '/images/posts/default.jpg', slug } = Astro.props;
   .hero-overlay {
     position: absolute;
     inset: 0;
-    background: rgba(30,35,32,0.6);
+    background: rgba(30,35,32,0.5);
   }
   .hero-content {
     position: relative;
     z-index: 2;
     text-align: center;
     padding: 40px;
+    max-width: 800px;
   }
   .hero-quote {
     font-family: var(--font-heading);
     color: white;
-    font-size: 3rem;
+    font-size: 3.5rem;
     font-weight: 500;
-    line-height: 1.25;
-    margin-bottom: 32px;
+    line-height: 1.2;
+    margin-bottom: 16px;
+    text-shadow: 0 2px 10px rgba(0,0,0,0.3);
   }
-  .hero-btn {
-    display: inline-block;
-    background: var(--bg-secondary);
-    color: var(--text-primary);
+  .hero-attribution {
+    color: rgba(255, 255, 255, 0.9);
     font-family: var(--font-primary);
-    font-size: 0.95rem;
-    font-weight: 600;
-    padding: 14px 32px;
-    border-radius: 30px;
-    text-decoration: none;
-    transition: transform 0.2s, background 0.2s;
-  }
-  .hero-btn:hover {
-    background: white;
-    transform: translateY(-2px);
+    font-size: 1.1rem;
+    font-style: italic;
+    letter-spacing: 0.05em;
   }
   @media (max-width: 768px) {
     .hero-quote {
-      font-size: 2rem;
+      font-size: 2.2rem;
     }
   }
 </style>

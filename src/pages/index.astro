@@ -30,32 +30,18 @@ const CATEGORIES: Record<string, string> = {
 };
 
 /**
- * Logic for Hero Section:
- * Find the first post marked as 'featured' in Keystatic.
- * Fallback to the most recent post if no featured post exists.
- */
-const featuredPost = allPosts.find((p: any) => p.featured) || allPosts[0];
-const featuredSlug = featuredPost?.slug;
-
-/**
  * Logic for Latest Reflections:
- * Filter out the post currently used in the Hero section.
- * Take the next 4 posts to display in the grid.
+ * Display the first 4 posts in the grid.
  */
-const recentPosts = allPosts.filter((p: any) => p.slug !== featuredSlug).slice(0, 4);
+const recentPosts = allPosts.slice(0, 4);
 ---
 
 <MainLayout title="The Wandering Mind">
   <Header />
 
   <main class="container" style="padding-top: 32px; padding-bottom: 32px;">
-    <!-- Featured Hero Section -->
-    {featuredPost && (
-      <HeroSection
-        slug={featuredPost.slug}
-        coverImage={featuredPost.coverImage}
-      />
-    )}
+    <!-- Static Hero Section with Quote -->
+    <HeroSection />
 
     <!-- Latest Reflections Grid Section -->
     <section class="latest-reflections">

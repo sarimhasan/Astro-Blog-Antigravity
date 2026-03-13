@@ -10,7 +10,6 @@ Aسٹunning, high-performance blog built with **Astro**, **Keystatic**, and **Va
 
 -   **🚀 Fast & Light**: Built with Astro for minimal JavaScript and maximum performance.
 -   **📝 Keystatic CMS Integration**: A local-first, Git-based CMS that allows you to manage content directly from your browser.
--   **🔍 Live Search**: Lightning-fast client-side search for articles by title, excerpt, or category.
 -   **🌓 Dark Mode**: A sleek, persistent dark theme with smooth transitions.
 -   **📱 Fully Responsive**: Optimized for everything from large desktops to mobile phones.
 -   **🎨 Premium Design**: Modern typography (Outfit & Playfair Display), subtle micro-animations, and a curated color palette.
@@ -24,7 +23,6 @@ Aسٹunning, high-performance blog built with **Astro**, **Keystatic**, and **Va
 -   **CMS**: [Keystatic](https://keystatic.com/)
 -   **Styling**: Vanilla CSS (Modern CSS Variables & Logic)
 -   **Fonts**: [Google Fonts](https://fonts.google.com/) (Outfit, Playfair Display)
--   **Search**: Client-side fetch + API Routes
 -   **Deployment**: Optimized for [Netlify](https://www.netlify.com/)
 
 ---
@@ -39,7 +37,6 @@ Aسٹunning, high-performance blog built with **Astro**, **Keystatic**, and **Va
 │   ├── content/         # Markdown/Markdoc files (Managed by Keystatic)
 │   ├── layouts/         # Base templates for pages (MainLayout.astro)
 │   ├── pages/           # Route definitions (Home, Single Post, API)
-│   │   ├── api/         # JSON endpoints for search
 │   │   └── [slug].astro # Dynamic post routing
 │   └── styles/          # Global styles and design system tokens
 ├── keystatic.config.ts  # CMS configuration & schema definitions

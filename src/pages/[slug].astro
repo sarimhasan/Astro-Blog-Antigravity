@@ -51,9 +51,32 @@ const dateStr = new Date().toLocaleDateString('en-US', {
 const initials = post.data.authorName
   ? post.data.authorName.split(' ').map((w: string) => w[0]).join('')
   : '?';
+
+// JSON-LD Structured Data
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": post.data.title,
+  "description": post.data.excerpt,
+  "image": post.data.coverImage ? [new URL(post.data.coverImage, Astro.url).href] : [],
+  "datePublished": dateStr, // Ideally this should be a machine-readable ISO date
+  "author": [{
+    "@type": "Person",
+    "name": post.data.authorName,
+    "url": Astro.url.origin // Link to author profile if exists
+  }]
+};
 ---
 
-<MainLayout title={`${post.data.title} — The Wandering Mind`}>
+<MainLayout 
+  title={`${post.data.title} — The Wandering Mind`}
+  description={post.data.excerpt}
+  image={post.data.coverImage}
+  type="article"
+>
+  <!-- Inject JSON-LD into the head -->
+  <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} is:inline slot="head" />
+  
   <Header />
 
   <article class="post-page container">

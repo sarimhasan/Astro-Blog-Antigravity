@@ -5,18 +5,50 @@
  * Handles the common HTML structure, meta tags, global styling, and theme management.
  */
 interface Props {
-  title?: string; // Optinal page title
+  title?: string;
+  description?: string;
+  image?: string;
+  canonicalURL?: string;
+  type?: 'website' | 'article';
 }
 
-const { title = "The Wandering Mind" } = Astro.props;
+const { 
+  title = "The Wandering Mind — Sarim's Pensieve", 
+  description = "Sarim's Pensieve — A Thinking Space for Philosophy, Science, and Miscellaneous Thoughts.",
+  image = "/images/hero-nocode.jpg", // Fallback image
+  canonicalURL = Astro.url.href,
+  type = 'website'
+} = Astro.props;
+
+const siteName = "The Wandering Mind";
 ---
 
 <!DOCTYPE html>
 <html lang="en" data-theme="light">
   <head>
     <meta charset="UTF-8" />
-    <meta name="description" content="Sarim's Pensieve — A Thinking Space" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    
+    <!-- Primary Meta Tags -->
+    <title>{title}</title>
+    <meta name="title" content={title} />
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonicalURL} />
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content={type} />
+    <meta property="og:url" content={Astro.url.href} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:image" content={new URL(image, Astro.url)} />
+    <meta property="og:site_name" content={siteName} />
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image" />
+    <meta property="twitter:url" content={Astro.url.href} />
+    <meta property="twitter:title" content={title} />
+    <meta property="twitter:description" content={description} />
+    <meta property="twitter:image" content={new URL(image, Astro.url)} />
     
     <!-- Favicon -->
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
@@ -27,8 +59,8 @@ const { title = "The Wandering Mind" } = Astro.props;
     
     <!-- Google Fonts: Outfit for body, Playfair Display for headings -->
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800;900&family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap" rel="stylesheet" />
-    
-    <title>{title}</title>
+
+    <slot name="head" />
   </head>
   <body>
     <!-- Main page content is injected here via the slot -->

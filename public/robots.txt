@@ -1,0 +1,6 @@
+# Allow all search engines to crawl the site
+User-agent: *
+Allow: /
+
+# Link to your sitemap (uncomment and update once sitemap is generated)
+# Sitemap: https://your-domain.com/sitemap-index.xml
