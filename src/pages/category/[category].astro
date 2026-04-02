@@ -1,108 +1,99 @@
 ---
 import MainLayout from '../../layouts/MainLayout.astro';
-import Header from '../../components/Header.astro';
-import Footer from '../../components/Footer.astro';
-import RecentPostCard from '../../components/RecentPostCard.astro';
 import { getCollection } from 'astro:content';
+import { formatPostDate, mapPostEntry, sortPostsByDateDesc } from '../../lib/content';
+
+export const prerender = false;
 
 const { category } = Astro.params;
 
 const CATEGORIES: Record<string, string> = {
-  philosophy: 'Philosophy',
-  science: 'Science',
-  thoughts: 'Thoughts',
+  philosophy:    'Philosophy',
+  science:       'Science',
+  thoughts:      'Thoughts',
   miscellaneous: 'Miscellaneous',
 };
 
 const title = category ? CATEGORIES[category as string] || category : 'Category';
 
-const _allPosts = await getCollection('posts');
-const posts = _allPosts
-  .filter((post) => post.data.category === category)
-  .map(p => ({ slug: p.slug, ...p.data }));
-
+const posts = sortPostsByDateDesc(
+  (await getCollection('posts'))
+    .filter((post) => post.data.category === category)
+    .map(mapPostEntry)
+);
 ---
 
-<MainLayout title={`${title} - The Wandering Mind`}>
-  <Header />
+<MainLayout
+  title={`${title} — Karachi And Beyond`}
+  description={`Browse posts in the ${title.toLowerCase()} category.`}
+>
+  <main class="mx-auto w-full max-w-[1440px] px-6 pb-16 lg:px-10">
 
-  <main class="container" style="padding-top: 60px; padding-bottom: 80px; min-height: 60vh;">
-    <h1 class="category-page-title">
-      <span class="muted">Category:</span> {title}
-    </h1>
+    <!-- Page header -->
+    <section class="border-b border-[#31353b]/20 py-14">
+      <p class="font-['Space_Mono'] text-[0.6rem] uppercase tracking-[0.48em] text-[var(--secondary)]">
+        // Category archive
+      </p>
+      <h1 class="mt-4 font-['Space_Grotesk'] text-[clamp(3rem,9vw,6rem)] font-bold uppercase leading-[0.84] tracking-[-0.05em] text-[var(--primary)]">
+        {title}
+      </h1>
+      <p class="mt-5 max-w-[40rem] font-['Newsreader'] text-[1rem] leading-7 text-[var(--on-surface-soft)]">
+        Posts grouped by topic, sorted by date so the newest entry appears first.
+      </p>
+    </section>
 
+    <!-- Back link -->
+    <a
+      href="/journal"
+      class="mt-8 inline-flex items-center gap-3 border border-[rgba(255,200,128,0.18)] px-4 py-3 font-['Space_Grotesk'] text-[0.68rem] uppercase tracking-[0.22em] text-[var(--primary)] transition hover:bg-[rgba(255,200,128,0.08)]"
+    >
+      <span>←</span>
+      <span>Back to journal</span>
+    </a>
+
+    <!-- Post list -->
     {posts.length > 0 ? (
-      <div class="cards-grid">
-        {posts.map((post: any) => {
-          const catName = CATEGORIES[post.category] || 'General';
-          return (
-            <RecentPostCard
-              title={post.title}
-              slug={post.slug}
-              excerpt={post.excerpt}
-              coverImage={post.coverImage}
-              categoryName={catName}
-              categorySlug={post.category}
-              authorName={post.authorName}
-              readTime={post.readTime}
-            />
-          );
-        })}
-      </div>
+      <section class="mt-8 space-y-0">
+        {posts.map((post, index) => (
+          <article class="log-entry group relative border-b border-[#31353b]/20 border-l border-l-[#31353b]/20 pl-10 py-10 transition-all duration-300 hover:border-l-[var(--primary)] hover:bg-[rgba(255,200,128,0.02)]">
+            <div class="log-entry-gutter"></div>
+
+            <!-- Meta -->
+            <div class="mb-4 flex flex-wrap items-baseline gap-4">
+              <span class="font-['Space_Mono'] text-[0.62rem] uppercase text-[var(--secondary-container)]">
+                Log_{String(index + 1).padStart(3, '0')}
+              </span>
+              <span class="border border-[rgba(255,200,128,0.18)] px-2.5 py-1 font-['Space_Mono'] text-[0.56rem] uppercase tracking-[0.2em] text-[var(--primary)]">
+                --{title}
+              </span>
+              <span class="font-['Space_Mono'] text-[0.56rem] uppercase tracking-[0.18em] text-[var(--on-surface-soft)] opacity-50">
+                {formatPostDate(post.date)}
+              </span>
+            </div>
+
+            <!-- Title + excerpt -->
+            <a href={`/${post.slug}`} class="block">
+              <h2 class="max-w-[22ch] font-['Space_Grotesk'] text-[clamp(1.8rem,4vw,3.5rem)] font-bold uppercase leading-[0.9] tracking-[-0.04em] text-[var(--on-surface)] transition-colors group-hover:text-[var(--primary)]">
+                {post.title}
+              </h2>
+              <p class="mt-4 max-w-[56rem] font-['Newsreader'] text-[1rem] leading-7 text-[var(--on-surface-soft)]">
+                {post.excerpt || 'A reflective entry from the field terminal.'}
+              </p>
+            </a>
+
+            <p class="mt-5 font-['Space_Mono'] text-[0.56rem] uppercase tracking-[0.2em] text-[var(--on-surface-soft)] opacity-40">
+              {post.readTime || '5 MIN READ'}
+            </p>
+          </article>
+        ))}
+      </section>
     ) : (
-      <div class="no-posts">
-        <p>No posts found in this category yet. Check back soon!</p>
-      </div>
+      <section class="mt-8">
+        <div class="border border-[#31353b]/30 bg-[var(--surface-container-low)] p-10 font-['Space_Mono'] text-[0.72rem] uppercase tracking-[0.2em] text-[var(--on-surface-soft)]">
+          No posts in this category yet.
+        </div>
+      </section>
     )}
+
   </main>
-
-  <Footer />
 </MainLayout>
-
-<style>
-  .category-page-title {
-    font-family: var(--font-heading);
-    font-size: 2.5rem;
-    font-weight: 700;
-    color: var(--text-primary);
-    margin-bottom: 48px;
-    border-bottom: 1px solid var(--border-color);
-    padding-bottom: 24px;
-  }
-  
-  .category-page-title .muted {
-    color: var(--text-muted);
-    font-size: 1.5rem;
-    font-weight: 500;
-  }
-
-  .cards-grid {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 24px;
-  }
-  
-  .no-posts {
-    padding: 60px 0;
-    text-align: center;
-    color: var(--text-secondary);
-    font-size: 1.1rem;
-    background: var(--bg-secondary);
-    border-radius: var(--radius-md);
-  }
-
-  @media (max-width: 1024px) {
-    .cards-grid {
-      grid-template-columns: repeat(2, 1fr);
-    }
-  }
-  
-  @media (max-width: 640px) {
-    .cards-grid {
-      grid-template-columns: 1fr;
-    }
-    .category-page-title {
-      font-size: 2rem;
-    }
-  }
-</style>

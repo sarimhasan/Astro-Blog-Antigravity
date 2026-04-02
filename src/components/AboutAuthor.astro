@@ -1,101 +1,27 @@
 ---
-/**
- * AboutAuthor Component
- * Displays a persistent section introduce the author with a photo, bio, and social links.
- * Typically used at the bottom of the homepage or about pages.
- */
 ---
-<section class="about-author">
-  <!-- Author Visual Representation -->
-  <div class="author-image-wrapper">
-    <img src="/images/posts/default.jpg" alt="Author" class="author-image" loading="lazy" />
+
+<section class="my-20 grid items-center gap-10 md:grid-cols-2">
+  <div class="overflow-hidden rounded-xl border border-[#d7d0c3]">
+    <img src="/images/posts/default.jpg" alt="Author" class="h-[360px] w-full object-cover md:h-[420px]" loading="lazy" />
   </div>
 
-  <!-- Biography and Social Links -->
-  <div class="author-info">
-    <h2 class="author-heading">About the Author</h2>
-    <p class="author-bio">
-      Welcome to my digital space. I'm a writer, thinker, and lifelong learner exploring the intersection of philosophy, science, and the human experience.
-      <br/><br/>
-      Through these essays, I hope to spark curiosity and inspire others to wander through the landscape of ideas with an open mind.
+  <div>
+    <h2 class="font-['Newsreader'] text-[2.3rem] font-bold text-[#171615]">About the Author</h2>
+    <p class="mt-5 text-[1.03rem] leading-8 text-[#504b45]">
+      Welcome to this digital space. I write about philosophy, science, and human agency in systems.
+      Through these essays, the goal is to invite sharper thinking and deeper attention.
     </p>
-    
-    <div class="author-socials">
-      <a href="#" aria-label="Twitter">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 4s-.7 2.1-2 3.4c1.6 10-9.4 17.3-18 11.6 2.2.1 4.4-.6 6-2C3 15.5.5 9.6 3 5c2.2 2.6 5.6 4.1 9 4-.9-4.2 4-6.6 7-3.8 1.1 0 3-1.2 3-1.2z"/></svg>
+    <div class="mt-6 flex gap-4 text-[#171615]">
+      <a href="#" aria-label="Twitter" class="transition hover:text-[#ff4a0a]">
+        <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 4s-.7 2.1-2 3.4c1.6 10-9.4 17.3-18 11.6 2.2.1 4.4-.6 6-2C3 15.5.5 9.6 3 5c2.2 2.6 5.6 4.1 9 4-.9-4.2 4-6.6 7-3.8 1.1 0 3-1.2 3-1.2z"/></svg>
       </a>
-      <a href="#" aria-label="LinkedIn">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect width="4" height="12" x="2" y="9"/><circle cx="4" cy="4" r="2"/></svg>
+      <a href="#" aria-label="LinkedIn" class="transition hover:text-[#ff4a0a]">
+        <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect width="4" height="12" x="2" y="9"/><circle cx="4" cy="4" r="2"/></svg>
       </a>
-      <a href="#" aria-label="Instagram">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="20" x="2" y="2" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" x2="17.51" y1="6.5" y2="6.5"/></svg>
+      <a href="#" aria-label="Instagram" class="transition hover:text-[#ff4a0a]">
+        <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="20" x="2" y="2" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" x2="17.51" y1="6.5" y2="6.5"/></svg>
       </a>
     </div>
   </div>
 </section>
-
-<style>
-  /* Base grid layout for the about section */
-  .about-author {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 60px;
-    align-items: center;
-    margin: 100px 0;
-  }
-  
-  .author-image-wrapper {
-    border-radius: var(--radius-lg);
-    overflow: hidden;
-    height: 400px;
-  }
-  
-  .author-image {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-  }
-  
-  .author-heading {
-    font-family: var(--font-heading);
-    font-size: 2.2rem;
-    font-weight: 700;
-    margin-bottom: 24px;
-    color: var(--text-primary);
-  }
-  
-  .author-bio {
-    font-size: 1.05rem;
-    line-height: 1.7;
-    color: var(--text-secondary);
-    margin-bottom: 32px;
-  }
-  
-  .author-socials {
-    display: flex;
-    gap: 16px;
-  }
-  
-  .author-socials a {
-    color: var(--text-primary);
-    transition: color 0.2s ease;
-    width: 20px;
-    height: 20px;
-  }
-  
-  .author-socials a:hover {
-    color: var(--text-muted);
-  }
-  
-  /* Mobile Responsive adjustments */
-  @media (max-width: 768px) {
-    .about-author {
-      grid-template-columns: 1fr;
-      gap: 40px;
-    }
-    .author-image-wrapper {
-      height: 300px;
-    }
-  }
-</style>
-

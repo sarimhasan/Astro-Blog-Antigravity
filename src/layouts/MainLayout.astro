@@ -1,9 +1,7 @@
 ---
-/**
- * MainLayout Component
- * The base template for all pages in the blog.
- * Handles the common HTML structure, meta tags, global styling, and theme management.
- */
+import Navbar from '../components/Navbar.astro';
+import Footer from '../components/Footer.astro';
+
 interface Props {
   title?: string;
   description?: string;
@@ -13,94 +11,68 @@ interface Props {
 }
 
 const { 
-  title = "The Wandering Mind — Sarim's Pensieve", 
-  description = "Sarim's Pensieve — A Thinking Space for Philosophy, Science, and Miscellaneous Thoughts.",
-  image = "/images/hero-nocode.jpg", // Fallback image
+  title = 'Karachi And Beyond', 
+  description = 'A personal observatory for essays, field notes, and technical reflections from Karachi.',
+  image = '/images/hero-nocode.jpg',
   canonicalURL = Astro.url.href,
   type = 'website'
 } = Astro.props;
 
-const siteName = "The Wandering Mind";
+const siteName = 'Karachi And Beyond';
 ---
 
 <!DOCTYPE html>
-<html lang="en" data-theme="light">
+<html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#0a0e14" />
     
-    <!-- Primary Meta Tags -->
     <title>{title}</title>
     <meta name="title" content={title} />
     <meta name="description" content={description} />
     <link rel="canonical" href={canonicalURL} />
 
-    <!-- Open Graph / Facebook -->
     <meta property="og:type" content={type} />
     <meta property="og:url" content={Astro.url.href} />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
-    <meta property="og:image" content={new URL(image, Astro.url)} />
+    <meta property="og:image" content={new URL(image, Astro.url).href} />
     <meta property="og:site_name" content={siteName} />
 
-    <!-- Twitter -->
     <meta property="twitter:card" content="summary_large_image" />
     <meta property="twitter:url" content={Astro.url.href} />
     <meta property="twitter:title" content={title} />
     <meta property="twitter:description" content={description} />
-    <meta property="twitter:image" content={new URL(image, Astro.url)} />
+    <meta property="twitter:image" content={new URL(image, Astro.url).href} />
     
-    <!-- Favicon -->
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    
-    <!-- Font Preconnections for performance -->
+
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    
-    <!-- Google Fonts: Outfit for body, Playfair Display for headings -->
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800;900&family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap" rel="stylesheet" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Newsreader:opsz,ital,wght@6..72,0,400;6..72,0,500;6..72,1,400&family=Space+Grotesk:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap"
+      rel="stylesheet"
+    />
 
     <slot name="head" />
   </head>
-  <body>
-    <!-- Main page content is injected here via the slot -->
-    <slot />
+  <body class="min-h-dvh bg-[var(--surface)] text-[var(--on-surface)] relative overflow-x-hidden selection:bg-[rgba(255,200,128,0.2)]">
+    <!-- Global noise grain overlay -->
+    <div class="noise-overlay fixed inset-0 z-[100] pointer-events-none" aria-hidden="true"></div>
 
-    <script is:inline>
-      /**
-       * Theme Management Script
-       * Handles switching between Light and Dark modes.
-       * Uses 'data-theme' attribute on <html> for CSS targeting.
-       * Persists user preference in localStorage.
-       */
-      
-      // Initialize theme from localStorage or default to 'light'
-      const theme = localStorage.getItem('theme') || 'light';
-      document.documentElement.setAttribute('data-theme', theme);
+    <a href="#content" class="skip-link">Skip to content</a>
+    <Navbar currentPath={Astro.url.pathname} />
 
-      // Global function to toggle theme, accessible from components
-      window.toggleTheme = function() {
-        const current = document.documentElement.getAttribute('data-theme');
-        const next = current === 'dark' ? 'light' : 'dark';
-        
-        // Update document and storage
-        document.documentElement.setAttribute('data-theme', next);
-        localStorage.setItem('theme', next);
+    <!-- pt-16 = exact height of the flat fixed navbar -->
+    <div id="content" class="mx-auto w-full max-w-[1440px] pt-16">
+      <slot />
+    </div>
 
-        // Update the visual state of the theme toggle button if it exists
-        const btn = document.getElementById('theme-toggle');
-        if (btn) {
-          btn.innerHTML = next === 'dark'
-            ? '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg> Light'
-            : '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg> Dark';
-        }
-      };
-    </script>
+    <Footer />
   </body>
 </html>
 
 <style is:global>
-  /* Import global CSS variables and reset */
   @import '../styles/global.css';
 </style>
-

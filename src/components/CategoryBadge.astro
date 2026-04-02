@@ -4,7 +4,16 @@ interface Props {
   slug: string;
 }
 const { name, slug } = Astro.props;
-const badgeClass = `category-badge category-badge--${slug}`;
+const baseClass = 'inline-flex items-center rounded-full border px-2.5 py-1 font-[\'IBM Plex Mono\'] text-[0.62rem] font-semibold uppercase tracking-[0.11em] leading-none';
+
+const variants: Record<string, string> = {
+  philosophy: 'border-[#f2c2a9] bg-[#fbe4d8] text-[#8f3400]',
+  science: 'border-[#bfd3ea] bg-[#dce8f5] text-[#04376d]',
+  thoughts: 'border-[#bdd8c4] bg-[#ddefde] text-[#104b2e]',
+  miscellaneous: 'border-[#e8d8b8] bg-[#f4ead6] text-[#5f4520]',
+};
+
+const badgeClass = `${baseClass} ${variants[slug] || 'border-[#d7d0c3] bg-[#f0ece3] text-[#4f4a43]'}`;
 ---
 
 <span class={badgeClass}>{name}</span>

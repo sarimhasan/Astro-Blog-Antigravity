@@ -1,119 +1,35 @@
 ---
 ---
 
-<div class="theme-section">
-  <h3 class="theme-title">Browse by Theme</h3>
-  
-  <div class="theme-grid">
-    <a href="/category/philosophy" class="theme-item">
-      <div class="theme-circle c-philosophy">
-        <!-- Lightbulb / idea -->
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M15 14c.2-1 .7-1.7 1.5-2.5A7 7 0 1 0 6.1 8.5C5 10 4.6 11 4.6 13a6 6 0 0 0 3.4 5.4V20a2 2 0 0 0 2 2h4a2 2 0 0 0 2-2v-1.6c.9-.4 1.7-1.2 2-2.4"/>
-          <line x1="12" y1="2" x2="12" y2="4"/>
-        </svg>
+<section class="my-14 flex flex-col items-center">
+  <h3 class="mb-8 font-['Newsreader'] text-[2rem] font-bold text-[#171615]">Browse by Theme</h3>
+  <div class="flex flex-wrap items-start justify-center gap-10">
+    <a href="/category/philosophy" class="group flex flex-col items-center gap-3">
+      <div class="grid h-20 w-20 place-items-center rounded-full bg-[#33383b] text-white transition group-hover:-translate-y-1 group-hover:shadow-lg">
+        <span class="font-['IBM Plex Mono'] text-xs uppercase tracking-[0.1em]">P</span>
       </div>
-      <span class="theme-label">Philosophy</span>
+      <span class="text-[0.95rem] text-[#171615]">Philosophy</span>
     </a>
-    
-    <a href="/category/science" class="theme-item">
-      <div class="theme-circle c-science">
-        <!-- Atom -->
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-          <circle cx="12" cy="12" r="3"/>
-          <ellipse cx="12" cy="12" rx="10" ry="4" transform="rotate(45 12 12)"/>
-          <ellipse cx="12" cy="12" rx="10" ry="4" transform="rotate(-45 12 12)"/>
-        </svg>
+
+    <a href="/category/science" class="group flex flex-col items-center gap-3">
+      <div class="grid h-20 w-20 place-items-center rounded-full bg-[#6f889b] text-white transition group-hover:-translate-y-1 group-hover:shadow-lg">
+        <span class="font-['IBM Plex Mono'] text-xs uppercase tracking-[0.1em]">S</span>
       </div>
-      <span class="theme-label">Science</span>
+      <span class="text-[0.95rem] text-[#171615]">Science</span>
     </a>
-    
-    <a href="/category/thoughts" class="theme-item">
-      <div class="theme-circle c-thoughts">
-        <!-- Speech bubble / thought -->
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
-        </svg>
+
+    <a href="/category/thoughts" class="group flex flex-col items-center gap-3">
+      <div class="grid h-20 w-20 place-items-center rounded-full bg-[#7c6b8a] text-white transition group-hover:-translate-y-1 group-hover:shadow-lg">
+        <span class="font-['IBM Plex Mono'] text-xs uppercase tracking-[0.1em]">T</span>
       </div>
-      <span class="theme-label">Thoughts</span>
+      <span class="text-[0.95rem] text-[#171615]">Thoughts</span>
     </a>
-    
-    <a href="/category/miscellaneous" class="theme-item">
-      <div class="theme-circle c-miscellaneous">
-        <!-- Grid / misc -->
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-          <rect x="3" y="3" width="7" height="7" rx="1"/>
-          <rect x="14" y="3" width="7" height="7" rx="1"/>
-          <rect x="3" y="14" width="7" height="7" rx="1"/>
-          <rect x="14" y="14" width="7" height="7" rx="1"/>
-        </svg>
+
+    <a href="/category/miscellaneous" class="group flex flex-col items-center gap-3">
+      <div class="grid h-20 w-20 place-items-center rounded-full bg-[#a87b5a] text-white transition group-hover:-translate-y-1 group-hover:shadow-lg">
+        <span class="font-['IBM Plex Mono'] text-xs uppercase tracking-[0.1em]">M</span>
       </div>
-      <span class="theme-label">Miscellaneous</span>
+      <span class="text-[0.95rem] text-[#171615]">Miscellaneous</span>
     </a>
   </div>
-</div>
-
-<style>
-  .theme-section {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    margin: 60px 0;
-  }
-  
-  .theme-title {
-    font-family: var(--font-heading);
-    font-size: 1.8rem;
-    font-weight: 700;
-    color: var(--text-primary);
-    margin-bottom: 40px;
-  }
-  
-  .theme-grid {
-    display: flex;
-    justify-content: center;
-    gap: 48px;
-    flex-wrap: wrap;
-  }
-  
-  .theme-item {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 16px;
-    text-decoration: none;
-  }
-  
-  .theme-circle {
-    width: 80px;
-    height: 80px;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: white;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-  }
-  
-  .theme-circle svg {
-    width: 32px;
-    height: 32px;
-  }
-  
-  .theme-item:hover .theme-circle {
-    transform: translateY(-4px);
-    box-shadow: var(--shadow-md);
-  }
-  
-  .theme-label {
-    font-family: var(--font-primary);
-    font-size: 0.95rem;
-    font-weight: 500;
-    color: var(--text-primary);
-  }
-  
-  .c-philosophy     { background-color: #33383B; }
-  .c-science        { background-color: #6F889B; }
-  .c-thoughts       { background-color: #7C6B8A; }
-  .c-miscellaneous  { background-color: #A87B5A; }
-</style>
+</section>

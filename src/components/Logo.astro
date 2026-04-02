@@ -1,34 +1,9 @@
 ---
 ---
 
-<div class="logo-wrapper">
-  <svg class="logo-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-    <path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1 0-5H20"/>
-    <!-- Compass inner parts -->
-    <circle cx="12" cy="10" r="4"/>
-    <path d="m12 6-1 4 1 4 1-4-1-4z"/>
-  </svg>
-  <span class="logo-text">The Wandering <br/>Mind</span>
+<div class="flex items-center gap-2.5">
+  <span aria-hidden="true" class="relative inline-block h-3.5 w-3.5 border border-[#ff4a0a]">
+    <span class="absolute left-[3px] top-[3px] h-1.5 w-1.5 bg-[#ff4a0a]"></span>
+  </span>
+  <span class="font-['Newsreader'] text-[1.25rem] font-bold leading-none tracking-[-0.015em] text-[#121212]">The Wandering Mind</span>
 </div>
-
-<style>
-  .logo-wrapper {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-  }
-  
-  .logo-icon {
-    width: 32px;
-    height: 32px;
-    color: var(--text-primary);
-  }
-  
-  .logo-text {
-    font-family: var(--font-heading);
-    font-weight: 800;
-    font-size: 1.1rem;
-    line-height: 1.1;
-    color: var(--text-primary);
-  }
-</style>

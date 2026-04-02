@@ -1,98 +1,29 @@
 ---
 ---
 
-<footer class="site-footer">
-  <div class="container footer-container">
-    <div class="footer-bottom">
-      <div class="footer-brand">
-        <a href="/" class="footer-home">Home</a>
-      </div>
-      <div class="footer-cats">
-        <a href="/category/philosophy">Philosophy</a>
-        <a href="/category/science">Science</a>
-        <a href="/category/thoughts">Thoughts</a>
-        <a href="/category/miscellaneous">Miscellaneous</a>
-      </div>
-      <div class="footer-quote">
-        "Exploring the cosmos without<br/>and the universe within."<br/><span class="quote-author">— Elon</span>
-      </div>
+<footer class="border-t border-[#31353b]/30 bg-[#0a0e14]">
+  <div class="mx-auto flex w-full max-w-[1440px] flex-col gap-8 px-6 py-10 md:flex-row md:items-end md:justify-between md:gap-10 md:py-12 lg:px-10">
+
+    <!-- Left: coordinates -->
+    <div class="font-['Space_Mono'] text-[0.65rem] uppercase tracking-[0.2em] text-[var(--primary)]">
+      <span>24.8607° N, 67.0104° E █</span>
+      <p class="mt-2 text-[var(--on-surface-soft)]">Station: KHI_01</p>
     </div>
-    
-    <div class="footer-copyright">
-      &copy; Copyright TM 2024. All rights reserved
+
+    <!-- Center: nav links -->
+    <nav aria-label="Footer navigation" class="flex flex-wrap gap-x-6 gap-y-3 font-['Space_Grotesk'] text-[0.65rem] uppercase tracking-[0.22em] text-[#E8E6DF]/40">
+      <a href="/"                       class="transition-colors hover:text-[var(--primary)] cursor-crosshair">Logs</a>
+      <a href="/journal"                class="transition-colors hover:text-[var(--primary)] cursor-crosshair">Journal</a>
+      <a href="/category/philosophy"    class="transition-colors hover:text-[var(--primary)] cursor-crosshair">Philosophy</a>
+      <a href="/category/science"       class="transition-colors hover:text-[var(--primary)] cursor-crosshair">Science</a>
+      <a href="/category/thoughts"      class="transition-colors hover:text-[var(--primary)] cursor-crosshair">Thoughts</a>
+      <a href="/category/miscellaneous" class="transition-colors hover:text-[var(--primary)] cursor-crosshair">Miscellaneous</a>
+    </nav>
+
+    <!-- Right: version string -->
+    <div class="font-['Space_Mono'] text-[0.58rem] uppercase tracking-[0.22em] text-[#E8E6DF]/20">
+      KHI_TERMINAL_V2.0
     </div>
+
   </div>
 </footer>
-
-<style>
-  .site-footer {
-    background: #2B302C;
-    color: #F5F4EF;
-    padding: 80px 0 30px;
-    margin-top: 100px;
-  }
-  
-  .footer-container {
-    max-width: 900px;
-  }
-
-  .footer-bottom {
-    display: grid;
-    grid-template-columns: 1fr 2fr 2fr;
-    gap: 40px;
-    margin-bottom: 60px;
-    font-size: 0.9rem;
-  }
-
-  .footer-home {
-    font-weight: 600;
-  }
-
-  .footer-cats {
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-  }
-
-  .footer-quote {
-    color: #A0A5A2;
-    font-style: italic;
-    line-height: 1.6;
-    text-align: right;
-  }
-
-  .quote-author {
-    display: block;
-    margin-top: 8px;
-    font-style: normal;
-  }
-
-  a {
-    color: inherit;
-    text-decoration: none;
-    transition: opacity 0.2s;
-  }
-
-  a:hover {
-    opacity: 0.8;
-  }
-
-  .footer-copyright {
-    text-align: left;
-    font-size: 0.75rem;
-    color: #7E8581;
-  }
-
-  @media (max-width: 640px) {
-    .footer-bottom {
-      grid-template-columns: 1fr;
-      text-align: center;
-    }
-    .footer-quote {
-      text-align: center;
-    }
-    .footer-copyright {
-      text-align: center;
-    }
-  }
-</style>

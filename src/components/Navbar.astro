@@ -1,0 +1,109 @@
+---
+interface Props {
+  currentPath?: string;
+}
+
+const { currentPath = '/' } = Astro.props;
+
+const navItems = [
+  { label: 'Logs',          href: '/' },
+  { label: 'Journal',       href: '/journal' },
+  { label: 'Philosophy',    href: '/category/philosophy' },
+  { label: 'Science',       href: '/category/science' },
+  { label: 'Thoughts',      href: '/category/thoughts' },
+  { label: 'Miscellaneous', href: '/category/miscellaneous' },
+];
+
+const isActive = (href: string) => {
+  if (href === '/') return currentPath === '/';
+  if (href === '/journal') return currentPath === '/journal' || currentPath.startsWith('/blog/');
+  return currentPath.startsWith(href);
+};
+---
+
+<!-- Fixed flat brutalist navbar -->
+<header class="fixed left-0 right-0 top-0 z-[90] border-b border-[#31353b]/30 bg-[#0a0e14]">
+  <div class="mx-auto flex h-16 w-full max-w-[1440px] items-center justify-between px-6 lg:px-10">
+
+    <!-- Logo -->
+    <a href="/" class="group flex items-center gap-3 shrink-0">
+      <span class="font-['Space_Mono'] text-[1rem] font-bold text-[var(--primary)]">█</span>
+      <div>
+        <p class="font-['Space_Mono'] text-[0.72rem] font-bold uppercase tracking-[0.18em] text-[var(--primary)]">Karachi And Beyond</p>
+        <p class="hidden font-['Space_Mono'] text-[0.48rem] uppercase tracking-[0.28em] text-[var(--on-surface-soft)] sm:block">Mission Terminal</p>
+      </div>
+    </a>
+
+    <!-- Desktop Nav -->
+    <nav aria-label="Primary navigation" class="hidden items-center gap-6 lg:flex">
+      {navItems.map((item) => (
+        <a
+          href={item.href}
+          aria-current={isActive(item.href) ? 'page' : undefined}
+          class:list={[
+            "font-['Space_Grotesk'] text-[0.72rem] uppercase tracking-[0.15em] transition-colors duration-75 pb-1",
+            isActive(item.href)
+              ? 'border-b border-[var(--primary)] text-[var(--primary)]'
+              : 'text-[#E8E6DF]/60 hover:text-[var(--primary)] hover:bg-[rgba(255,200,128,0.04)] px-1',
+          ]}
+        >
+          {item.label}
+        </a>
+      ))}
+    </nav>
+
+    <!-- Mobile hamburger -->
+    <button
+      id="nav-toggle"
+      aria-label="Toggle navigation menu"
+      aria-expanded="false"
+      class="flex flex-col gap-1.5 p-2 lg:hidden"
+    >
+      <span class="block h-px w-6 bg-[var(--primary)] transition-all duration-200" id="ham-top"></span>
+      <span class="block h-px w-6 bg-[var(--primary)] transition-all duration-200" id="ham-mid"></span>
+      <span class="block h-px w-4 bg-[var(--primary)] transition-all duration-200 self-end" id="ham-bot"></span>
+    </button>
+  </div>
+
+  <!-- Mobile menu (hidden by default) -->
+  <div id="mobile-menu" class="hidden border-t border-[#31353b]/30 bg-[#0a0e14] px-6 pb-6 pt-4 lg:hidden">
+    <nav aria-label="Mobile navigation" class="flex flex-col gap-4">
+      {navItems.map((item) => (
+        <a
+          href={item.href}
+          aria-current={isActive(item.href) ? 'page' : undefined}
+          class:list={[
+            "font-['Space_Grotesk'] text-[0.76rem] uppercase tracking-[0.2em] py-2 border-b border-[#31353b]/20",
+            isActive(item.href)
+              ? 'text-[var(--primary)]'
+              : 'text-[#E8E6DF]/60 hover:text-[var(--primary)]',
+          ]}
+        >
+          {item.label}
+        </a>
+      ))}
+    </nav>
+  </div>
+</header>
+
+<script>
+  const toggle = document.getElementById('nav-toggle');
+  const menu   = document.getElementById('mobile-menu');
+  const hamTop = document.getElementById('ham-top');
+  const hamMid = document.getElementById('ham-mid');
+  const hamBot = document.getElementById('ham-bot');
+
+  toggle?.addEventListener('click', () => {
+    const open = menu?.classList.toggle('hidden') === false;
+    toggle.setAttribute('aria-expanded', String(open));
+    if (open) {
+      hamTop?.classList.add('translate-y-2', 'rotate-45');
+      hamMid?.classList.add('opacity-0');
+      hamBot?.classList.add('-translate-y-2', '-rotate-45', 'w-6');
+    } else {
+      hamTop?.classList.remove('translate-y-2', 'rotate-45');
+      hamMid?.classList.remove('opacity-0');
+      hamBot?.classList.remove('-translate-y-2', '-rotate-45', 'w-6');
+    }
+  });
+</script>

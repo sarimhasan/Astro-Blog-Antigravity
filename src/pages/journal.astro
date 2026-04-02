@@ -1,0 +1,85 @@
+---
+import MainLayout from '../layouts/MainLayout.astro';
+import { getCollection } from 'astro:content';
+import { formatPostDate, mapPostEntry, sortPostsByDateDesc } from '../lib/content';
+
+const CATEGORIES: Record<string, string> = {
+  philosophy: 'Philosophy',
+  science:    'Science',
+  thoughts:   'Thoughts',
+  miscellaneous: 'Miscellaneous',
+};
+
+const posts = sortPostsByDateDesc((await getCollection('posts')).map(mapPostEntry));
+---
+
+<MainLayout
+  title="Journal — Karachi And Beyond"
+  description="Browse the full archive of posts from Karachi And Beyond, sorted by most recent."
+>
+  <main class="mx-auto w-full max-w-[1440px] px-6 pb-16 lg:px-10">
+
+    <!-- Page header -->
+    <section class="border-b border-[#31353b]/20 py-14">
+      <p class="font-['Space_Mono'] text-[0.6rem] uppercase tracking-[0.48em] text-[var(--secondary)]">
+        // Archive
+      </p>
+      <h1 class="mt-4 font-['Space_Grotesk'] text-[clamp(3rem,9vw,6rem)] font-bold uppercase leading-[0.84] tracking-[-0.05em] text-[var(--primary)]">
+        Journal
+      </h1>
+      <p class="mt-5 max-w-[40rem] font-['Newsreader'] text-[1rem] leading-7 text-[var(--on-surface-soft)]">
+        Every post in chronological order, with the newest entry first. Ordering is
+        driven by each post's date metadata.
+      </p>
+    </section>
+
+    <!-- Post list -->
+    <section class="mt-8 space-y-0">
+      {posts.map((post, index) => (
+        <article class="log-entry group relative border-b border-[#31353b]/20 border-l border-l-[#31353b]/20 pl-10 py-10 transition-all duration-300 hover:border-l-[var(--primary)] hover:bg-[rgba(255,200,128,0.02)]">
+          <div class="log-entry-gutter"></div>
+
+          <!-- Meta -->
+          <div class="mb-4 flex flex-wrap items-baseline gap-4">
+            <span class="font-['Space_Mono'] text-[0.62rem] uppercase text-[var(--secondary-container)]">
+              Log_{String(index + 1).padStart(3, '0')}
+            </span>
+            <span class="border border-[rgba(255,200,128,0.18)] px-2.5 py-1 font-['Space_Mono'] text-[0.56rem] uppercase tracking-[0.2em] text-[var(--primary)]">
+              --{CATEGORIES[post.category] || 'General'}
+            </span>
+            {post.featured && (
+              <span class="border border-[rgba(215,255,197,0.2)] px-2.5 py-1 font-['Space_Mono'] text-[0.56rem] uppercase tracking-[0.2em] text-[var(--secondary)]">
+                featured
+              </span>
+            )}
+            <span class="font-['Space_Mono'] text-[0.56rem] uppercase tracking-[0.18em] text-[var(--on-surface-soft)] opacity-50">
+              {formatPostDate(post.date)}
+            </span>
+          </div>
+
+          <!-- Title + excerpt -->
+          <a href={`/${post.slug}`} class="block">
+            <h2 class="max-w-[22ch] font-['Space_Grotesk'] text-[clamp(1.8rem,4vw,3.5rem)] font-bold uppercase leading-[0.9] tracking-[-0.04em] text-[var(--on-surface)] transition-colors group-hover:text-[var(--primary)]">
+              {post.title}
+            </h2>
+            <p class="mt-4 max-w-[56rem] font-['Newsreader'] text-[1rem] leading-7 text-[var(--on-surface-soft)]">
+              {post.excerpt || 'A reflective entry from the field terminal.'}
+            </p>
+          </a>
+
+          <!-- Read time -->
+          <p class="mt-5 font-['Space_Mono'] text-[0.56rem] uppercase tracking-[0.2em] text-[var(--on-surface-soft)] opacity-40">
+            {post.readTime || '5 MIN READ'}
+          </p>
+        </article>
+      ))}
+
+      {posts.length === 0 && (
+        <div class="border border-[#31353b]/30 bg-[var(--surface-container-low)] p-10 font-['Space_Mono'] text-[0.72rem] uppercase tracking-[0.2em] text-[var(--on-surface-soft)]">
+          No posts in the archive yet.
+        </div>
+      )}
+    </section>
+
+  </main>
+</MainLayout>
