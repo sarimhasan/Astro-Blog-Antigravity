@@ -11,14 +11,14 @@ interface Props {
 }
 
 const { 
-  title = 'Karachi And Beyond', 
-  description = 'A personal observatory for essays, field notes, and technical reflections from Karachi.',
+  title = 'The Inkwell', 
+  description = 'Thoughts written in graphite, stored in silicon. A personal journal for essays, philosophy, and reflections.',
   image = '/images/hero-nocode.jpg',
   canonicalURL = Astro.url.href,
   type = 'website'
 } = Astro.props;
 
-const siteName = 'Karachi And Beyond';
+const siteName = 'The Inkwell';
 ---
 
 <!DOCTYPE html>
@@ -26,7 +26,7 @@ const siteName = 'Karachi And Beyond';
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="theme-color" content="#0a0e14" />
+    <meta name="theme-color" content="#e8ddc5" />
     
     <title>{title}</title>
     <meta name="title" content={title} />
@@ -51,21 +51,21 @@ const siteName = 'Karachi And Beyond';
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Newsreader:opsz,ital,wght@6..72,0,400;6..72,0,500;6..72,1,400&family=Space+Grotesk:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Courier+Prime:ital,wght@0,400;0,700;1,400;1,700&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&display=swap"
       rel="stylesheet"
     />
 
     <slot name="head" />
   </head>
-  <body class="min-h-dvh bg-[var(--surface)] text-[var(--on-surface)] relative overflow-x-hidden selection:bg-[rgba(255,200,128,0.2)]">
-    <!-- Global noise grain overlay -->
+  <body class="min-h-dvh bg-[var(--surface)] text-[var(--on-surface)] relative overflow-x-hidden selection:bg-[rgba(22,40,57,0.12)]">
+    <!-- Global paper-grain overlay -->
     <div class="noise-overlay fixed inset-0 z-[100] pointer-events-none" aria-hidden="true"></div>
 
     <a href="#content" class="skip-link">Skip to content</a>
     <Navbar currentPath={Astro.url.pathname} />
 
-    <!-- pt-16 = exact height of the flat fixed navbar -->
-    <div id="content" class="mx-auto w-full max-w-[1440px] pt-16">
+    <!-- pt-16 = exact height of the fixed navbar -->
+    <div id="content" class="mx-auto w-full max-w-[1200px] pt-16">
       <slot />
     </div>
 

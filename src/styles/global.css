@@ -2,28 +2,70 @@
 
 @layer base {
   :root {
-    --surface: #0a0e14;
-    --surface-container: #1c2025;
-    --surface-container-high: #262a30;
-    --surface-container-highest: #31353b;
-    --surface-container-low: #12161b;
-    --surface-container-lowest: #0a0e14;
-    --surface-variant: rgba(49, 53, 59, 0.72);
-    --on-surface: #e0e2ea;
-    --on-surface-soft: #9aa0ad;
-    --outline-variant: rgba(159, 142, 122, 0.18);
-    --primary: #ffc880;
-    --primary-dim: #f5a623;
-    --primary-container: #f5a623;
-    --secondary: #d7ffc5;
-    --secondary-container: #2ff801;
-    --tertiary: #2ff801;
-    --nebula-gradient: linear-gradient(135deg, #f5a623 0%, #ffc880 100%);
+    /* ── Ink & Graphite palette ──────────────────────────── */
+    --surface: #e8ddc5;
+    --surface-dim: #d1c6b1;
+    --surface-bright: #eee3cc;
+    --surface-container: #e0d5be;
+    --surface-container-high: #d8ceb6;
+    --surface-container-highest: #cfc6ae;
+    --surface-container-low: #ece2c9;
+    --surface-container-lowest: #fcf4e0;
+    --surface-variant: #d8ceb6;
+    --on-surface: #2c2923;
+    --on-surface-variant: #595349;
+    --outline: #8e8679;
+    --outline-variant: #d1c8b7;
+    --surface-tint: #4e6073;
+
+    /* Primary — Ink Blue */
+    --primary: #162839;
+    --on-primary: #ffffff;
+    --primary-container: #2c3e50;
+    --on-primary-container: #96a9be;
+    --inverse-primary: #b5c8df;
+    --primary-fixed: #d1e4fb;
+    --primary-fixed-dim: #b5c8df;
+    --on-primary-fixed: #091d2e;
+    --on-primary-fixed-variant: #36485b;
+
+    /* Secondary — Forest Green */
+    --secondary: #556254;
+    --on-secondary: #ffffff;
+    --secondary-container: #d6e4d2;
+    --on-secondary-container: #596658;
+    --secondary-fixed: #d9e6d5;
+    --secondary-fixed-dim: #bdcab9;
+    --on-secondary-fixed: #131e13;
+    --on-secondary-fixed-variant: #3e4a3d;
+
+    /* Tertiary — Sepia */
+    --tertiary: #312419;
+    --on-tertiary: #ffffff;
+    --tertiary-container: #493a2e;
+    --on-tertiary-container: #b8a394;
+    --tertiary-fixed: #f6decd;
+    --tertiary-fixed-dim: #d9c2b2;
+    --on-tertiary-fixed: #25190f;
+    --on-tertiary-fixed-variant: #534437;
+
+    /* Error */
+    --error: #ba1a1a;
+    --on-error: #ffffff;
+    --error-container: #ffdad6;
+    --on-error-container: #93000a;
+
+    /* Inverse */
+    --inverse-surface: #30312e;
+    --inverse-on-surface: #f2f1ec;
+
+    /* Background alias */
+    --background: #e8ddc5;
+    --on-background: #2c2923;
   }
 
   * {
     box-sizing: border-box;
-    border-radius: 0 !important;
   }
 
   html,
@@ -34,21 +76,25 @@
   }
 
   body {
-    background: var(--surface);
+    background-color: var(--surface);
+    background-image: radial-gradient(var(--outline-variant) 1px, transparent 1px);
+    background-size: 24px 24px;
+    background-position: 0 0;
     color: var(--on-surface);
-    font-family: "Newsreader", "Georgia", serif;
-    line-height: 1.5;
+    font-family: "Source Serif 4", "Georgia", serif;
+    line-height: 1.6;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
-    color-scheme: dark;
+    color-scheme: light;
+    position: relative;
   }
 
   h1,
   h2,
   h3,
   h4 {
-    font-family: "Space Grotesk", "Segoe UI", sans-serif;
-    color: var(--on-surface);
+    font-family: "Courier Prime", "Courier New", monospace;
+    color: var(--primary);
   }
 
   a {
@@ -66,10 +112,10 @@
     left: 1rem;
     top: -4rem;
     z-index: 60;
-    border: 1px solid rgba(255, 200, 128, 0.28);
-    background: rgba(10, 14, 20, 0.96);
+    border: 1px solid var(--outline-variant);
+    background: var(--surface);
     padding: 0.75rem 1rem;
-    font-family: "Space Grotesk", sans-serif;
+    font-family: "Courier Prime", monospace;
     font-size: 0.72rem;
     text-transform: uppercase;
     letter-spacing: 0.2em;
@@ -82,60 +128,190 @@
   }
 }
 
-/* ── Terminal Texture Utilities ─────────────────────────────── */
+/* ── Journal Texture Utilities ──────────────────────────── */
 
 .noise-overlay {
   background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
-  opacity: 0.04;
+  opacity: 0.08;
+  pointer-events: none;
+  mix-blend-mode: multiply;
+}
+
+/* Paper card: subtle tinted background with thin border */
+.paper-card {
+  background-color: var(--surface-container-low);
+  position: relative;
+}
+
+.paper-card::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  border: 1px solid rgba(196, 198, 205, 0.4);
+  border-radius: inherit;
   pointer-events: none;
 }
 
-.scan-lines {
-  background:
-    linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.22) 50%),
-    linear-gradient(
-      90deg,
-      rgba(255, 0, 0, 0.05),
-      rgba(0, 255, 0, 0.02),
-      rgba(0, 0, 255, 0.05)
-    );
-  background-size: 100% 4px, 3px 100%;
-  pointer-events: none;
+/* Paper shadow: bottom-right directional, ink-tinted */
+.paper-shadow {
+  box-shadow: 2px 3px 8px rgba(22, 40, 57, 0.08);
 }
 
-.star-map {
-  background-image: url("data:image/svg+xml,%3Csvg width='800' height='800' viewBox='0 0 800 800' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23ffc880' fill-opacity='0.12'%3E%3Ccircle cx='100' cy='100' r='1'/%3E%3Ccircle cx='250' cy='340' r='0.8'/%3E%3Ccircle cx='400' cy='200' r='1'/%3E%3Ccircle cx='560' cy='460' r='1.2'/%3E%3Ccircle cx='700' cy='500' r='1.5'/%3E%3Ccircle cx='200' cy='600' r='1'/%3E%3Ccircle cx='620' cy='140' r='0.9'/%3E%3Ccircle cx='340' cy='680' r='1.1'/%3E%3Ccircle cx='80' cy='430' r='0.7'/%3E%3Ccircle cx='730' cy='280' r='0.8'/%3E%3Cpath d='M100 100 L400 200 L200 600 Z' stroke='%23ffc880' stroke-opacity='0.04' fill='none'/%3E%3Cpath d='M400 200 L700 500 L560 460 Z' stroke='%23ffc880' stroke-opacity='0.04' fill='none'/%3E%3C/g%3E%3C/svg%3E");
+/* Sketch divider animation */
+.sketch-divider {
+  stroke-dasharray: 1000;
+  stroke-dashoffset: 1000;
+  animation: dash 2s linear forwards;
 }
 
-.hero-glow {
-  background: radial-gradient(circle at center, rgba(245, 166, 35, 0.15) 0%, transparent 70%);
+@keyframes dash {
+  to {
+    stroke-dashoffset: 0;
+  }
 }
 
-.terminal-card-hover {
-  transition: border-color 300ms ease;
+/* Ink link: hand-drawn underline hover effect */
+.ink-link {
+  position: relative;
+  display: inline;
 }
 
-.terminal-card-hover:hover {
-  border-color: rgba(255, 200, 128, 0.4);
-}
-
-/* Left-gutter accent for log entries */
-.log-entry-gutter {
+.ink-link::after {
+  content: '';
   position: absolute;
   left: 0;
-  top: 0;
-  width: 2px;
-  height: 0;
-  background: rgba(255, 200, 128, 0.25);
-  filter: blur(2px);
-  transition: height 500ms ease;
+  bottom: -2px;
+  width: 0;
+  height: 1.5px;
+  background: var(--primary);
+  transition: width 300ms ease;
 }
 
-.log-entry:hover .log-entry-gutter {
-  height: 100%;
+.ink-link:hover::after {
+  width: 100%;
 }
 
-/* Amber outer-glow on hover for primary buttons */
-.btn-primary:hover {
-  box-shadow: 0 0 0 4px rgba(255, 200, 128, 0.15);
+/* Sticky note accent */
+.sticky-note {
+  background-color: #e8e4c9;
+  font-family: "Courier Prime", monospace;
+}
+
+/* Button hover: paper lift effect */
+.btn-paper {
+  transition: box-shadow 200ms ease, transform 200ms ease;
+}
+
+.btn-paper:hover {
+  box-shadow: 3px 4px 10px rgba(22, 40, 57, 0.12);
+  transform: translateY(-1px);
+}
+
+/* Category chip styles */
+.chip-philosophy {
+  background-color: rgba(246, 222, 205, 0.4);
+  color: var(--on-tertiary-fixed);
+}
+
+.chip-science {
+  background-color: rgba(209, 228, 251, 0.4);
+  color: var(--on-primary-fixed);
+}
+
+.chip-journal {
+  background-color: rgba(209, 228, 251, 0.3);
+  color: var(--on-primary-fixed);
+}
+
+.chip-thoughts {
+  background-color: rgba(217, 230, 213, 0.5);
+  color: var(--on-secondary-fixed);
+}
+
+.chip-miscellaneous {
+  background-color: rgba(228, 226, 221, 0.5);
+  color: var(--on-surface-variant);
+}
+
+/* Prose styling for markdown content */
+.prose-journal h1,
+.prose-journal h2,
+.prose-journal h3,
+.prose-journal h4 {
+  font-family: "Courier Prime", monospace;
+  color: var(--primary);
+  margin-top: 2em;
+  margin-bottom: 0.6em;
+}
+
+.prose-journal p {
+  font-family: "Source Serif 4", Georgia, serif;
+  font-size: 1.05rem;
+  line-height: 1.8;
+  color: var(--on-surface);
+  margin-bottom: 1.2em;
+}
+
+.prose-journal a {
+  color: var(--primary);
+  text-decoration: underline;
+  text-decoration-color: rgba(22, 40, 57, 0.3);
+  text-underline-offset: 3px;
+  transition: text-decoration-color 200ms ease;
+}
+
+.prose-journal a:hover {
+  text-decoration-color: var(--primary);
+}
+
+.prose-journal blockquote {
+  border-left: 3px solid var(--tertiary);
+  background: rgba(246, 222, 205, 0.15);
+  padding: 1rem 1.5rem;
+  margin: 1.5em 0;
+  font-family: "Source Serif 4", Georgia, serif;
+  font-size: 1.1rem;
+  font-style: italic;
+  line-height: 1.7;
+}
+
+.prose-journal code {
+  background: var(--surface-container-high);
+  padding: 0.15em 0.4em;
+  font-size: 0.88em;
+  color: var(--tertiary);
+  border-radius: 0.25rem;
+}
+
+.prose-journal pre {
+  background: var(--inverse-surface);
+  color: var(--inverse-on-surface);
+  padding: 1.25rem;
+  overflow-x: auto;
+  border-radius: 0.25rem;
+}
+
+.prose-journal img {
+  border: 1px solid var(--outline-variant);
+  border-radius: 0.25rem;
+}
+
+.prose-journal strong {
+  color: var(--on-surface);
+}
+
+.prose-journal ul,
+.prose-journal ol {
+  padding-left: 1.5em;
+  margin-bottom: 1.2em;
+}
+
+.prose-journal li {
+  font-family: "Source Serif 4", Georgia, serif;
+  font-size: 1.05rem;
+  line-height: 1.8;
+  margin-bottom: 0.3em;
 }

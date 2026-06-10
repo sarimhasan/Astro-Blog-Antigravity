@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>The Inkwell - Home</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Courier+Prime:ital,wght@0,400;0,700;1,400;1,700&amp;family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "on-secondary-fixed-variant": "#3e4a3d",
+                      "surface-dim": "#dbdad5",
+                      "secondary-fixed-dim": "#bdcab9",
+                      "error": "#ba1a1a",
+                      "on-surface-variant": "#43474c",
+                      "surface-bright": "#fbf9f4",
+                      "tertiary-container": "#493a2e",
+                      "on-tertiary": "#ffffff",
+                      "tertiary-fixed": "#f6decd",
+                      "error-container": "#ffdad6",
+                      "on-tertiary-fixed": "#25190f",
+                      "outline": "#74777d",
+                      "primary-fixed-dim": "#b5c8df",
+                      "inverse-primary": "#b5c8df",
+                      "surface-container-high": "#eae8e3",
+                      "on-primary": "#ffffff",
+                      "surface-variant": "#e4e2dd",
+                      "background": "#fbf9f4",
+                      "surface-container": "#f0eee9",
+                      "primary": "#162839",
+                      "secondary": "#556254",
+                      "tertiary-fixed-dim": "#d9c2b2",
+                      "secondary-fixed": "#d9e6d5",
+                      "primary-container": "#2c3e50",
+                      "primary-fixed": "#d1e4fb",
+                      "on-secondary-container": "#596658",
+                      "inverse-surface": "#30312e",
+                      "on-error": "#ffffff",
+                      "on-surface": "#1b1c19",
+                      "surface": "#fbf9f4",
+                      "on-primary-fixed-variant": "#36485b",
+                      "surface-container-low": "#f5f3ee",
+                      "on-error-container": "#93000a",
+                      "on-background": "#1b1c19",
+                      "surface-container-lowest": "#ffffff",
+                      "outline-variant": "#c4c6cd",
+                      "surface-container-highest": "#e4e2dd",
+                      "on-secondary": "#ffffff",
+                      "tertiary": "#312419",
+                      "on-tertiary-container": "#b8a394",
+                      "surface-tint": "#4e6073",
+                      "on-secondary-fixed": "#131e13",
+                      "secondary-container": "#d6e4d2",
+                      "on-tertiary-fixed-variant": "#534437",
+                      "on-primary-fixed": "#091d2e",
+                      "on-primary-container": "#96a9be",
+                      "inverse-on-surface": "#f2f1ec"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.125rem",
+                      "lg": "0.25rem",
+                      "xl": "0.5rem",
+                      "full": "0.75rem"
+              },
+              "spacing": {
+                      "dot-gap": "24px",
+                      "stack-sm": "0.5rem",
+                      "stack-lg": "3rem",
+                      "dot-size": "1px",
+                      "stack-md": "1.5rem",
+                      "gutter": "1.5rem",
+                      "margin-page": "clamp(1.5rem, 5vw, 4rem)"
+              },
+              "fontFamily": {
+                      "headline-md": [
+                              "Courier Prime"
+                      ],
+                      "label-md": [
+                              "Courier Prime"
+                      ],
+                      "body-md": [
+                              "Source Serif 4"
+                      ],
+                      "display-lg": [
+                              "Courier Prime"
+                      ],
+                      "caption": [
+                              "Source Serif 4"
+                      ],
+                      "headline-lg": [
+                              "Courier Prime"
+                      ],
+                      "body-lg": [
+                              "Source Serif 4"
+                      ],
+                      "headline-lg-mobile": [
+                              "Courier Prime"
+                      ]
+              },
+              "fontSize": {
+                      "headline-md": [
+                              "20px",
+                              {
+                                      "lineHeight": "1.3",
+                                      "fontWeight": "700"
+                              }
+                      ],
+                      "label-md": [
+                              "14px",
+                              {
+                                      "lineHeight": "1.4",
+                                      "letterSpacing": "0.05em",
+                                      "fontWeight": "400"
+                              }
+                      ],
+                      "body-md": [
+                              "17px",
+                              {
+                                      "lineHeight": "1.6",
+                                      "fontWeight": "400"
+                              }
+                      ],
+                      "display-lg": [
+                              "48px",
+                              {
+                                      "lineHeight": "1.1",
+                                      "letterSpacing": "-0.02em",
+                                      "fontWeight": "700"
+                              }
+                      ],
+                      "caption": [
+                              "14px",
+                              {
+                                      "lineHeight": "1.4",
+                                      "fontWeight": "400"
+                              }
+                      ],
+                      "headline-lg": [
+                              "32px",
+                              {
+                                      "lineHeight": "1.2",
+                                      "fontWeight": "700"
+                              }
+                      ],
+                      "body-lg": [
+                              "20px",
+                              {
+                                      "lineHeight": "1.6",
+                                      "fontWeight": "400"
+                              }
+                      ],
+                      "headline-lg-mobile": [
+                              "24px",
+                              {
+                                      "lineHeight": "1.2",
+                                      "fontWeight": "700"
+                              }
+                      ]
+              }
+      },
+          },
+        }
+    </script>
+<style>
+        body {
+            background-color: #fbf9f4; /* surface */
+            background-image: radial-gradient(#c4c6cd 1px, transparent 1px);
+            background-size: 24px 24px;
+            background-position: 0 0;
+            position: relative;
+        }
+        body::before {
+            content: "";
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: url('data:image/svg+xml;utf8,<svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg"><filter id="noiseFilter"><feTurbulence type="fractalNoise" baseFrequency="0.65" numOctaves="3" stitchTiles="stitch"/></filter><rect width="100%" height="100%" filter="url(%23noiseFilter)"/></svg>');
+            opacity: 0.03;
+            pointer-events: none;
+            z-index: 50;
+        }
+        
+        .paper-shadow {
+            box-shadow: 2px 2px 8px rgba(22, 40, 57, 0.08);
+        }
+        
+        .paper-card {
+            background-color: #f5f3ee; /* surface-container-low */
+            position: relative;
+        }
+        .paper-card::after {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            border: 1px solid rgba(196, 198, 205, 0.4);
+            pointer-events: none;
+        }
+
+        .sketch-divider {
+            stroke-dasharray: 1000;
+            stroke-dashoffset: 1000;
+            animation: dash 2s linear forwards;
+        }
+        @keyframes dash {
+            to {
+                stroke-dashoffset: 0;
+            }
+        }
+    </style>
+</head>
+<body class="text-on-surface min-h-screen flex flex-col">
+<!-- TopNavBar -->
+<header class="bg-surface dark:bg-surface-dim text-primary dark:text-primary-fixed-dim font-headline-md text-headline-md w-full top-0 sticky border-b border-outline-variant dark:border-outline opacity-80 shadow-sm dark:shadow-none z-40">
+<div class="flex justify-between items-center px-margin-page py-4 max-w-[1200px] mx-auto">
+<div class="font-headline-lg text-headline-lg text-primary dark:text-primary-fixed-dim italic">
+                The Inkwell
+            </div>
+<!-- Desktop Nav -->
+<nav class="hidden md:flex gap-6 items-center font-label-md text-label-md">
+<a class="text-primary dark:text-primary-fixed border-b-2 border-primary dark:border-primary-fixed pb-1" href="#">Journal</a>
+<a class="text-on-surface-variant dark:text-outline-variant hover:text-primary dark:hover:text-primary-fixed transition-colors" href="#">Philosophy</a>
+<a class="text-on-surface-variant dark:text-outline-variant hover:text-primary dark:hover:text-primary-fixed transition-colors" href="#">Science</a>
+<a class="text-on-surface-variant dark:text-outline-variant hover:text-primary dark:hover:text-primary-fixed transition-colors" href="#">Thoughts</a>
+<a class="text-on-surface-variant dark:text-outline-variant hover:text-primary dark:hover:text-primary-fixed transition-colors" href="#">Misc</a>
+<a class="text-on-surface-variant dark:text-outline-variant hover:text-primary dark:hover:text-primary-fixed transition-colors" href="#">Reviews</a>
+</nav>
+<div class="flex items-center gap-4">
+<button class="hover:bg-surface-container-low dark:hover:bg-tertiary-container transition-all scale-95 duration-200 ease-in-out p-2 rounded-full">
+<span class="material-symbols-outlined" data-icon="edit_note">edit_note</span>
+</button>
+</div>
+</div>
+</header>
+<!-- Main Canvas -->
+<main class="flex-grow max-w-[1200px] mx-auto w-full px-margin-page py-stack-lg flex flex-col gap-stack-lg">
+<!-- Hero Section -->
+<section class="flex flex-col gap-stack-md py-stack-lg max-w-[720px]">
+<h1 class="font-display-lg text-display-lg text-primary">Thoughts written in graphite, stored in silicon.</h1>
+<p class="font-body-lg text-body-lg text-on-surface-variant max-w-[600px]">A digital manifestation of late-night musings, technical discoveries, and personal reflections. Welcome to the quiet corner of my mind.</p>
+<svg class="w-32 h-4 text-outline" preserveaspectratio="none" viewbox="0 0 100 10">
+<path class="sketch-divider" d="M0,5 Q25,0 50,5 T100,5" fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="1.5"></path>
+</svg>
+</section>
+<!-- Featured Blog Card -->
+<section class="paper-card p-6 md:p-10 paper-shadow flex flex-col md:flex-row gap-8 items-start">
+<div class="w-full md:w-1/2 aspect-[4/3] bg-surface-container-high relative overflow-hidden">
+<img alt="A close-up photograph of an open, cream-colored dotted notebook resting on a dark wooden desk. A sleek, matte black fountain pen lies diagonally across the pages. The lighting is moody and warm, resembling a solitary desk lamp in a dimly lit study, creating long, soft shadows. The overall aesthetic evokes a sense of quiet introspection, tactile analog stationery, and late-night journaling in an Inkwell-inspired setting." class="object-cover w-full h-full mix-blend-multiply opacity-90" data-alt="A close-up photograph of an open, cream-colored dotted notebook resting on a dark wooden desk. A sleek, matte black fountain pen lies diagonally across the pages. The lighting is moody and warm, resembling a solitary desk lamp in a dimly lit study, creating long, soft shadows. The overall aesthetic evokes a sense of quiet introspection, tactile analog stationery, and late-night journaling in an Inkwell-inspired setting." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBtGRGqZmX9Zs73S5-wdXTLpG6nb72CtEpBSd75JWW4Qr_BnbrgS7l-zb0A444s5S-l08brXMMC50c4HhXRyI0FRB0NJcxyZ8K4j48Jy46hZ3ZIxYWBGaex92cAf5xCNRnYx2oC6sWFSzgPHYGnvSiqGwYKbVt7qs4lJlO1g6nsk-JX2VbBbmGBR1K2NNqxNTvQjbet6k1KBWvqXaDHFgHrRthADkV1rURCxRBTX3RnWy_z5LrRH942eGRdBf2q8ycrFs6Nmk6V6MUD"/>
+</div>
+<div class="w-full md:w-1/2 flex flex-col gap-4">
+<div class="flex gap-2 items-center">
+<span class="px-2 py-1 bg-tertiary-fixed text-on-tertiary-fixed font-label-md text-label-md bg-opacity-40">Philosophy</span>
+<span class="font-caption text-caption text-outline-variant">October 24, 2024</span>
+</div>
+<h2 class="font-headline-lg text-headline-lg text-primary">The Architecture of Silence</h2>
+<p class="font-body-md text-body-md text-on-surface-variant line-clamp-3">In an era defined by constant noise, finding silence is no longer passive; it requires deliberate architectural choices in our lives and our digital tools. A deep dive into structuring quiet spaces.</p>
+<a class="inline-flex items-center gap-2 font-label-md text-label-md text-primary mt-4 hover:underline decoration-1 underline-offset-4" href="#">
+                    Read Entry <span class="material-symbols-outlined text-sm">arrow_right_alt</span>
+</a>
+</div>
+</section>
+<!-- Two Column Layout: Latest Entries & Reviews Preview -->
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-gutter items-start">
+<!-- Latest Entries Column -->
+<section class="lg:col-span-7 flex flex-col gap-6">
+<h3 class="font-headline-md text-headline-md text-primary border-b border-primary pb-2 inline-block">Recent Entries</h3>
+<div class="flex flex-col gap-8">
+<!-- Entry Item -->
+<article class="flex flex-col gap-2 group cursor-pointer">
+<div class="flex gap-3 items-baseline">
+<span class="font-caption text-caption text-outline w-24 shrink-0">Oct 20, 2024</span>
+<h4 class="font-headline-md text-headline-md text-on-surface group-hover:text-primary transition-colors">Mapping the Unseen Variables</h4>
+</div>
+<div class="pl-[108px]">
+<p class="font-body-md text-body-md text-on-surface-variant line-clamp-2">Exploring the subtle factors in environmental data sets that often go unnoticed but drastically alter the final computational models.</p>
+<div class="flex gap-2 mt-2">
+<span class="px-2 py-0.5 bg-secondary-container text-on-secondary-container font-label-md text-label-md bg-opacity-30">Science</span>
+</div>
+</div>
+</article>
+<!-- Entry Item -->
+<article class="flex flex-col gap-2 group cursor-pointer">
+<div class="flex gap-3 items-baseline">
+<span class="font-caption text-caption text-outline w-24 shrink-0">Oct 15, 2024</span>
+<h4 class="font-headline-md text-headline-md text-on-surface group-hover:text-primary transition-colors">A Note on Analog Constraints</h4>
+</div>
+<div class="pl-[108px]">
+<p class="font-body-md text-body-md text-on-surface-variant line-clamp-2">Why limiting your tools often expands your creative output. Observations from a week without digital note-taking.</p>
+<div class="flex gap-2 mt-2">
+<span class="px-2 py-0.5 bg-primary-fixed text-on-primary-fixed font-label-md text-label-md bg-opacity-30">Journal</span>
+<span class="px-2 py-0.5 bg-surface-variant text-on-surface-variant font-label-md text-label-md bg-opacity-50">Thoughts</span>
+</div>
+</div>
+</article>
+<!-- Entry Item -->
+<article class="flex flex-col gap-2 group cursor-pointer">
+<div class="flex gap-3 items-baseline">
+<span class="font-caption text-caption text-outline w-24 shrink-0">Oct 02, 2024</span>
+<h4 class="font-headline-md text-headline-md text-on-surface group-hover:text-primary transition-colors">The Errata of Memory</h4>
+</div>
+<div class="pl-[108px]">
+<p class="font-body-md text-body-md text-on-surface-variant line-clamp-2">We rarely remember events as they happened. We remember the last time we remembered them. A short meditation on nostalgia.</p>
+<div class="flex gap-2 mt-2">
+<span class="px-2 py-0.5 bg-tertiary-fixed text-on-tertiary-fixed font-label-md text-label-md bg-opacity-40">Misc</span>
+</div>
+</div>
+</article>
+</div>
+<div class="mt-4 flex justify-center">
+<button class="bg-primary text-on-primary font-label-md text-label-md px-6 py-2 paper-shadow hover:shadow-md transition-shadow">
+                        View Archives
+                    </button>
+</div>
+</section>
+<!-- Reviews Sidebar -->
+<aside class="lg:col-span-5 flex flex-col gap-8 bg-surface-container-low p-6 paper-shadow relative">
+<!-- Sticky note accent -->
+<div class="absolute -top-3 -right-3 w-10 h-10 bg-[#e8e4c9] shadow-sm transform rotate-12 flex items-center justify-center">
+<span class="material-symbols-outlined text-outline text-sm">push_pin</span>
+</div>
+<h3 class="font-headline-md text-headline-md text-primary border-b border-outline-variant pb-2">Reviews Preview</h3>
+<div class="flex flex-col gap-6">
+<!-- Personal -->
+<div>
+<h4 class="font-label-md text-label-md text-outline uppercase tracking-wider mb-3">Personal (Books &amp; Film)</h4>
+<ul class="flex flex-col gap-4">
+<li class="flex gap-3 items-start">
+<div class="w-12 h-16 bg-surface-container-high shrink-0 overflow-hidden">
+<img alt="A worn paperback book titled 'Dune' resting on a dark surface, softly lit from the side." class="object-cover w-full h-full mix-blend-multiply opacity-80" data-alt="A macro shot of the worn spine of a vintage paperback book lying on a minimalist wooden table. The cover has a textured, matte finish. The scene is illuminated by soft, natural light from a window, creating gentle highlights and deep, moody shadows that fit an analog, stationery-inspired aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuC2DpOzA5KJs5b9RHVwRO8w1Dm8DNfOPzceT2PR6h2SKWcox2ahCkT767jEXdGCvnlNfekahKTm2YZqHGPFzvGEZz2qzQ7RSbX0nn8kvaCBTpvIVwKteJ_LOXRjRNnCPyQ7jijsBgCwutWD4mtkOfqmQfNvPWkaFjMSVVW0D1GPaI33_3_SotBtxyitBlDvgpIBQjLqoh-MlFztPN-7tZfmgeloTKtaLleENL3ZyeLX7Cg7oy1mizifqG9x0YaU5yo-wj-vZE8iiGXv"/>
+</div>
+<div class="flex flex-col">
+<span class="font-body-md text-body-md text-on-surface">The Glass Bead Game</span>
+<span class="font-caption text-caption text-outline">Hesse • 5/5</span>
+</div>
+</li>
+<li class="flex gap-3 items-start">
+<div class="w-12 h-16 bg-surface-container-high shrink-0 flex items-center justify-center">
+<span class="material-symbols-outlined text-outline">movie</span>
+</div>
+<div class="flex flex-col">
+<span class="font-body-md text-body-md text-on-surface">Perfect Days</span>
+<span class="font-caption text-caption text-outline">Wenders • 4.5/5</span>
+</div>
+</li>
+</ul>
+</div>
+<div class="w-full h-px bg-outline-variant opacity-50"></div>
+<!-- Tech -->
+<div>
+<h4 class="font-label-md text-label-md text-outline uppercase tracking-wider mb-3">Tech (Gadgets &amp; Gear)</h4>
+<ul class="flex flex-col gap-4">
+<li class="flex gap-3 items-start">
+<div class="w-12 h-12 rounded-full bg-surface-container-high shrink-0 flex items-center justify-center overflow-hidden">
+<img alt="A top-down view of a mechanical keyboard on a desk." class="object-cover w-full h-full mix-blend-multiply opacity-80" data-alt="A top-down, minimalist shot of a custom mechanical keyboard with retro, gray-and-cream keycaps sitting on a dark grey felt desk mat. The lighting is diffused and cool, contrasting with the warm cream tones of the keys. The composition is clean, geometric, and perfectly suits a quiet, focused tech-review aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCF60jdMyABdsk6yBQg1h2bQ1e5yo32f_yJgsvJldCauz_H1srJ4VeRrw_Q7L0iuNIQrHZdyQzXhw2ft7r0GvOHSAr4owplPrVDYxgDUurp74fOPDoT6-9Q3mPe8GPjdrxpky0HAu8BJKJgbqEcl8mY2QltwnryaHV1lhobf-e_tOwAiimOIka1Wy4VHDlnlr8LQfTsguDWSnJ4MzZXcUmzSU1_10OEXI5Epx73LZMzyI8kD-B8dCo81PJnrCWd29GXAq3dVIhkBZd_"/>
+</div>
+<div class="flex flex-col justify-center">
+<span class="font-body-md text-body-md text-on-surface">Keychron Q1 Pro</span>
+<span class="font-caption text-caption text-outline">Tactile joy • 4/5</span>
+</div>
+</li>
+</ul>
+</div>
+</div>
+</aside>
+</div>
+</main>
+<!-- Footer -->
+<footer class="bg-surface-container-highest dark:bg-tertiary-container text-on-surface-variant dark:text-on-tertiary-container font-caption text-caption w-full mt-stack-lg rounded-t-xl border-t border-outline-variant dark:border-outline shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.05)] transition-opacity duration-300">
+<div class="flex flex-col md:flex-row justify-between items-center px-margin-page py-stack-md max-w-[1200px] mx-auto gap-4">
+<div class="font-headline-md text-headline-md text-primary dark:text-primary-fixed">
+                The Inkwell
+            </div>
+<div class="text-center md:text-left opacity-80">
+                © 2024 The Inkwell. Written in graphite, stored in silicon.
+            </div>
+<nav class="flex gap-4">
+<a class="text-on-surface-variant dark:text-on-tertiary-container opacity-80 hover:opacity-100 hover:underline decoration-primary/30 dark:decoration-primary-fixed/30 transition-all" href="#">Archives</a>
+<a class="text-on-surface-variant dark:text-on-tertiary-container opacity-80 hover:opacity-100 hover:underline decoration-primary/30 dark:decoration-primary-fixed/30 transition-all" href="#">RSS Feed</a>
+<a class="text-on-surface-variant dark:text-on-tertiary-container opacity-80 hover:opacity-100 hover:underline decoration-primary/30 dark:decoration-primary-fixed/30 transition-all" href="#">Colophon</a>
+<a class="text-on-surface-variant dark:text-on-tertiary-container opacity-80 hover:opacity-100 hover:underline decoration-primary/30 dark:decoration-primary-fixed/30 transition-all" href="#">Contact</a>
+</nav>
+</div>
+</footer>
+</body></html>

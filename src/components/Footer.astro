@@ -1,28 +1,31 @@
 ---
 ---
 
-<footer class="border-t border-[#31353b]/30 bg-[#0a0e14]">
-  <div class="mx-auto flex w-full max-w-[1440px] flex-col gap-8 px-6 py-10 md:flex-row md:items-end md:justify-between md:gap-10 md:py-12 lg:px-10">
+<footer class="border-t border-[var(--outline-variant)] bg-[var(--surface-container-highest)] mt-12">
+  <div class="mx-auto flex w-full max-w-[1200px] flex-col gap-6 px-6 py-8 md:flex-row md:items-center md:justify-between md:gap-10 md:py-10 lg:px-10">
 
-    <!-- Left: coordinates -->
-    <div class="font-['Space_Mono'] text-[0.65rem] uppercase tracking-[0.2em] text-[var(--primary)]">
-      <span>24.8607° N, 67.0104° E █</span>
-      <p class="mt-2 text-[var(--on-surface-soft)]">Station: KHI_01</p>
+    <!-- Left: brand -->
+    <div>
+      <p class="font-['Courier_Prime'] text-[1.1rem] font-bold italic text-[var(--primary)]">The Inkwell</p>
+      <p class="mt-1 font-['Source_Serif_4'] text-[0.82rem] text-[var(--on-surface-variant)] opacity-80">
+        © 2024 The Inkwell. Written in graphite, stored in silicon.
+      </p>
     </div>
 
     <!-- Center: nav links -->
-    <nav aria-label="Footer navigation" class="flex flex-wrap gap-x-6 gap-y-3 font-['Space_Grotesk'] text-[0.65rem] uppercase tracking-[0.22em] text-[#E8E6DF]/40">
-      <a href="/"                       class="transition-colors hover:text-[var(--primary)] cursor-crosshair">Logs</a>
-      <a href="/journal"                class="transition-colors hover:text-[var(--primary)] cursor-crosshair">Journal</a>
-      <a href="/category/philosophy"    class="transition-colors hover:text-[var(--primary)] cursor-crosshair">Philosophy</a>
-      <a href="/category/science"       class="transition-colors hover:text-[var(--primary)] cursor-crosshair">Science</a>
-      <a href="/category/thoughts"      class="transition-colors hover:text-[var(--primary)] cursor-crosshair">Thoughts</a>
-      <a href="/category/miscellaneous" class="transition-colors hover:text-[var(--primary)] cursor-crosshair">Miscellaneous</a>
+    <nav aria-label="Footer navigation" class="flex flex-wrap gap-x-5 gap-y-2 font-['Courier_Prime'] text-[0.72rem] uppercase tracking-[0.05em] text-[var(--on-surface-variant)]">
+      <a href="/"                       class="transition-colors hover:text-[var(--primary)]">Logs</a>
+      <a href="/journal"                class="transition-colors hover:text-[var(--primary)]">Journal</a>
+      <a href="/category/philosophy"    class="transition-colors hover:text-[var(--primary)]">Philosophy</a>
+      <a href="/category/science"       class="transition-colors hover:text-[var(--primary)]">Science</a>
+      <a href="/category/thoughts"      class="transition-colors hover:text-[var(--primary)]">Thoughts</a>
+      <a href="/category/miscellaneous" class="transition-colors hover:text-[var(--primary)]">Miscellaneous</a>
     </nav>
 
-    <!-- Right: version string -->
-    <div class="font-['Space_Mono'] text-[0.58rem] uppercase tracking-[0.22em] text-[#E8E6DF]/20">
-      KHI_TERMINAL_V2.0
+    <!-- Right: RSS + extras -->
+    <div class="flex gap-4 font-['Courier_Prime'] text-[0.68rem] uppercase tracking-[0.05em] text-[var(--outline)]">
+      <a href="#" class="transition-colors hover:text-[var(--primary)]">RSS Feed</a>
+      <a href="#" class="transition-colors hover:text-[var(--primary)]">Colophon</a>
     </div>
 
   </div>

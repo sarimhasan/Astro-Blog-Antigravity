@@ -12,335 +12,202 @@ const intelItems = (await getCollection('intel')).map((item) => ({ slug: item.sl
 
 // Entry count label (pad to 3 digits)
 const entryCount = String(posts.length).padStart(3, '0');
+
+const CATEGORIES: Record<string, string> = {
+  philosophy:    'Philosophy',
+  science:       'Science',
+  thoughts:      'Thoughts',
+  miscellaneous: 'Miscellaneous',
+};
 ---
 
 <MainLayout
-  title="Karachi And Beyond"
-  description="A celestial log mapping the path from the shores of Sindh to the Martian frontier."
+  title="The Inkwell"
+  description="Thoughts written in graphite, stored in silicon. A personal journal for essays, philosophy, and reflections."
 >
 
   <!-- ══════════════════════════════════════════════════
        SECTION 1 — HERO
   ═══════════════════════════════════════════════════ -->
-  <section class="relative flex min-h-[calc(100vh-4rem)] flex-col items-center justify-center overflow-hidden border-b border-[#31353b]/20 px-6">
-    <!-- Background layers -->
-    <div class="star-map absolute inset-0 opacity-50" aria-hidden="true"></div>
-    <div class="hero-glow absolute inset-0" aria-hidden="true"></div>
-
-    <!-- Content -->
-    <div class="relative z-10 text-center">
-      <p class="font-['Space_Mono'] text-[0.65rem] uppercase tracking-[0.5em] text-[var(--secondary-container)]">
-        --system: initialized
-      </p>
-
-      <h1 class="mt-4 font-['Space_Grotesk'] text-[clamp(4.5rem,14vw,9rem)] font-bold uppercase leading-[0.88] tracking-[0.12em] text-[var(--primary-container)]">
-        Karachi<br />And Beyond
-      </h1>
-
-      <p class="mx-auto mt-8 max-w-[36rem] font-['Newsreader'] text-[1.15rem] italic leading-relaxed text-[var(--on-surface)] opacity-80">
-        A celestial log of an 18-year-old aerospace aspirant mapping the path from
-        the shores of Sindh to the Martian frontier.
-      </p>
-
-      <div class="mt-12">
-        <a
-          href="#mission-log"
-          class="btn-primary inline-block bg-[var(--primary-container)] px-10 py-4 font-['Space_Mono'] text-[0.75rem] font-bold uppercase tracking-widest text-[#452b00] transition-all hover:bg-[var(--primary)]"
-        >
-          █ Initiate Log_Readout
-        </a>
-      </div>
-    </div>
-
-    <!-- Bottom-left telemetry -->
-    <div class="absolute bottom-8 left-8 font-['Space_Mono'] text-[0.6rem] uppercase tracking-[0.3em] opacity-40">
-      Station_ID: KHI_01 // 24.8607° N, 67.0104° E
-    </div>
+  <section class="flex flex-col gap-6 py-16 md:py-24 max-w-[720px] px-6 lg:px-10">
+    <h1 class="font-['Courier_Prime'] text-[clamp(2.4rem,7vw,3.2rem)] font-bold leading-[1.1] tracking-[-0.02em] text-[var(--primary)]">
+      Thoughts written in graphite, stored in silicon.
+    </h1>
+    <p class="font-['Source_Serif_4'] text-[1.15rem] leading-relaxed text-[var(--on-surface-variant)] max-w-[600px]">
+      A digital manifestation of late-night musings, technical discoveries,
+      and personal reflections. Welcome to the quiet corner of my mind.
+    </p>
+    <svg class="w-32 h-4 text-[var(--outline)]" preserveAspectRatio="none" viewBox="0 0 100 10">
+      <path class="sketch-divider" d="M0,5 Q25,0 50,5 T100,5" fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="1.5"></path>
+    </svg>
   </section>
 
 
   <!-- ══════════════════════════════════════════════════
-       SECTION 2 — FEATURED INTEL
+       SECTION 2 — FEATURED POST
   ═══════════════════════════════════════════════════ -->
-  <section class="grid grid-cols-1 border-b border-[#31353b]/20 md:grid-cols-12">
-
-    <!-- Left: cover image (7/12) -->
-    <div class="relative h-[480px] overflow-hidden bg-[var(--surface-container)] md:col-span-7 md:h-[560px]">
-      <div class="scan-lines absolute inset-0 z-10 opacity-40" aria-hidden="true"></div>
-
+  <section class="paper-card p-6 md:p-10 paper-shadow mx-6 lg:mx-10 flex flex-col md:flex-row gap-8 items-start rounded-[0.25rem]">
+    <!-- Cover image -->
+    <div class="w-full md:w-1/2 aspect-[4/3] bg-[var(--surface-container-high)] relative overflow-hidden rounded-[0.25rem]">
       {featuredPost?.coverImage ? (
         <img
           src={featuredPost.coverImage}
           alt={featuredPost.title}
-          class="h-full w-full object-cover brightness-50 contrast-125 grayscale"
+          class="object-cover w-full h-full mix-blend-multiply opacity-90"
         />
       ) : (
-        <div class="flex h-full w-full items-center justify-center bg-[radial-gradient(circle_at_center,rgba(255,200,128,0.12),transparent_60%)]">
-          <span class="font-['Space_Mono'] text-[0.65rem] uppercase tracking-[0.3em] text-[var(--on-surface-soft)]">No cover image</span>
+        <div class="flex h-full w-full items-center justify-center bg-[var(--surface-container)]">
+          <span class="font-['Courier_Prime'] text-[0.75rem] uppercase tracking-[0.1em] text-[var(--outline)]">No cover image</span>
         </div>
       )}
-
-      <div class="absolute inset-0 bg-gradient-to-t from-[#0a0e14] to-transparent opacity-70"></div>
-
-      <!-- Post info at bottom -->
-      <div class="absolute bottom-10 left-10 right-10 z-20">
-        <div class="mb-4 flex flex-wrap gap-3">
-          <span class="border border-[rgba(47,248,1,0.3)] bg-[rgba(47,248,1,0.08)] px-3 py-1 font-['Space_Mono'] text-[0.58rem] uppercase tracking-tighter text-[var(--secondary-container)]">
-            --FEATURED_INTEL
-          </span>
-          <span class="py-1 font-['Space_Mono'] text-[0.58rem] uppercase tracking-widest text-[var(--on-surface-soft)] opacity-60">
-            {featuredPost ? formatPostDate(featuredPost.date) : 'No date'} // SYNC: COMPLETE
-          </span>
-        </div>
-
-        <h2 class="max-w-[20ch] font-['Space_Grotesk'] text-[clamp(1.8rem,4vw,3.2rem)] font-bold uppercase leading-[0.92] tracking-tight text-[var(--on-surface)]">
-          {featuredPost?.title || 'No featured post yet'}
-        </h2>
-      </div>
     </div>
 
-    <!-- Right: excerpt + READ_DATA_PACKET (5/12) -->
-    <div class="flex flex-col justify-start bg-[var(--surface-container-low)] p-10 md:col-span-5 md:p-14">
-      {featuredPost ? (
-        <>
-          <blockquote class="relative border-l-2 border-[var(--primary)] py-4 pl-6 font-['Newsreader'] text-[1.3rem] italic leading-relaxed text-[#E8E6DF]">
-            {featuredPost.excerpt || 'A deep technical dive from the field terminal.'}
-          </blockquote>
+    <!-- Info -->
+    <div class="w-full md:w-1/2 flex flex-col gap-4">
+      <div class="flex gap-2 items-center flex-wrap">
+        <span class="px-2 py-1 font-['Courier_Prime'] text-[0.72rem] uppercase tracking-[0.05em] chip-philosophy">
+          {featuredPost ? (CATEGORIES[featuredPost.category] || featuredPost.category) : 'Journal'}
+        </span>
+        <span class="font-['Source_Serif_4'] text-[0.82rem] text-[var(--outline)]">
+          {featuredPost ? formatPostDate(featuredPost.date) : 'No date'}
+        </span>
+      </div>
 
-          <p class="mt-8 font-['Newsreader'] text-[1.05rem] leading-[1.8] text-[var(--on-surface)] opacity-70">
-            A deep-dive from the mission archive. Telemetry compiled and transmitted
-            from the Karachi field station.
-          </p>
+      <h2 class="font-['Courier_Prime'] text-[clamp(1.5rem,4vw,2rem)] font-bold leading-[1.2] text-[var(--primary)]">
+        {featuredPost?.title || 'No featured post yet'}
+      </h2>
 
-          <a
-            href={`/${featuredPost.slug}`}
-            class="mt-10 font-['Space_Mono'] text-[0.8rem] uppercase tracking-[0.2em] text-[var(--primary)] transition-all hover:underline"
-          >
-            &gt; READ_DATA_PACKET.PDF
-          </a>
+      <p class="font-['Source_Serif_4'] text-[1rem] leading-[1.6] text-[var(--on-surface-variant)] line-clamp-3">
+        {featuredPost?.excerpt || 'Flag a post with featured: true to surface it here.'}
+      </p>
 
-          <a
-            href={`/${featuredPost.slug}`}
-            class="btn-primary mt-6 inline-flex items-center gap-3 border border-[rgba(255,200,128,0.3)] bg-[rgba(255,200,128,0.1)] px-5 py-3 font-['Space_Grotesk'] text-[0.7rem] uppercase tracking-[0.22em] text-[var(--primary)] transition hover:bg-[rgba(255,200,128,0.18)]"
-          >
-            <span>Open data packet</span>
-            <span>→</span>
-          </a>
-        </>
-      ) : (
-        <p class="font-['Newsreader'] text-[1rem] leading-7 text-[var(--on-surface-soft)]">
-          Flag a post with <code class="text-[var(--primary)]">featured: true</code> to surface it here.
-        </p>
+      {featuredPost && (
+        <a
+          href={`/${featuredPost.slug}`}
+          class="inline-flex items-center gap-2 font-['Courier_Prime'] text-[0.78rem] uppercase tracking-[0.05em] text-[var(--primary)] mt-2 ink-link"
+        >
+          Read Entry <span class="text-sm">→</span>
+        </a>
       )}
     </div>
   </section>
 
 
   <!-- ══════════════════════════════════════════════════
-       SECTION 3 — MISSION LOGS + ABOUT THE PILOT
+       SECTION 3 — RECENT ENTRIES + REVIEWS SIDEBAR
   ═══════════════════════════════════════════════════ -->
-  <section class="mt-20 grid grid-cols-1 border-t border-[#31353b]/20 lg:grid-cols-12">
+  <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 mt-12 px-6 lg:px-10 items-start">
 
-    <!-- Left: Mission Logs (8/12) -->
-    <div id="mission-log" class="border-b border-[#31353b]/20 p-8 md:p-14 lg:col-span-8 lg:border-b-0 lg:border-r lg:border-[#31353b]/20">
-      <!-- Section header -->
-      <header class="mb-14 flex items-baseline justify-between gap-6">
-        <h3 class="font-['Space_Mono'] text-[1rem] uppercase tracking-[0.2em] text-[var(--primary)] whitespace-nowrap">
-          // Mission Logs
-        </h3>
-        <div class="mx-4 h-px flex-grow self-center bg-[#31353b]/30"></div>
-        <div class="flex gap-6 font-['Space_Mono'] text-[0.58rem] uppercase tracking-widest text-[var(--on-surface-soft)] opacity-50 whitespace-nowrap">
-          <span>Entries: {entryCount}</span>
-          <span>Status: Live</span>
-        </div>
-      </header>
+    <!-- Latest Entries Column -->
+    <section class="lg:col-span-7 flex flex-col gap-6">
+      <h3 class="font-['Courier_Prime'] text-[1.15rem] font-bold text-[var(--primary)] border-b-2 border-[var(--primary)] pb-2 inline-block">
+        Recent Entries
+      </h3>
 
-      <!-- Log entries -->
-      <div class="space-y-14">
-        {recentPosts.map((post, index) => (
-          <article class="log-entry group relative border-l border-[#31353b]/30 pl-10 transition-all duration-300 hover:border-l-[var(--primary)]">
-            <!-- Amber gutter accent -->
-            <div class="log-entry-gutter"></div>
-
-            <!-- Meta row -->
-            <div class="mb-4 flex flex-wrap items-baseline gap-4">
-              <span class="font-['Space_Mono'] text-[0.65rem] uppercase text-[var(--secondary-container)]">
-                Log_{String(index + 1).padStart(3, '0')}
-              </span>
-              <span class="font-['Space_Mono'] text-[0.58rem] uppercase tracking-widest text-[var(--on-surface-soft)] opacity-50">
-                {formatPostDate(post.date)}
-              </span>
-            </div>
-
-            <!-- Title -->
+      <div class="flex flex-col gap-8">
+        {recentPosts.map((post) => (
+          <article class="group cursor-pointer">
             <a href={`/${post.slug}`} class="block">
-              <h4 class="max-w-[22ch] font-['Space_Grotesk'] text-[clamp(1.8rem,4vw,3.2rem)] font-bold uppercase leading-[0.9] tracking-tight text-[var(--on-surface)] transition-colors duration-200 group-hover:text-[var(--primary)]">
-                {post.title}
-              </h4>
-            </a>
-
-            <!-- Excerpt -->
-            <p class="mt-4 max-w-[48rem] font-['Newsreader'] text-[1.05rem] leading-[1.8] text-[var(--on-surface)] opacity-75">
-              {post.excerpt || 'Telemetry received. Details are being compiled from the archives.'}
-            </p>
-
-            <!-- Tag badges -->
-            <div class="mt-5 flex flex-wrap gap-3">
-              <span class="border border-[#31353b]/40 px-2 py-1 font-['Space_Mono'] text-[0.58rem] uppercase tracking-tighter text-[var(--on-surface-soft)] opacity-60 transition-colors hover:border-[var(--secondary)] hover:text-[var(--secondary)] cursor-crosshair">
-                [--{post.category}]
-              </span>
-              {post.featured && (
-                <span class="border border-[rgba(47,248,1,0.3)] px-2 py-1 font-['Space_Mono'] text-[0.58rem] uppercase tracking-tighter text-[var(--secondary-container)] cursor-crosshair">
-                  [--featured]
+              <div class="flex gap-3 items-baseline">
+                <span class="font-['Source_Serif_4'] text-[0.82rem] text-[var(--outline)] w-24 shrink-0">
+                  {formatPostDate(post.date)}
                 </span>
-              )}
-            </div>
+                <h4 class="font-['Courier_Prime'] text-[1.15rem] font-bold text-[var(--on-surface)] group-hover:text-[var(--primary)] transition-colors">
+                  {post.title}
+                </h4>
+              </div>
+              <div class="pl-[108px] mt-1">
+                <p class="font-['Source_Serif_4'] text-[0.95rem] leading-[1.6] text-[var(--on-surface-variant)] line-clamp-2">
+                  {post.excerpt || 'A reflective entry from the journal.'}
+                </p>
+                <div class="flex gap-2 mt-2">
+                  <span class={`px-2 py-0.5 font-['Courier_Prime'] text-[0.68rem] uppercase tracking-[0.05em] chip-${post.category}`}>
+                    {CATEGORIES[post.category] || post.category}
+                  </span>
+                  {post.featured && (
+                    <span class="px-2 py-0.5 font-['Courier_Prime'] text-[0.68rem] uppercase tracking-[0.05em] bg-[rgba(209,228,251,0.3)] text-[var(--on-primary-fixed)]">
+                      Featured
+                    </span>
+                  )}
+                </div>
+              </div>
+            </a>
           </article>
         ))}
+      </div>
 
-        <!-- View all logs link -->
+      <div class="mt-4 flex justify-center">
         <a
           href="/journal"
-          class="mt-4 inline-flex items-center gap-3 border border-[rgba(255,200,128,0.18)] px-4 py-3 font-['Space_Grotesk'] text-[0.68rem] uppercase tracking-[0.22em] text-[var(--primary)] transition hover:bg-[rgba(255,200,128,0.08)]"
+          class="bg-[var(--primary)] text-[var(--on-primary)] font-['Courier_Prime'] text-[0.78rem] uppercase tracking-[0.05em] px-6 py-2.5 paper-shadow btn-paper rounded-[0.25rem] inline-block"
         >
-          <span>View all logs</span>
-          <span>→</span>
+          View Archives
         </a>
       </div>
-    </div>
+    </section>
 
-    <!-- Right: About The Pilot (4/12) -->
-    <aside class="bg-[var(--surface-container-low)] p-8 md:p-14 lg:col-span-4">
-      <header class="mb-14">
-        <h3 class="font-['Space_Mono'] text-[1rem] uppercase tracking-[0.2em] text-[var(--primary)]">
-          &gt; About The Pilot
-        </h3>
-      </header>
+    <!-- Reviews Sidebar -->
+    <aside class="lg:col-span-5 flex flex-col gap-6 bg-[var(--surface-container-low)] p-6 paper-shadow relative rounded-[0.25rem]">
+      <!-- Sticky note accent -->
+      <div class="absolute -top-3 -right-3 w-10 h-10 sticky-note shadow-sm transform rotate-12 flex items-center justify-center rounded-[0.125rem]">
+        <span class="text-[var(--outline)] text-sm">📌</span>
+      </div>
 
-      <div class="space-y-10">
-        <!-- Bio copy -->
-        <p class="font-['Newsreader'] text-[1.1rem] leading-[1.8] text-[#E8E6DF]">
-          I am an 18-year-old student currently deciphering the complexities of
-          orbital mechanics from a small desk in Gulshan. My mission is to bridge
-          the gap between Karachi's industrial grit and the infinite potential of
-          aerospace engineering. This blog is my telemetry data.
-        </p>
+      <h3 class="font-['Courier_Prime'] text-[1.15rem] font-bold text-[var(--primary)] border-b border-[var(--outline-variant)] pb-2">
+        Reviews Preview
+      </h3>
 
-        <!-- Stats data panels -->
-        <div class="border-t border-[#31353b]/30 pt-10">
-          <div class="grid grid-cols-2 gap-3">
-            <div class="bg-[var(--surface-container)] p-4">
-              <p class="font-['Space_Mono'] text-[0.55rem] uppercase tracking-widest text-[var(--on-surface-soft)] opacity-50">Age</p>
-              <p class="mt-1 font-['Space_Mono'] text-[0.9rem] text-[var(--secondary-container)]">18_Earth_Years</p>
+      <div class="flex flex-col gap-5">
+        {intelItems.length > 0 ? (
+          intelItems.map((entry: any) => (
+            <div class="flex gap-3 items-start">
+              <div class="w-12 h-14 bg-[var(--surface-container-high)] shrink-0 overflow-hidden rounded-[0.125rem] flex items-center justify-center">
+                {entry.coverImage ? (
+                  <img src={entry.coverImage} alt={entry.title} class="object-cover w-full h-full mix-blend-multiply opacity-80" />
+                ) : (
+                  <span class="font-['Courier_Prime'] text-[0.6rem] text-[var(--outline)]">
+                    {entry.itemType === 'book' ? '📖' : '🎬'}
+                  </span>
+                )}
+              </div>
+              <div class="flex flex-col">
+                <span class="font-['Source_Serif_4'] text-[0.95rem] text-[var(--on-surface)]">{entry.title}</span>
+                <span class="font-['Source_Serif_4'] text-[0.78rem] text-[var(--outline)]">
+                  {entry.creator || 'Unknown'} • {entry.rating || 'N/A'}
+                </span>
+              </div>
             </div>
-            <div class="bg-[var(--surface-container)] p-4">
-              <p class="font-['Space_Mono'] text-[0.55rem] uppercase tracking-widest text-[var(--on-surface-soft)] opacity-50">Status</p>
-              <p class="mt-1 font-['Space_Mono'] text-[0.9rem] text-[var(--secondary-container)]">Aspirant</p>
-            </div>
-            <div class="col-span-2 bg-[var(--surface-container)] p-4">
-              <p class="font-['Space_Mono'] text-[0.55rem] uppercase tracking-widest text-[var(--on-surface-soft)] opacity-50">Mission_Objective</p>
-              <p class="mt-1 font-['Space_Mono'] text-[0.9rem] uppercase text-[var(--primary)]">Aerospace Engineering</p>
-            </div>
-            <div class="col-span-2 bg-[var(--surface-container)] p-4">
-              <p class="font-['Space_Mono'] text-[0.55rem] uppercase tracking-widest text-[var(--on-surface-soft)] opacity-50">Coordinates</p>
-              <p class="mt-1 font-['Space_Mono'] text-[0.9rem] text-[#E8E6DF]">24.8607° N, 67.0104° E</p>
-            </div>
-          </div>
-        </div>
+          ))
+        ) : (
+          <p class="font-['Source_Serif_4'] text-[0.88rem] text-[var(--on-surface-variant)]">
+            No intel entries yet. Add items to the intel collection.
+          </p>
+        )}
       </div>
     </aside>
-  </section>
+  </div>
 
 
   <!-- ══════════════════════════════════════════════════
-       SECTION 4 — INTEL ARCHIVE (Currently Reading/Watching)
+       SECTION 4 — FIELD INVENTORY (Additional Posts)
   ═══════════════════════════════════════════════════ -->
-  <section class="border-t border-[#31353b]/20 p-8 md:p-14 lg:grid lg:grid-cols-12 lg:gap-10">
+  {gearPosts.length > 0 && (
+    <section class="mt-16 px-6 lg:px-10">
+      <div class="flex items-baseline justify-between gap-4 mb-8">
+        <h3 class="font-['Courier_Prime'] text-[1.15rem] font-bold text-[var(--primary)]">
+          More From the Archive
+        </h3>
+        <div class="h-px flex-grow bg-[var(--outline-variant)]"></div>
+        <span class="font-['Courier_Prime'] text-[0.72rem] uppercase tracking-[0.05em] text-[var(--outline)] shrink-0">
+          Entries: {entryCount}
+        </span>
+      </div>
 
-    <!-- Header column -->
-    <div class="mb-10 lg:col-span-4 lg:mb-0">
-      <p class="font-['Space_Mono'] text-[0.6rem] uppercase tracking-[0.48em] text-[var(--secondary)]">Currently reading / watching</p>
-      <h2 class="mt-3 font-['Space_Grotesk'] text-[clamp(2rem,4vw,3.2rem)] font-bold uppercase leading-[0.9] tracking-[-0.04em] text-[var(--on-surface)]">
-        Intel Archive
-      </h2>
-      <p class="mt-4 max-w-[26rem] font-['Newsreader'] text-[0.98rem] leading-7 text-[var(--on-surface-soft)]">
-        Books and films tracked through the Intel collection. Status and progress
-        logged from the field station.
-      </p>
-    </div>
-
-    <!-- Cards column -->
-    <div class="grid gap-4 lg:col-span-8 sm:grid-cols-2">
-      {intelItems.length > 0 ? (
-        intelItems.map((entry: any) => {
-          const progress = entry.status === 'complete' ? 100 : 42;
-          const image = entry.coverImage || '/images/posts/test-post/coverImage.jpg';
-          return (
-            <article class="grid gap-4 border border-[#31353b]/30 bg-[var(--surface-container-low)] p-4 transition hover:border-[rgba(255,200,128,0.3)] sm:grid-cols-[120px_minmax(0,1fr)]">
-              <!-- Cover -->
-              <div class="overflow-hidden border border-[#31353b]/30 bg-[var(--surface-container)]">
-                <img src={image} alt={entry.title} class="h-full min-h-[140px] w-full object-cover opacity-90" />
-              </div>
-              <!-- Info -->
-              <div>
-                <div class="flex flex-wrap items-center gap-2 font-['Space_Mono'] text-[0.56rem] uppercase tracking-[0.18em]">
-                  <span class="border border-[rgba(215,255,197,0.2)] px-2 py-1 text-[var(--secondary)]">{entry.itemType}</span>
-                  <span class="text-[var(--on-surface-soft)] opacity-60">{entry.creator || 'Unknown'}</span>
-                </div>
-                <h3 class="mt-3 font-['Space_Grotesk'] text-[1.25rem] font-semibold uppercase leading-[1.04] text-[var(--on-surface)]">{entry.title}</h3>
-                <p class="mt-2 font-['Newsreader'] text-[0.9rem] leading-6 text-[var(--on-surface-soft)]">{entry.excerpt || 'Status tracked from the archive.'}</p>
-                <!-- Progress bar -->
-                <div class="mt-4">
-                  <div class="mb-1.5 flex items-center justify-between font-['Space_Mono'] text-[0.54rem] uppercase tracking-[0.18em] text-[var(--on-surface-soft)] opacity-60">
-                    <span>Progress</span>
-                    <span>{progress}%</span>
-                  </div>
-                  <div class="h-1 bg-[rgba(255,255,255,0.05)]">
-                    <div class="h-1 bg-[var(--primary)] transition-all" style={`width:${progress}%`}></div>
-                  </div>
-                </div>
-                <!-- Rating / Status badges -->
-                <div class="mt-4 flex flex-wrap gap-2 font-['Space_Mono'] text-[0.54rem] uppercase tracking-[0.18em]">
-                  <span class="border border-[rgba(255,200,128,0.2)] px-2 py-1 text-[var(--primary)]">{entry.rating || 'N/A'}</span>
-                  <span class="border border-[rgba(215,255,197,0.2)] px-2 py-1 text-[var(--secondary)]">{entry.status}</span>
-                </div>
-              </div>
-            </article>
-          );
-        })
-      ) : (
-        <div class="border border-[#31353b]/30 bg-[var(--surface-container-low)] p-6 font-['Space_Mono'] text-[0.72rem] uppercase tracking-[0.2em] text-[var(--on-surface-soft)]">
-          No Intel entries yet. Add items to the intel collection.
-        </div>
-      )}
-    </div>
-  </section>
-
-
-  <!-- ══════════════════════════════════════════════════
-       SECTION 5 — ACQUIRED GEAR AND FINDS
-  ═══════════════════════════════════════════════════ -->
-  <section class="border-t border-[#31353b]/20 p-8 md:p-14 lg:grid lg:grid-cols-12 lg:gap-10">
-
-    <!-- Header column -->
-    <div class="mb-10 lg:col-span-4 lg:mb-0">
-      <p class="font-['Space_Mono'] text-[0.6rem] uppercase tracking-[0.48em] text-[var(--secondary)]">Acquired gear and finds</p>
-      <h2 class="mt-3 font-['Space_Grotesk'] text-[clamp(2rem,4vw,3.2rem)] font-bold uppercase leading-[0.9] tracking-[-0.04em] text-[var(--on-surface)]">
-        Field Inventory
-      </h2>
-      <p class="mt-4 max-w-[26rem] font-['Newsreader'] text-[0.98rem] leading-7 text-[var(--on-surface-soft)]">
-        A quieter shelf — older entries and useful discoveries pulled directly
-        from the post archive.
-      </p>
-    </div>
-
-    <!-- Cards grid column -->
-    <div class="grid gap-4 sm:grid-cols-2 lg:col-span-8 xl:grid-cols-3">
-      {gearPosts.length > 0 ? (
-        gearPosts.map((post) => (
+      <div class="grid gap-6 sm:grid-cols-2 xl:grid-cols-3">
+        {gearPosts.map((post) => (
           <a
             href={`/${post.slug}`}
-            class="group overflow-hidden border border-[#31353b]/30 bg-[var(--surface-container-low)] transition hover:border-[rgba(255,200,128,0.3)] hover:bg-[var(--surface-container)]"
+            class="group paper-card paper-shadow overflow-hidden rounded-[0.25rem] transition-all hover:shadow-lg"
           >
             <!-- Cover image -->
             <div class="relative h-44 overflow-hidden bg-[var(--surface-container)]">
@@ -348,41 +215,36 @@ const entryCount = String(posts.length).padStart(3, '0');
                 <img
                   src={post.coverImage}
                   alt={post.title}
-                  class="h-full w-full object-cover opacity-85 transition duration-300 group-hover:scale-[1.03]"
+                  class="h-full w-full object-cover opacity-90 transition duration-300 group-hover:scale-[1.03]"
                 />
               ) : (
-                <div class="flex h-full w-full items-center justify-center bg-[radial-gradient(circle_at_center,rgba(255,200,128,0.1),transparent_60%)]">
-                  <span class="font-['Space_Mono'] text-[0.58rem] uppercase tracking-widest text-[var(--on-surface-soft)] opacity-40">No image</span>
+                <div class="flex h-full w-full items-center justify-center">
+                  <span class="font-['Courier_Prime'] text-[0.72rem] uppercase tracking-[0.1em] text-[var(--outline)]">No image</span>
                 </div>
               )}
-              <div class="absolute inset-0 bg-gradient-to-t from-[#12161b] to-transparent opacity-80"></div>
             </div>
 
             <!-- Card body -->
             <div class="p-4">
-              <div class="flex items-center justify-between gap-3 font-['Space_Mono'] text-[0.55rem] uppercase tracking-[0.18em] text-[var(--on-surface-soft)] opacity-60">
-                <span>--{post.category}</span>
+              <div class="flex items-center justify-between gap-3 font-['Courier_Prime'] text-[0.68rem] uppercase tracking-[0.05em] text-[var(--outline)]">
+                <span>{CATEGORIES[post.category] || post.category}</span>
                 <span>{formatPostDate(post.date)}</span>
               </div>
-              <h3 class="mt-3 font-['Space_Grotesk'] text-[1.2rem] font-semibold uppercase leading-[1.04] text-[var(--on-surface)] transition group-hover:text-[var(--primary)]">
+              <h4 class="mt-3 font-['Courier_Prime'] text-[1.05rem] font-bold leading-[1.2] text-[var(--on-surface)] transition group-hover:text-[var(--primary)]">
                 {post.title}
-              </h3>
-              <p class="mt-2 font-['Newsreader'] text-[0.9rem] leading-6 text-[var(--on-surface-soft)]">
-                {post.excerpt || 'Archived item from the same field log.'}
+              </h4>
+              <p class="mt-2 font-['Source_Serif_4'] text-[0.88rem] leading-[1.5] text-[var(--on-surface-variant)] line-clamp-2">
+                {post.excerpt || 'An entry from the journal archive.'}
               </p>
-              <div class="mt-4 flex items-center justify-between font-['Space_Mono'] text-[0.56rem] uppercase tracking-[0.18em] text-[var(--on-surface-soft)] opacity-60">
+              <div class="mt-4 flex items-center justify-between font-['Courier_Prime'] text-[0.68rem] uppercase tracking-[0.05em] text-[var(--outline)]">
                 <span>{post.readTime || '5 MIN READ'}</span>
-                <span class="text-[var(--primary)] opacity-100">Inspect →</span>
+                <span class="text-[var(--primary)] ink-link">Read →</span>
               </div>
             </div>
           </a>
-        ))
-      ) : (
-        <div class="border border-[#31353b]/30 bg-[var(--surface-container-low)] p-6 font-['Space_Mono'] text-[0.72rem] uppercase tracking-[0.2em] text-[var(--on-surface-soft)]">
-          No additional posts available yet.
-        </div>
-      )}
-    </div>
-  </section>
+        ))}
+      </div>
+    </section>
+  )}
 
 </MainLayout>

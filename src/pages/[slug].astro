@@ -56,62 +56,63 @@ const jsonLd = {
     <!-- Back link -->
     <a
       href="/journal"
-      class="mt-8 inline-flex items-center gap-3 border border-[rgba(255,200,128,0.18)] px-4 py-3 font-['Space_Grotesk'] text-[0.68rem] uppercase tracking-[0.22em] text-[var(--primary)] transition hover:bg-[rgba(255,200,128,0.08)]"
+      class="mt-8 inline-flex items-center gap-3 border border-[var(--outline-variant)] px-4 py-3 font-['Courier_Prime'] text-[0.68rem] uppercase tracking-[0.22em] text-[var(--primary)] transition hover:bg-[var(--surface-container-high)]"
     >
       <span>←</span>
       <span>Back to journal</span>
     </a>
 
     <!-- Post hero card -->
-    <article class="mt-6 border border-[#31353b]/30 bg-[var(--surface-container-low)]">
+    <article class="mt-6 border border-[var(--outline-variant)] bg-[var(--surface-container-low)]">
       <div class="grid gap-0 lg:grid-cols-[1.1fr_0.9fr]">
 
         <!-- Left: metadata + title -->
-        <div class="border-b border-[#31353b]/20 p-8 sm:p-10 lg:border-b-0 lg:border-r lg:border-[#31353b]/20">
+        <div class="border-b border-[var(--outline-variant)] p-8 sm:p-10 lg:border-b-0 lg:border-r lg:border-[var(--outline-variant)]">
           <!-- Tag strip -->
-          <div class="flex flex-wrap items-center gap-2 font-['Space_Mono'] text-[0.56rem] uppercase tracking-[0.2em]">
-            <span class="border border-[rgba(255,200,128,0.2)] px-2.5 py-1 text-[var(--primary)]">--{categoryName}</span>
+          <div class="flex flex-wrap items-center gap-2 font-['Courier_Prime'] text-[0.72rem] uppercase tracking-[0.1em]">
+            <span class={`px-2.5 py-1 text-[var(--primary)] chip-${post.data.category}`}>
+              {categoryName}
+            </span>
             {post.data.featured && (
-              <span class="border border-[rgba(215,255,197,0.2)] px-2.5 py-1 text-[var(--secondary)]">Featured</span>
+              <span class="px-2.5 py-1 bg-[rgba(209,228,251,0.3)] text-[var(--on-primary-fixed)]">
+                Featured
+              </span>
             )}
-            <span class="text-[var(--on-surface-soft)] opacity-60">{formatPostDate(post.data.date)}</span>
-            <span class="text-[var(--on-surface-soft)] opacity-60">{post.data.readTime}</span>
+            <span class="text-[var(--on-surface-variant)]">{formatPostDate(post.data.date)}</span>
+            <span class="text-[var(--on-surface-variant)]">{post.data.readTime}</span>
           </div>
 
           <!-- Title -->
-          <h1 class="mt-6 max-w-[18ch] font-['Space_Grotesk'] text-[clamp(2.4rem,6vw,4.8rem)] font-bold uppercase leading-[0.86] tracking-[-0.05em] text-[var(--on-surface)]">
+          <h1 class="mt-6 max-w-[18ch] font-['Courier_Prime'] text-[clamp(2.4rem,6vw,4rem)] font-bold uppercase leading-[1.05] tracking-[-0.02em] text-[var(--primary)]">
             {post.data.title}
           </h1>
 
           <!-- Excerpt -->
-          <p class="mt-5 max-w-[42rem] font-['Newsreader'] text-[1.05rem] leading-8 text-[var(--on-surface-soft)]">
+          <p class="mt-5 max-w-[42rem] font-['Source_Serif_4'] text-[1.05rem] leading-[1.6] text-[var(--on-surface-variant)]">
             {post.data.excerpt || 'A reflective entry from the field terminal.'}
           </p>
 
           <!-- Author + year badges -->
-          <div class="mt-8 flex flex-wrap gap-2 font-['Space_Mono'] text-[0.56rem] uppercase tracking-[0.18em]">
-            <span class="border border-[rgba(255,200,128,0.18)] px-2.5 py-1 text-[var(--primary)]">
+          <div class="mt-8 flex flex-wrap gap-2 font-['Courier_Prime'] text-[0.72rem] uppercase tracking-[0.1em]">
+            <span class="border border-[var(--outline-variant)] px-2.5 py-1 text-[var(--primary)] bg-[var(--surface-container-high)]">
               {post.data.authorName}
             </span>
-            <span class="border border-[rgba(215,255,197,0.14)] px-2.5 py-1 text-[var(--secondary)]">
+            <span class="border border-[var(--outline-variant)] px-2.5 py-1 text-[var(--secondary)] bg-[var(--surface-container-high)]">
               Issue {new Date(post.data.date).getFullYear()}
             </span>
           </div>
         </div>
 
         <!-- Right: cover image -->
-        <div class="relative bg-[var(--surface-container)]">
+        <div class="relative bg-[var(--surface-container)] flex items-center justify-center overflow-hidden">
           {post.data.coverImage ? (
-            <>
-              <div class="scan-lines absolute inset-0 z-10 opacity-20 pointer-events-none" aria-hidden="true"></div>
-              <img
-                src={post.data.coverImage}
-                alt={post.data.title}
-                class="h-full min-h-[22rem] w-full object-cover"
-              />
-            </>
+            <img
+              src={post.data.coverImage}
+              alt={post.data.title}
+              class="h-full min-h-[22rem] w-full object-cover"
+            />
           ) : (
-            <div class="flex min-h-[22rem] items-center justify-center bg-[radial-gradient(circle_at_center,rgba(255,200,128,0.1),transparent_60%)] font-['Space_Mono'] text-[0.65rem] uppercase tracking-[0.3em] text-[var(--on-surface-soft)] opacity-40">
+            <div class="flex min-h-[22rem] items-center justify-center font-['Courier_Prime'] text-[0.68rem] uppercase tracking-[0.2em] text-[var(--outline)]">
               No image attached
             </div>
           )}
@@ -123,30 +124,33 @@ const jsonLd = {
     <section class="mt-4 grid gap-4 lg:grid-cols-[260px_minmax(0,1fr)]">
 
       <!-- Sidebar -->
-      <aside class="border border-[#31353b]/30 bg-[var(--surface-container-low)] p-6 self-start">
-        <p class="font-['Space_Mono'] text-[0.58rem] uppercase tracking-[0.4em] text-[var(--secondary)]">
-          // Telemetry
+      <aside class="border border-[var(--outline-variant)] bg-[var(--surface-container-low)] p-6 self-start">
+        <p class="font-['Courier_Prime'] text-[0.72rem] uppercase tracking-[0.1em] text-[var(--primary)] border-b border-[var(--outline-variant)] pb-2 mb-4">
+          Entry Details
         </p>
-        <div class="mt-5 space-y-3 font-['Space_Mono'] text-[0.7rem] uppercase tracking-[0.14em] text-[var(--on-surface-soft)]">
-          <p><span class="text-[var(--primary)] opacity-60">Category</span><br />{categoryName}</p>
-          <p><span class="text-[var(--primary)] opacity-60">Read time</span><br />{post.data.readTime}</p>
-          <p><span class="text-[var(--primary)] opacity-60">Author</span><br />{post.data.authorName}</p>
-          <p><span class="text-[var(--primary)] opacity-60">Published</span><br />{formatPostDate(post.data.date)}</p>
+        <div class="space-y-4 font-['Courier_Prime'] text-[0.72rem] uppercase tracking-[0.05em] text-[var(--on-surface-variant)]">
+          <div>
+            <span class="text-[var(--outline)] text-[0.68rem]">Category</span>
+            <div class="mt-1 font-bold text-[var(--primary)]">{categoryName}</div>
+          </div>
+          <div>
+            <span class="text-[var(--outline)] text-[0.68rem]">Read time</span>
+            <div class="mt-1 font-bold text-[var(--primary)]">{post.data.readTime}</div>
+          </div>
+          <div>
+            <span class="text-[var(--outline)] text-[0.68rem]">Author</span>
+            <div class="mt-1 font-bold text-[var(--primary)]">{post.data.authorName}</div>
+          </div>
+          <div>
+            <span class="text-[var(--outline)] text-[0.68rem]">Published</span>
+            <div class="mt-1 font-bold text-[var(--primary)]">{formatPostDate(post.data.date)}</div>
+          </div>
         </div>
       </aside>
 
       <!-- Prose content -->
-      <div class="border border-[#31353b]/30 bg-[var(--surface-container-low)] p-6 sm:p-8 lg:p-10">
-        <div class="prose max-w-none
-          prose-headings:font-['Space_Grotesk'] prose-headings:uppercase prose-headings:tracking-[-0.04em] prose-headings:text-[var(--on-surface)]
-          prose-p:font-['Newsreader'] prose-p:text-[var(--on-surface)] prose-p:leading-8 prose-p:text-[1.05rem]
-          prose-a:text-[var(--primary)] prose-a:underline
-          prose-strong:text-[var(--on-surface)]
-          prose-blockquote:border-l-[3px] prose-blockquote:border-[var(--primary)] prose-blockquote:bg-[rgba(255,200,128,0.05)] prose-blockquote:px-5 prose-blockquote:py-4 prose-blockquote:font-['Newsreader'] prose-blockquote:text-[1.15rem] prose-blockquote:leading-8 prose-blockquote:italic
-          prose-code:bg-[rgba(255,255,255,0.05)] prose-code:px-1.5 prose-code:py-0.5 prose-code:text-[var(--secondary)]
-          prose-pre:bg-[#10151b] prose-pre:text-[var(--on-surface)]
-          prose-img:border prose-img:border-[#31353b]/30
-        ">
+      <div class="border border-[var(--outline-variant)] bg-[var(--surface-container-low)] p-6 sm:p-8 lg:p-10">
+        <div class="prose-journal max-w-none">
           <Content />
         </div>
       </div>
