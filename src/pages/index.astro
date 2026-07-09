@@ -3,20 +3,17 @@ import MainLayout from '../layouts/MainLayout.astro';
 import { getCollection } from 'astro:content';
 import { formatPostDate, getFeaturedPost, mapPostEntry, sortPostsByDateDesc } from '../lib/content';
 
-const posts        = sortPostsByDateDesc((await getCollection('posts')).map(mapPostEntry));
+const posts = sortPostsByDateDesc((await getCollection('posts')).map(mapPostEntry));
 const featuredPost = getFeaturedPost(posts);
-const recentPosts  = posts.slice(0, 3);
-const gearPosts    = posts.slice(3, 6);
-
+const recentPosts = posts.slice(0, 3);
+const archivePosts = posts.slice(3, 6);
 const intelItems = (await getCollection('intel')).map((item) => ({ slug: item.slug, ...item.data }));
-
-// Entry count label (pad to 3 digits)
 const entryCount = String(posts.length).padStart(3, '0');
 
 const CATEGORIES: Record<string, string> = {
-  philosophy:    'Philosophy',
-  science:       'Science',
-  thoughts:      'Thoughts',
+  philosophy: 'Philosophy',
+  science: 'Science',
+  thoughts: 'Thoughts',
   miscellaneous: 'Miscellaneous',
 };
 ---
@@ -25,220 +22,186 @@ const CATEGORIES: Record<string, string> = {
   title="The Inkwell"
   description="Thoughts written in graphite, stored in silicon. A personal journal for essays, philosophy, and reflections."
 >
-
-  <!-- ══════════════════════════════════════════════════
-       SECTION 1 — HERO
-  ═══════════════════════════════════════════════════ -->
-  <section class="flex flex-col gap-6 py-16 md:py-24 max-w-[720px] px-6 lg:px-10">
-    <h1 class="font-['Courier_Prime'] text-[clamp(2.4rem,7vw,3.2rem)] font-bold leading-[1.1] tracking-[-0.02em] text-[var(--primary)]">
-      Thoughts written in graphite, stored in silicon.
-    </h1>
-    <p class="font-['Source_Serif_4'] text-[1.15rem] leading-relaxed text-[var(--on-surface-variant)] max-w-[600px]">
-      A digital manifestation of late-night musings, technical discoveries,
-      and personal reflections. Welcome to the quiet corner of my mind.
-    </p>
-    <svg class="w-32 h-4 text-[var(--outline)]" preserveAspectRatio="none" viewBox="0 0 100 10">
-      <path class="sketch-divider" d="M0,5 Q25,0 50,5 T100,5" fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="1.5"></path>
-    </svg>
-  </section>
-
-
-  <!-- ══════════════════════════════════════════════════
-       SECTION 2 — FEATURED POST
-  ═══════════════════════════════════════════════════ -->
-  <section class="paper-card p-6 md:p-10 paper-shadow mx-6 lg:mx-10 flex flex-col md:flex-row gap-8 items-start rounded-[0.25rem]">
-    <!-- Cover image -->
-    <div class="w-full md:w-1/2 aspect-[4/3] bg-[var(--surface-container-high)] relative overflow-hidden rounded-[0.25rem]">
-      {featuredPost?.coverImage ? (
-        <img
-          src={featuredPost.coverImage}
-          alt={featuredPost.title}
-          class="object-cover w-full h-full mix-blend-multiply opacity-90"
-        />
-      ) : (
-        <div class="flex h-full w-full items-center justify-center bg-[var(--surface-container)]">
-          <span class="font-['Courier_Prime'] text-[0.75rem] uppercase tracking-[0.1em] text-[var(--outline)]">No cover image</span>
-        </div>
-      )}
-    </div>
-
-    <!-- Info -->
-    <div class="w-full md:w-1/2 flex flex-col gap-4">
-      <div class="flex gap-2 items-center flex-wrap">
-        <span class="px-2 py-1 font-['Courier_Prime'] text-[0.72rem] uppercase tracking-[0.05em] chip-philosophy">
-          {featuredPost ? (CATEGORIES[featuredPost.category] || featuredPost.category) : 'General'}
-        </span>
-        <span class="font-['Source_Serif_4'] text-[0.82rem] text-[var(--outline)]">
-          {featuredPost ? formatPostDate(featuredPost.date) : 'No date'}
-        </span>
-      </div>
-
-      <h2 class="font-['Courier_Prime'] text-[clamp(1.5rem,4vw,2rem)] font-bold leading-[1.2] text-[var(--primary)]">
-        {featuredPost?.title || 'No featured post yet'}
-      </h2>
-
-      <p class="font-['Source_Serif_4'] text-[1rem] leading-[1.6] text-[var(--on-surface-variant)] line-clamp-3">
-        {featuredPost?.excerpt || 'Flag a post with featured: true to surface it here.'}
+  <section class="fade-in grid gap-8 lg:grid-cols-[1.15fr_0.85fr] lg:items-end">
+    <div class="max-w-3xl">
+      <p class="eyebrow">Personal journal · Sarim Hasan</p>
+      <h1 class="section-heading mt-5 max-w-[14ch] text-[clamp(2.9rem,7vw,5.6rem)] font-semibold tracking-[-0.02em] text-[var(--text)]" data-animate="hero-heading">
+        Notes on the universe, the mind, and the quiet in between.
+      </h1>
+      <p class="body-copy mt-6 max-w-[62ch]">
+        A slow-paced archive of essays on space, physics, philosophy, and the natural world — written in search of a little more serenity.
       </p>
-
-      {featuredPost && (
-        <a
-          href={`/${featuredPost.slug}`}
-          class="inline-flex items-center gap-2 font-['Courier_Prime'] text-[0.78rem] uppercase tracking-[0.05em] text-[var(--primary)] mt-2 ink-link"
-        >
-          Read Entry <span class="text-sm">→</span>
-        </a>
-      )}
+      <div class="mt-8 flex flex-wrap gap-3 text-[0.72rem] uppercase tracking-[0.16em] text-[var(--text-soft)]">
+        <span class="chip">Essays</span>
+        <span class="chip">Field notes</span>
+        <span class="chip">Reflections</span>
+      </div>
     </div>
-  </section>
 
-
-  <!-- ══════════════════════════════════════════════════
-       SECTION 3 — RECENT ENTRIES + REVIEWS SIDEBAR
-  ═══════════════════════════════════════════════════ -->
-  <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 mt-12 px-6 lg:px-10 items-start">
-
-    <!-- Latest Entries Column -->
-    <section class="lg:col-span-7 flex flex-col gap-6">
-      <h3 class="font-['Courier_Prime'] text-[1.15rem] font-bold text-[var(--primary)] border-b-2 border-[var(--primary)] pb-2 inline-block">
-        Recent Entries
-      </h3>
-
-      <div class="flex flex-col gap-8">
-        {recentPosts.map((post) => (
-          <article class="group cursor-pointer">
-            <a href={`/${post.slug}`} class="block">
-              <div class="flex gap-3 items-baseline">
-                <span class="font-['Source_Serif_4'] text-[0.82rem] text-[var(--outline)] w-24 shrink-0">
-                  {formatPostDate(post.date)}
-                </span>
-                <h4 class="font-['Courier_Prime'] text-[1.15rem] font-bold text-[var(--on-surface)] group-hover:text-[var(--primary)] transition-colors">
-                  {post.title}
-                </h4>
-              </div>
-              <div class="pl-[108px] mt-1">
-                <p class="font-['Source_Serif_4'] text-[0.95rem] leading-[1.6] text-[var(--on-surface-variant)] line-clamp-2">
-                  {post.excerpt || 'A reflective entry from the journal.'}
-                </p>
-                <div class="flex gap-2 mt-2">
-                  <span class={`px-2 py-0.5 font-['Courier_Prime'] text-[0.68rem] uppercase tracking-[0.05em] chip-${post.category}`}>
-                    {CATEGORIES[post.category] || post.category}
-                  </span>
-                  {post.featured && (
-                    <span class="px-2 py-0.5 font-['Courier_Prime'] text-[0.68rem] uppercase tracking-[0.05em] bg-[rgba(209,228,251,0.3)] text-[var(--on-primary-fixed)]">
-                      Featured
-                    </span>
-                  )}
-                </div>
-              </div>
-            </a>
-          </article>
-        ))}
-      </div>
-
-      <div class="mt-4 flex justify-center">
-        <a
-          href="#more-from-archive"
-          class="bg-[var(--primary)] text-[var(--on-primary)] font-['Courier_Prime'] text-[0.78rem] uppercase tracking-[0.05em] px-6 py-2.5 paper-shadow btn-paper rounded-[0.25rem] inline-block"
-        >
-          Explore Archive
-        </a>
-      </div>
-    </section>
-
-    <!-- Reviews Sidebar -->
-    <aside class="lg:col-span-5 flex flex-col gap-6 bg-[var(--surface-container-low)] p-6 paper-shadow relative rounded-[0.25rem]">
-      <!-- Sticky note accent -->
-      <div class="absolute -top-3 -right-3 w-10 h-10 sticky-note shadow-sm transform rotate-12 flex items-center justify-center rounded-[0.125rem]">
-        <span class="text-[var(--outline)] text-sm">📌</span>
-      </div>
-
-      <h3 class="font-['Courier_Prime'] text-[1.15rem] font-bold text-[var(--primary)] border-b border-[var(--outline-variant)] pb-2">
-        Reviews Preview
-      </h3>
-
-      <div class="flex flex-col gap-5">
-        {intelItems.length > 0 ? (
-          intelItems.map((entry: any) => (
-            <div class="flex gap-3 items-start">
-              <div class="w-12 h-14 bg-[var(--surface-container-high)] shrink-0 overflow-hidden rounded-[0.125rem] flex items-center justify-center">
-                {entry.coverImage ? (
-                  <img src={entry.coverImage} alt={entry.title} class="object-cover w-full h-full mix-blend-multiply opacity-80" />
-                ) : (
-                  <span class="font-['Courier_Prime'] text-[0.6rem] text-[var(--outline)]">
-                    {entry.itemType === 'book' ? '📖' : '🎬'}
-                  </span>
-                )}
-              </div>
-              <div class="flex flex-col">
-                <span class="font-['Source_Serif_4'] text-[0.95rem] text-[var(--on-surface)]">{entry.title}</span>
-                <span class="font-['Source_Serif_4'] text-[0.78rem] text-[var(--outline)]">
-                  {entry.creator || 'Unknown'} • {entry.rating || 'N/A'}
-                </span>
-              </div>
-            </div>
-          ))
-        ) : (
-          <p class="font-['Source_Serif_4'] text-[0.88rem] text-[var(--on-surface-variant)]">
-            No intel entries yet. Add items to the intel collection.
-          </p>
-        )}
-      </div>
-    </aside>
-  </div>
-
-
-  <!-- ══════════════════════════════════════════════════
-       SECTION 4 — FIELD INVENTORY (Additional Posts)
-  ═══════════════════════════════════════════════════ -->
-  {gearPosts.length > 0 && (
-    <section id="more-from-archive" class="mt-16 px-6 lg:px-10">
-      <div class="flex items-baseline justify-between gap-4 mb-8">
-        <h3 class="font-['Courier_Prime'] text-[1.15rem] font-bold text-[var(--primary)]">
-          More From the Archive
-        </h3>
-        <div class="h-px flex-grow bg-[var(--outline-variant)]"></div>
-        <span class="font-['Courier_Prime'] text-[0.72rem] uppercase tracking-[0.05em] text-[var(--outline)] shrink-0">
-          Entries: {entryCount}
-        </span>
-      </div>
-
-      <div class="grid gap-6 sm:grid-cols-2 xl:grid-cols-3">
-        {gearPosts.map((post) => (
-          <a
-            href={`/${post.slug}`}
-            class="group paper-card paper-shadow overflow-hidden rounded-[0.25rem] transition-all hover:shadow-lg"
-          >
-            <!-- Cover image -->
-            <div class="relative h-44 overflow-hidden bg-[var(--surface-container)]">
-              {post.coverImage ? (
+    <div class="surface-shell rounded-[1.75rem] p-4 fade-in-delay-1" data-animate="featured-section">
+      <div class="surface-inner rounded-[1.5rem] p-5 sm:p-6">
+        <p class="eyebrow">Featured entry</p>
+        {featuredPost ? (
+          <article class="mt-5 space-y-4">
+            <div class="overflow-hidden rounded-[1.25rem] border border-[var(--border)] bg-black/20">
+              {featuredPost.coverImage ? (
                 <img
-                  src={post.coverImage}
-                  alt={post.title}
-                  class="h-full w-full object-cover opacity-90 transition duration-300 group-hover:scale-[1.03]"
+                  src={featuredPost.coverImage}
+                  alt={featuredPost.title}
+                  class="aspect-[4/3] w-full object-cover"
                 />
               ) : (
-                <div class="flex h-full w-full items-center justify-center">
-                  <span class="font-['Courier_Prime'] text-[0.72rem] uppercase tracking-[0.1em] text-[var(--outline)]">No image</span>
+                <div class="flex aspect-[4/3] items-center justify-center px-6 text-center text-[0.72rem] uppercase tracking-[0.22em] text-[var(--text-soft)]">
+                  No cover image attached
                 </div>
               )}
             </div>
 
-            <!-- Card body -->
-            <div class="p-4">
-              <div class="flex items-center justify-between gap-3 font-['Courier_Prime'] text-[0.68rem] uppercase tracking-[0.05em] text-[var(--outline)]">
-                <span>{CATEGORIES[post.category] || post.category}</span>
-                <span>{formatPostDate(post.date)}</span>
+            <div class="flex flex-wrap items-center gap-2 text-[0.68rem] uppercase tracking-[0.18em] text-[var(--text-soft)]">
+              <span class={`chip chip-${featuredPost.category}`}>{CATEGORIES[featuredPost.category] || featuredPost.category}</span>
+              <span>{formatPostDate(featuredPost.date)}</span>
+            </div>
+
+            <h2 class="section-heading text-[clamp(1.8rem,4vw,2.7rem)] font-semibold tracking-[-0.02em]">
+              {featuredPost.title}
+            </h2>
+
+            <p class="body-copy line-clamp-3">{featuredPost.excerpt || 'Flag a post with featured: true to surface it here.'}</p>
+
+            <a href={`/${featuredPost.slug}`} class="button-primary group">
+              <span>Read entry</span>
+              <span aria-hidden="true" class="flex h-8 w-8 items-center justify-center rounded-full bg-white/8 text-[0.9rem] transition-transform duration-200 group-hover:translate-x-0.5">→</span>
+            </a>
+          </article>
+        ) : (
+          <p class="body-copy mt-5">Flag a post with featured: true to surface it here.</p>
+        )}
+      </div>
+    </div>
+  </section>
+
+  <section class="mt-10 grid gap-6 lg:grid-cols-[1.2fr_0.8fr]">
+    <div class="surface-shell rounded-[1.75rem] p-4 fade-in-delay-2">
+      <div class="surface-inner rounded-[1.5rem] p-5 sm:p-6">
+        <div class="flex items-center justify-between gap-4">
+          <div>
+            <p class="eyebrow">Recent entries</p>
+            <h3 class="section-heading mt-3 text-[clamp(1.55rem,3vw,2.2rem)] font-semibold tracking-[-0.02em]" data-animate="section-title">Latest writing</h3>
+          </div>
+          <a href="#more-from-archive" class="hidden text-[0.72rem] uppercase tracking-[0.18em] text-[var(--text-soft)] ui-link lg:inline-flex">Archive</a>
+        </div>
+
+        <div class="mt-6 divide-y divide-white/6">
+          {recentPosts.map((post, index) => (
+            <article class="py-5 first:pt-0 last:pb-0">
+              <a href={`/${post.slug}`} class="group grid gap-3 sm:grid-cols-[110px_minmax(0,1fr)] sm:items-start">
+                <div class="text-[0.7rem] uppercase tracking-[0.18em] text-[var(--text-soft)]">
+                  <div>{String(index + 1).padStart(2, '0')}</div>
+                  <div class="mt-2 text-[var(--text-muted)]">{formatPostDate(post.date)}</div>
+                </div>
+
+                <div>
+                  <h4 class="section-heading text-[clamp(1.2rem,2.3vw,1.55rem)] font-medium tracking-[-0.02em] transition-colors duration-200 group-hover:text-[var(--accent)]">
+                    {post.title}
+                  </h4>
+                  <p class="body-copy mt-2 line-clamp-2">{post.excerpt || 'A reflective entry from the journal.'}</p>
+                  <div class="mt-3 flex flex-wrap items-center gap-2">
+                    <span class={`chip chip-${post.category}`}>{CATEGORIES[post.category] || post.category}</span>
+                    {post.featured && <span class="chip border-[rgba(201,154,86,0.28)] bg-[rgba(201,154,86,0.12)] text-[var(--accent-strong)]">Featured</span>}
+                  </div>
+                </div>
+              </a>
+            </article>
+          ))}
+        </div>
+
+        <div class="mt-6 flex justify-start">
+          <a href="#more-from-archive" class="button-primary group">
+            <span>Explore archive</span>
+            <span aria-hidden="true" class="flex h-8 w-8 items-center justify-center rounded-full bg-white/8 text-[0.9rem] transition-transform duration-200 group-hover:translate-x-0.5">→</span>
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <aside class="surface-shell rounded-[1.75rem] p-4 fade-in-delay-3">
+      <div class="surface-inner rounded-[1.5rem] p-5 sm:p-6">
+        <div class="flex items-start justify-between gap-4">
+          <div>
+            <p class="eyebrow">Reading list</p>
+            <h3 class="section-heading mt-3 text-[clamp(1.3rem,2.7vw,1.9rem)] font-semibold tracking-[-0.02em]" data-animate="section-title">Notes in orbit</h3>
+          </div>
+          <span class="chip">{String(intelItems.length).padStart(2, '0')} items</span>
+        </div>
+
+        <div class="mt-6 space-y-4">
+          {intelItems.length > 0 ? (
+            intelItems.map((entry: any) => (
+              <div class="flex gap-4 rounded-[1.2rem] border border-[var(--border)] bg-white/3 p-3">
+                <div class="flex h-14 w-11 shrink-0 items-center justify-center overflow-hidden rounded-[0.9rem] border border-[var(--border)] bg-white/5">
+                  {entry.coverImage ? (
+                    <img src={entry.coverImage} alt={entry.title} class="h-full w-full object-cover" />
+                  ) : (
+                    <span class="text-[0.7rem] text-[var(--text-soft)]">{entry.itemType === 'book' ? 'Bk' : 'Fm'}</span>
+                  )}
+                </div>
+                <div class="min-w-0">
+                  <p class="truncate text-[0.98rem] font-medium text-[var(--text)]">{entry.title}</p>
+                  <p class="mt-1 text-[0.82rem] text-[var(--text-muted)]">
+                    {entry.creator || 'Unknown'} · {entry.rating || 'N/A'}
+                  </p>
+                </div>
               </div>
-              <h4 class="mt-3 font-['Courier_Prime'] text-[1.05rem] font-bold leading-[1.2] text-[var(--on-surface)] transition group-hover:text-[var(--primary)]">
-                {post.title}
-              </h4>
-              <p class="mt-2 font-['Source_Serif_4'] text-[0.88rem] leading-[1.5] text-[var(--on-surface-variant)] line-clamp-2">
-                {post.excerpt || 'An entry from the journal archive.'}
-              </p>
-              <div class="mt-4 flex items-center justify-between font-['Courier_Prime'] text-[0.68rem] uppercase tracking-[0.05em] text-[var(--outline)]">
-                <span>{post.readTime || '5 MIN READ'}</span>
-                <span class="text-[var(--primary)] ink-link">Read →</span>
+            ))
+          ) : (
+            <p class="body-copy">No intel entries yet. Add items to the intel collection.</p>
+          )}
+        </div>
+      </div>
+    </aside>
+  </section>
+
+  {archivePosts.length > 0 && (
+    <section id="more-from-archive" class="fade-in mt-10">
+      <div class="flex items-end justify-between gap-4">
+        <div>
+          <p class="eyebrow">Archive</p>
+          <h3 class="section-heading mt-3 text-[clamp(1.35rem,2.7vw,2rem)] font-semibold tracking-[-0.02em]" data-animate="section-title">More writing from the archive</h3>
+        </div>
+        <span class="chip">Entries: {entryCount}</span>
+      </div>
+
+      <div class="mt-6 grid gap-5 md:grid-cols-2 xl:grid-cols-3">
+        {archivePosts.map((post) => (
+          <a href={`/${post.slug}`} class="surface-shell group overflow-hidden rounded-[1.5rem] p-3 transition-transform duration-200 hover:-translate-y-1" data-animate="post-card" data-hover-card>
+            <div class="surface-inner overflow-hidden rounded-[1.2rem]">
+              <div class="relative aspect-[4/3] overflow-hidden border-b border-[var(--border)] bg-black/20">
+                {post.coverImage ? (
+                  <img
+                    src={post.coverImage}
+                    alt={post.title}
+                    class="h-full w-full object-cover transition-transform duration-500 group-hover:scale-[1.03]"
+                  />
+                ) : (
+                  <div class="flex h-full w-full items-center justify-center text-[0.72rem] uppercase tracking-[0.22em] text-[var(--text-soft)]">
+                    No image
+                  </div>
+                )}
+              </div>
+
+              <div class="p-5">
+                <div class="flex items-center justify-between gap-3 text-[0.68rem] uppercase tracking-[0.18em] text-[var(--text-soft)]">
+                  <span class={`chip chip-${post.category}`}>{CATEGORIES[post.category] || post.category}</span>
+                  <span>{formatPostDate(post.date)}</span>
+                </div>
+                <h4 class="section-heading mt-4 text-[1.35rem] font-medium tracking-[-0.02em] transition-colors duration-200 group-hover:text-[var(--accent)]">
+                  {post.title}
+                </h4>
+                <p class="body-copy mt-3 line-clamp-2">{post.excerpt || 'An entry from the journal archive.'}</p>
+                <div class="mt-5 flex items-center justify-between text-[0.68rem] uppercase tracking-[0.18em] text-[var(--text-soft)]">
+                  <span>{post.readTime || '5 min read'}</span>
+                  <span class="ui-link ui-link-underline">Read</span>
+                </div>
               </div>
             </div>
           </a>
@@ -246,5 +209,4 @@ const CATEGORIES: Record<string, string> = {
       </div>
     </section>
   )}
-
 </MainLayout>

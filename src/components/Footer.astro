@@ -1,31 +1,32 @@
 ---
 ---
 
-<footer class="border-t border-[var(--outline-variant)] bg-[var(--surface-container-highest)] mt-12">
-  <div class="mx-auto flex w-full max-w-[1200px] flex-col gap-6 px-6 py-8 md:flex-row md:items-center md:justify-between md:gap-10 md:py-10 lg:px-10">
+<footer class="mt-16 border-t border-[var(--border)] bg-[rgba(8,10,14,0.82)]">
+  <div class="mx-auto w-full max-w-[1240px] px-4 py-10 sm:px-6 lg:px-8">
+    <div class="surface-shell rounded-[1.75rem] p-4 sm:p-5">
+      <div class="surface-inner rounded-[1.5rem] px-5 py-6 sm:px-6 sm:py-7">
+        <div class="grid gap-8 md:grid-cols-[1.2fr_1fr] md:items-end">
+          <div class="max-w-md">
+            <p class="eyebrow">The Inkwell</p>
+            <p class="mt-4 text-[1rem] leading-7 text-[var(--text-muted)]">
+              A quiet record of essays on space, physics, philosophy, and the slower rhythms of nature — written by Sarim Hasan to be read slowly.
+            </p>
+          </div>
 
-    <!-- Left: brand -->
-    <div>
-      <p class="font-['Courier_Prime'] text-[1.1rem] font-bold italic text-[var(--primary)]">The Inkwell</p>
-      <p class="mt-1 font-['Source_Serif_4'] text-[0.82rem] text-[var(--on-surface-variant)] opacity-80">
-        © 2024 The Inkwell. Written in graphite, stored in silicon.
-      </p>
+          <div class="flex flex-col gap-4 md:items-end">
+            <nav aria-label="Footer navigation" class="flex flex-wrap gap-2 md:justify-end">
+              <a href="/" class="chip ui-link hover:border-[var(--border-strong)]">Home</a>
+              <a href="/category/philosophy" class="chip chip-philosophy">Philosophy</a>
+              <a href="/category/science" class="chip chip-science">Science</a>
+              <a href="/category/thoughts" class="chip chip-thoughts">Thoughts</a>
+              <a href="/category/miscellaneous" class="chip chip-miscellaneous">Miscellaneous</a>
+            </nav>
+            <p class="text-[0.76rem] uppercase tracking-[0.16em] text-[var(--text-soft)]">
+              © 2026 The Inkwell
+            </p>
+          </div>
+        </div>
+      </div>
     </div>
-
-    <!-- Center: nav links -->
-    <nav aria-label="Footer navigation" class="flex flex-wrap gap-x-5 gap-y-2 font-['Courier_Prime'] text-[0.72rem] uppercase tracking-[0.05em] text-[var(--on-surface-variant)]">
-      <a href="/"                       class="transition-colors hover:text-[var(--primary)]">Logs</a>
-      <a href="/category/philosophy"    class="transition-colors hover:text-[var(--primary)]">Philosophy</a>
-      <a href="/category/science"       class="transition-colors hover:text-[var(--primary)]">Science</a>
-      <a href="/category/thoughts"      class="transition-colors hover:text-[var(--primary)]">Thoughts</a>
-      <a href="/category/miscellaneous" class="transition-colors hover:text-[var(--primary)]">Miscellaneous</a>
-    </nav>
-
-    <!-- Right: RSS + extras -->
-    <div class="flex gap-4 font-['Courier_Prime'] text-[0.68rem] uppercase tracking-[0.05em] text-[var(--outline)]">
-      <a href="#" class="transition-colors hover:text-[var(--primary)]">RSS Feed</a>
-      <a href="#" class="transition-colors hover:text-[var(--primary)]">Colophon</a>
-    </div>
-
   </div>
 </footer>

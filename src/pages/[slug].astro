@@ -18,9 +18,9 @@ if (!post) {
 const { Content } = await post.render();
 
 const CATEGORIES: Record<string, string> = {
-  philosophy:    'Philosophy',
-  science:       'Science',
-  thoughts:      'Thoughts',
+  philosophy: 'Philosophy',
+  science: 'Science',
+  thoughts: 'Thoughts',
   miscellaneous: 'Miscellaneous',
 };
 
@@ -44,117 +44,92 @@ const jsonLd = {
 ---
 
 <MainLayout
-  title={`${post.data.title} — Karachi And Beyond`}
+  title={`${post.data.title} — The Inkwell`}
   description={post.data.excerpt}
   image={post.data.coverImage}
   type="article"
 >
   <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} is:inline slot="head" />
 
-  <main class="mx-auto w-full max-w-[1200px] px-6 pb-16 lg:px-10">
-
-    <!-- Back link -->
-    <a
-      href="/"
-      class="mt-8 inline-flex items-center gap-3 border border-[var(--outline-variant)] px-4 py-3 font-['Courier_Prime'] text-[0.68rem] uppercase tracking-[0.22em] text-[var(--primary)] transition hover:bg-[var(--surface-container-high)]"
-    >
-      <span>←</span>
-      <span>Back to logs</span>
+  <section class="fade-in">
+    <a href="/" class="button-primary group">
+      <span>Back to home</span>
+      <span aria-hidden="true" class="flex h-8 w-8 items-center justify-center rounded-full bg-white/8">←</span>
     </a>
 
-    <!-- Post hero card -->
-    <article class="mt-6 border border-[var(--outline-variant)] bg-[var(--surface-container-low)]">
-      <div class="grid gap-0 lg:grid-cols-[1.1fr_0.9fr]">
-
-        <!-- Left: metadata + title -->
-        <div class="border-b border-[var(--outline-variant)] p-8 sm:p-10 lg:border-b-0 lg:border-r lg:border-[var(--outline-variant)]">
-          <!-- Tag strip -->
-          <div class="flex flex-wrap items-center gap-2 font-['Courier_Prime'] text-[0.72rem] uppercase tracking-[0.1em]">
-            <span class={`px-2.5 py-1 text-[var(--primary)] chip-${post.data.category}`}>
-              {categoryName}
-            </span>
-            {post.data.featured && (
-              <span class="px-2.5 py-1 bg-[rgba(209,228,251,0.3)] text-[var(--on-primary-fixed)]">
-                Featured
-              </span>
-            )}
-            <span class="text-[var(--on-surface-variant)]">{formatPostDate(post.data.date)}</span>
-            <span class="text-[var(--on-surface-variant)]">{post.data.readTime}</span>
-          </div>
-
-          <!-- Title -->
-          <h1 class="mt-6 max-w-[18ch] font-['Courier_Prime'] text-[clamp(2.4rem,6vw,4rem)] font-bold uppercase leading-[1.05] tracking-[-0.02em] text-[var(--primary)]">
-            {post.data.title}
-          </h1>
-
-          <!-- Excerpt -->
-          <p class="mt-5 max-w-[42rem] font-['Source_Serif_4'] text-[1.05rem] leading-[1.6] text-[var(--on-surface-variant)]">
-            {post.data.excerpt || 'A reflective entry from the field terminal.'}
-          </p>
-
-          <!-- Author + year badges -->
-          <div class="mt-8 flex flex-wrap gap-2 font-['Courier_Prime'] text-[0.72rem] uppercase tracking-[0.1em]">
-            <span class="border border-[var(--outline-variant)] px-2.5 py-1 text-[var(--primary)] bg-[var(--surface-container-high)]">
-              {post.data.authorName}
-            </span>
-            <span class="border border-[var(--outline-variant)] px-2.5 py-1 text-[var(--secondary)] bg-[var(--surface-container-high)]">
-              Issue {new Date(post.data.date).getFullYear()}
-            </span>
-          </div>
-        </div>
-
-        <!-- Right: cover image -->
-        <div class="relative bg-[var(--surface-container)] flex items-center justify-center overflow-hidden">
-          {post.data.coverImage ? (
-            <img
-              src={post.data.coverImage}
-              alt={post.data.title}
-              class="h-full min-h-[22rem] w-full object-cover"
-            />
-          ) : (
-            <div class="flex min-h-[22rem] items-center justify-center font-['Courier_Prime'] text-[0.68rem] uppercase tracking-[0.2em] text-[var(--outline)]">
-              No image attached
+    <article class="surface-shell mt-6 rounded-[1.75rem] p-4">
+      <div class="surface-inner rounded-[1.5rem] overflow-hidden">
+        <div class="grid lg:grid-cols-[1.05fr_0.95fr]">
+          <div class="p-6 sm:p-8 lg:p-10">
+            <div class="flex flex-wrap items-center gap-2 text-[0.68rem] uppercase tracking-[0.18em] text-[var(--text-soft)]">
+              <span class={`chip chip-${post.data.category}`}>{categoryName}</span>
+              {post.data.featured && <span class="chip border-[rgba(201,154,86,0.28)] bg-[rgba(201,154,86,0.12)] text-[var(--accent-strong)]">Featured</span>}
+              <span>{formatPostDate(post.data.date)}</span>
+              <span>{post.data.readTime}</span>
             </div>
-          )}
+
+            <h1 class="section-heading mt-6 max-w-[15ch] text-[clamp(2.5rem,5.5vw,4.4rem)] font-semibold tracking-[-0.02em] text-[var(--text)]" data-animate-text>
+              {post.data.title}
+            </h1>
+
+            <p class="body-copy mt-6 max-w-[58ch]">
+              {post.data.excerpt || 'A reflective entry from the archive.'}
+            </p>
+
+            <p class="mt-8 text-[0.72rem] uppercase tracking-[0.16em] text-[var(--text-soft)]">
+              Written by <span class="text-[var(--text-muted)]">{post.data.authorName}</span>
+            </p>
+          </div>
+
+          <div class="relative border-t border-[var(--border)] bg-black/20 lg:border-l lg:border-t-0">
+            {post.data.coverImage ? (
+              <img
+                src={post.data.coverImage}
+                alt={post.data.title}
+                class="h-full min-h-[20rem] w-full object-cover"
+              />
+            ) : (
+              <div class="flex min-h-[20rem] items-center justify-center px-8 text-center text-[0.72rem] uppercase tracking-[0.22em] text-[var(--text-soft)]">
+                No image attached
+              </div>
+            )}
+          </div>
         </div>
       </div>
     </article>
 
-    <!-- Content + telemetry sidebar -->
-    <section class="mt-4 grid gap-4 lg:grid-cols-[260px_minmax(0,1fr)]">
-
-      <!-- Sidebar -->
-      <aside class="border border-[var(--outline-variant)] bg-[var(--surface-container-low)] p-6 self-start">
-        <p class="font-['Courier_Prime'] text-[0.72rem] uppercase tracking-[0.1em] text-[var(--primary)] border-b border-[var(--outline-variant)] pb-2 mb-4">
-          Entry Details
-        </p>
-        <div class="space-y-4 font-['Courier_Prime'] text-[0.72rem] uppercase tracking-[0.05em] text-[var(--on-surface-variant)]">
-          <div>
-            <span class="text-[var(--outline)] text-[0.68rem]">Category</span>
-            <div class="mt-1 font-bold text-[var(--primary)]">{categoryName}</div>
-          </div>
-          <div>
-            <span class="text-[var(--outline)] text-[0.68rem]">Read time</span>
-            <div class="mt-1 font-bold text-[var(--primary)]">{post.data.readTime}</div>
-          </div>
-          <div>
-            <span class="text-[var(--outline)] text-[0.68rem]">Author</span>
-            <div class="mt-1 font-bold text-[var(--primary)]">{post.data.authorName}</div>
-          </div>
-          <div>
-            <span class="text-[var(--outline)] text-[0.68rem]">Published</span>
-            <div class="mt-1 font-bold text-[var(--primary)]">{formatPostDate(post.data.date)}</div>
+    <section class="mt-6 grid gap-6 lg:grid-cols-[260px_minmax(0,1fr)]">
+      <aside class="surface-shell self-start rounded-[1.5rem] p-4">
+        <div class="surface-inner rounded-[1.2rem] p-5">
+          <p class="eyebrow">Entry details</p>
+          <div class="mt-5 space-y-4 text-[0.76rem] uppercase tracking-[0.18em] text-[var(--text-soft)]">
+            <div>
+              <div class="text-[0.68rem] text-[var(--text-soft)]">Category</div>
+              <div class="mt-1 text-[0.88rem] text-[var(--text)]">{categoryName}</div>
+            </div>
+            <div>
+              <div class="text-[0.68rem] text-[var(--text-soft)]">Read time</div>
+              <div class="mt-1 text-[0.88rem] text-[var(--text)]">{post.data.readTime}</div>
+            </div>
+            <div>
+              <div class="text-[0.68rem] text-[var(--text-soft)]">Author</div>
+              <div class="mt-1 text-[0.88rem] text-[var(--text)]">{post.data.authorName}</div>
+            </div>
+            <div>
+              <div class="text-[0.68rem] text-[var(--text-soft)]">Published</div>
+              <div class="mt-1 text-[0.88rem] text-[var(--text)]">{formatPostDate(post.data.date)}</div>
+            </div>
           </div>
         </div>
       </aside>
 
-      <!-- Prose content -->
-      <div class="border border-[var(--outline-variant)] bg-[var(--surface-container-low)] p-6 sm:p-8 lg:p-10">
-        <div class="prose-journal max-w-none">
-          <Content />
+      <div class="surface-shell rounded-[1.5rem] p-4">
+        <div class="surface-inner rounded-[1.2rem] p-6 sm:p-8 lg:p-10" data-scroll-reveal>
+          <div class="article-prose max-w-none">
+            <Content />
+          </div>
         </div>
       </div>
-
     </section>
-  </main>
+  </section>
 </MainLayout>

@@ -6,7 +6,7 @@ interface Props {
 const { currentPath = '/' } = Astro.props;
 
 const navItems = [
-  { label: 'Logs',          href: '/' },
+  { label: 'Home',          href: '/' },
   { label: 'Philosophy',    href: '/category/philosophy' },
   { label: 'Science',       href: '/category/science' },
   { label: 'Thoughts',      href: '/category/thoughts' },
@@ -19,26 +19,23 @@ const isActive = (href: string) => {
 };
 ---
 
-<!-- Fixed journal-styled navbar -->
-<header class="fixed left-0 right-0 top-0 z-[90] border-b border-[var(--outline-variant)] bg-[var(--surface)] bg-opacity-95 backdrop-blur-sm">
-  <div class="mx-auto flex h-16 w-full max-w-[1200px] items-center justify-between px-6 lg:px-10">
-
-    <!-- Logo -->
-    <a href="/" class="group flex items-center gap-2 shrink-0">
-      <span class="font-['Courier_Prime'] text-[1.4rem] font-bold italic text-[var(--primary)] tracking-tight">The Inkwell</span>
+<header class="fixed inset-x-0 top-0 z-40 px-4 pt-4 sm:px-6 lg:px-8">
+  <div class="mx-auto flex w-full max-w-[1240px] items-center justify-between rounded-full border border-[var(--border)] bg-[rgba(10,13,19,0.74)] px-4 py-3 shadow-[0_24px_80px_rgba(3,7,16,0.35)] backdrop-blur-2xl sm:px-5">
+    <a href="/" class="group flex items-center gap-3 shrink-0">
+      <span class="inline-flex h-9 w-9 items-center justify-center rounded-full border border-[var(--border)] bg-[rgba(255,255,255,0.03)] text-[0.75rem] font-semibold tracking-[0.18em] text-[var(--accent)]">I</span>
+      <span class="font-medium tracking-[-0.03em] text-[0.98rem] text-[var(--text)] sm:text-[1rem]">The Inkwell</span>
     </a>
 
-    <!-- Desktop Nav -->
-    <nav aria-label="Primary navigation" class="hidden items-center gap-6 lg:flex">
+    <nav aria-label="Primary navigation" class="hidden items-center gap-2 lg:flex">
       {navItems.map((item) => (
         <a
           href={item.href}
           aria-current={isActive(item.href) ? 'page' : undefined}
           class:list={[
-            "font-['Courier_Prime'] text-[0.78rem] uppercase tracking-[0.05em] transition-colors duration-150 pb-1",
+            'rounded-full px-4 py-2 text-[0.72rem] font-medium uppercase tracking-[0.18em] transition-all duration-200',
             isActive(item.href)
-              ? 'border-b-2 border-[var(--primary)] text-[var(--primary)] font-bold'
-              : 'text-[var(--on-surface-variant)] hover:text-[var(--primary)]',
+              ? 'bg-[rgba(201,154,86,0.14)] text-[var(--text)] ring-1 ring-[rgba(201,154,86,0.22)]'
+              : 'text-[var(--text-muted)] hover:bg-white/5 hover:text-[var(--text)]',
           ]}
         >
           {item.label}
@@ -46,31 +43,31 @@ const isActive = (href: string) => {
       ))}
     </nav>
 
-    <!-- Mobile hamburger -->
     <button
       id="nav-toggle"
       aria-label="Toggle navigation menu"
       aria-expanded="false"
-      class="flex flex-col gap-1.5 p-2 lg:hidden"
+      class="group relative flex h-11 w-11 items-center justify-center rounded-full border border-[var(--border)] bg-white/5 text-[var(--text)] transition-transform duration-200 active:scale-95 lg:hidden"
     >
-      <span class="block h-[1.5px] w-6 bg-[var(--primary)] transition-all duration-200" id="ham-top"></span>
-      <span class="block h-[1.5px] w-6 bg-[var(--primary)] transition-all duration-200" id="ham-mid"></span>
-      <span class="block h-[1.5px] w-4 bg-[var(--primary)] transition-all duration-200 self-end" id="ham-bot"></span>
+      <span class="sr-only">Menu</span>
+      <span id="ham-top" class="absolute h-[1.5px] w-5 -translate-y-1.5 rounded-full bg-current transition-all duration-300"></span>
+      <span id="ham-mid" class="absolute h-[1.5px] w-5 rounded-full bg-current transition-all duration-300"></span>
+      <span id="ham-bot" class="absolute h-[1.5px] w-3 translate-y-1.5 rounded-full bg-current transition-all duration-300"></span>
     </button>
   </div>
 
-  <!-- Mobile menu (hidden by default) -->
-  <div id="mobile-menu" class="hidden border-t border-[var(--outline-variant)] bg-[var(--surface-container-low)] px-6 pb-6 pt-4 lg:hidden">
-    <nav aria-label="Mobile navigation" class="flex flex-col gap-1">
-      {navItems.map((item) => (
+  <div id="mobile-menu" class="pointer-events-none invisible absolute left-4 right-4 top-[5.5rem] z-40 rounded-[1.5rem] border border-[var(--border)] bg-[rgba(10,13,19,0.92)] p-3 opacity-0 shadow-[0_24px_80px_rgba(3,7,16,0.55)] backdrop-blur-2xl transition-all duration-300 lg:hidden">
+    <nav aria-label="Mobile navigation" class="grid gap-2">
+      {navItems.map((item, index) => (
         <a
           href={item.href}
           aria-current={isActive(item.href) ? 'page' : undefined}
           class:list={[
-            "font-['Courier_Prime'] text-[0.82rem] uppercase tracking-[0.05em] py-3 border-b border-[var(--outline-variant)]/30 transition-colors",
+            'rounded-[1rem] border border-transparent px-4 py-4 text-[0.75rem] font-medium uppercase tracking-[0.18em] transition-all duration-200',
+            `mobile-item mobile-item-${index + 1}`,
             isActive(item.href)
-              ? 'text-[var(--primary)] font-bold'
-              : 'text-[var(--on-surface-variant)] hover:text-[var(--primary)]',
+              ? 'border-[rgba(201,154,86,0.2)] bg-[rgba(201,154,86,0.1)] text-[var(--text)]'
+              : 'text-[var(--text-muted)] hover:bg-white/5 hover:text-[var(--text)]',
           ]}
         >
           {item.label}
@@ -88,16 +85,18 @@ const isActive = (href: string) => {
   const hamBot = document.getElementById('ham-bot');
 
   toggle?.addEventListener('click', () => {
-    const open = menu?.classList.toggle('hidden') === false;
+    const open = menu?.classList.toggle('opacity-0') === false;
     toggle.setAttribute('aria-expanded', String(open));
+    menu?.classList.toggle('pointer-events-none', !open);
+    menu?.classList.toggle('invisible', !open);
     if (open) {
-      hamTop?.classList.add('translate-y-2', 'rotate-45');
-      hamMid?.classList.add('opacity-0');
-      hamBot?.classList.add('-translate-y-2', '-rotate-45', 'w-6');
+      hamTop?.classList.add('translate-y-0', 'rotate-45');
+      hamMid?.classList.add('opacity-0', 'scale-x-0');
+      hamBot?.classList.add('translate-y-0', '-rotate-45', 'w-5');
     } else {
-      hamTop?.classList.remove('translate-y-2', 'rotate-45');
-      hamMid?.classList.remove('opacity-0');
-      hamBot?.classList.remove('-translate-y-2', '-rotate-45', 'w-6');
+      hamTop?.classList.remove('translate-y-0', 'rotate-45');
+      hamMid?.classList.remove('opacity-0', 'scale-x-0');
+      hamBot?.classList.remove('translate-y-0', '-rotate-45', 'w-5');
     }
   });
 </script>
