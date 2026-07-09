@@ -309,14 +309,40 @@ a.chip-miscellaneous:hover {
   transform: translateY(0) scale(0.98);
 }
 
-.article-prose h1,
-.article-prose h2,
-.article-prose h3,
+.article-prose h1 {
+  font-family: "Newsreader", Georgia, serif;
+  color: var(--text);
+  margin-top: 1em;
+  margin-bottom: 0.7em;
+  font-size: 2.4rem;
+  font-weight: 600;
+}
+
+.article-prose h2 {
+  font-family: "Newsreader", Georgia, serif;
+  color: var(--text);
+  margin-top: 2em;
+  margin-bottom: 0.7em;
+  font-size: 2rem;
+  font-weight: 600;
+}
+
+.article-prose h3 {
+  font-family: "Newsreader", Georgia, serif;
+  color: var(--text);
+  margin-top: 2em;
+  margin-bottom: 0.7em;
+  font-size: 1.6rem;
+  font-weight: 600;
+}
+
 .article-prose h4 {
   font-family: "Newsreader", Georgia, serif;
   color: var(--text);
   margin-top: 2em;
   margin-bottom: 0.7em;
+  font-size: 1.3rem;
+  font-weight: 600;
 }
 
 .article-prose p {

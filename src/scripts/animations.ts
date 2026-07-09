@@ -56,20 +56,24 @@ export function initEntranceAnimations() {
     );
   }
 
-  // Hero heading letter-by-letter reveal
+  // Hero heading word-by-word reveal so wrapping stays on word boundaries
   const heroHeading = document.querySelector('[data-animate="hero-heading"]');
   if (heroHeading && heroHeading.textContent) {
     const text = heroHeading.textContent;
     heroHeading.innerHTML = text
-      .split('')
-      .map((char) => `<span class="char" style="display:inline-block;opacity:0;">${char === ' ' ? '&nbsp;' : char}</span>`)
+      .trim()
+      .split(/(\s+)/)
+      .map((token) => {
+        if (/^\s+$/.test(token)) return token;
+        return `<span class="word" style="display:inline-block;opacity:0;">${token}</span>`;
+      })
       .join('');
 
-    const chars = heroHeading.querySelectorAll('.char');
-    gsap.to(chars, {
+    const words = heroHeading.querySelectorAll('.word');
+    gsap.to(words, {
       opacity: 1,
-      duration: 0.05,
-      stagger: 0.03,
+      duration: 0.12,
+      stagger: 0.04,
       ease: 'power1.in',
       delay: 0.2,
     });
@@ -171,14 +175,18 @@ export function initTextAnimations() {
     if (!text) return;
 
     el.innerHTML = text
-      .split('')
-      .map((char) => `<span class="anim-char" style="display:inline-block;opacity:0;">${char === ' ' ? '&nbsp;' : char}</span>`)
+      .trim()
+      .split(/(\s+)/)
+      .map((token) => {
+        if (/^\s+$/.test(token)) return token;
+        return `<span class="anim-word" style="display:inline-block;opacity:0;">${token}</span>`;
+      })
       .join('');
 
-    const chars = el.querySelectorAll('.anim-char');
-    gsap.to(chars, {
+    const words = el.querySelectorAll('.anim-word');
+    gsap.to(words, {
       opacity: 1,
-      duration: 0.06,
+      duration: 0.12,
       stagger: 0.04,
       ease: 'power1.in',
       scrollTrigger: {
