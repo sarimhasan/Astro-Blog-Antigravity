@@ -6,7 +6,6 @@ interface Props {
 const { currentPath = '/' } = Astro.props;
 
 const navItems = [
-  { label: 'Journal', href: '/journal' },
   { label: 'Philosophy', href: '/category/philosophy' },
   { label: 'Science', href: '/category/science' },
   { label: 'Thoughts', href: '/category/thoughts' },
@@ -14,10 +13,6 @@ const navItems = [
 ];
 
 const isActive = (href: string) => {
-  if (href === '/journal') {
-    return currentPath === '/journal' || currentPath === '/';
-  }
-
   return currentPath.startsWith(href);
 };
 ---

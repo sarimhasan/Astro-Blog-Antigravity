@@ -7,7 +7,6 @@ const { currentPath = '/' } = Astro.props;
 
 const navItems = [
   { label: 'Logs',          href: '/' },
-  { label: 'Journal',       href: '/journal' },
   { label: 'Philosophy',    href: '/category/philosophy' },
   { label: 'Science',       href: '/category/science' },
   { label: 'Thoughts',      href: '/category/thoughts' },
@@ -15,8 +14,7 @@ const navItems = [
 ];
 
 const isActive = (href: string) => {
-  if (href === '/') return currentPath === '/';
-  if (href === '/journal') return currentPath === '/journal' || currentPath.startsWith('/blog/');
+  if (href === '/') return currentPath === '/' || currentPath.startsWith('/blog/');
   return currentPath.startsWith(href);
 };
 ---

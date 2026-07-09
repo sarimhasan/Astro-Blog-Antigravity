@@ -41,6 +41,12 @@ export default config({
           multiline: true,
         }),
 
+        // Publish date used by the site for sorting and display
+        date: fields.text({
+          label: "Publish Date",
+          defaultValue: new Date().toISOString().slice(0, 10),
+        }),
+
         // Categorization for filtering and organization
         category: fields.select({
           label: "Category",

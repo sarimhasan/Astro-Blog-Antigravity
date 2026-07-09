@@ -66,7 +66,7 @@ const CATEGORIES: Record<string, string> = {
     <div class="w-full md:w-1/2 flex flex-col gap-4">
       <div class="flex gap-2 items-center flex-wrap">
         <span class="px-2 py-1 font-['Courier_Prime'] text-[0.72rem] uppercase tracking-[0.05em] chip-philosophy">
-          {featuredPost ? (CATEGORIES[featuredPost.category] || featuredPost.category) : 'Journal'}
+          {featuredPost ? (CATEGORIES[featuredPost.category] || featuredPost.category) : 'General'}
         </span>
         <span class="font-['Source_Serif_4'] text-[0.82rem] text-[var(--outline)]">
           {featuredPost ? formatPostDate(featuredPost.date) : 'No date'}
@@ -138,10 +138,10 @@ const CATEGORIES: Record<string, string> = {
 
       <div class="mt-4 flex justify-center">
         <a
-          href="/journal"
+          href="#more-from-archive"
           class="bg-[var(--primary)] text-[var(--on-primary)] font-['Courier_Prime'] text-[0.78rem] uppercase tracking-[0.05em] px-6 py-2.5 paper-shadow btn-paper rounded-[0.25rem] inline-block"
         >
-          View Archives
+          Explore Archive
         </a>
       </div>
     </section>
@@ -192,7 +192,7 @@ const CATEGORIES: Record<string, string> = {
        SECTION 4 — FIELD INVENTORY (Additional Posts)
   ═══════════════════════════════════════════════════ -->
   {gearPosts.length > 0 && (
-    <section class="mt-16 px-6 lg:px-10">
+    <section id="more-from-archive" class="mt-16 px-6 lg:px-10">
       <div class="flex items-baseline justify-between gap-4 mb-8">
         <h3 class="font-['Courier_Prime'] text-[1.15rem] font-bold text-[var(--primary)]">
           More From the Archive
