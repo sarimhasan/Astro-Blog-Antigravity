@@ -1,102 +1,423 @@
 ---
+import { CATEGORIES } from '../lib/categories';
+import Icon from './Icon.astro';
+import ThemeToggle from './ThemeToggle.astro';
+
 interface Props {
   currentPath?: string;
 }
 
 const { currentPath = '/' } = Astro.props;
 
-const navItems = [
-  { label: 'Home',          href: '/' },
-  { label: 'Philosophy',    href: '/category/philosophy' },
-  { label: 'Science',       href: '/category/science' },
-  { label: 'Thoughts',      href: '/category/thoughts' },
-  { label: 'Miscellaneous', href: '/category/miscellaneous' },
+const links = [
+  ...CATEGORIES.map((c) => ({
+    href: `/category/${c.slug}`,
+    label: c.label,
+    slug: c.slug,
+    wavelength: c.wavelength
+  })),
+  { href: '/reading', label: 'Reading', slug: 'neutral', wavelength: 'LOG' }
 ];
 
-const isActive = (href: string) => {
-  if (href === '/') return currentPath === '/' || currentPath.startsWith('/blog/');
-  return currentPath.startsWith(href);
-};
+const isActive = (href: string) => currentPath === href || currentPath.startsWith(href + '/');
+const homeActive = currentPath === '/';
 ---
 
-<header class="fixed inset-x-0 top-0 z-40 px-4 pt-4 sm:px-6 lg:px-8">
-  <div class="mx-auto flex w-full max-w-[1240px] items-center justify-between rounded-full border border-[var(--border)] bg-[rgba(10,13,19,0.74)] px-4 py-3 shadow-[0_24px_80px_rgba(3,7,16,0.35)] backdrop-blur-2xl sm:px-5">
-    <a href="/" class="group flex items-center gap-3 shrink-0">
-      <span class="inline-flex h-9 w-9 items-center justify-center rounded-full border border-[var(--border)] bg-[rgba(255,255,255,0.03)] text-[0.75rem] font-semibold tracking-[0.18em] text-[var(--accent)]">I</span>
-      <span class="font-medium tracking-[-0.03em] text-[0.98rem] text-[var(--text)] sm:text-[1rem]">The Inkwell</span>
+<header class="nav" data-nav>
+  <div class="nav__inner shell-wide">
+    <a href="/" class="mark" aria-current={homeActive ? 'page' : undefined} data-magnetic>
+      <span class="mark__glyph" aria-hidden="true">
+        <Icon name="prism" size={22} strokeWidth={1.5} />
+      </span>
+      <span class="mark__text">
+        <span class="mark__name">Sarim Hasan</span>
+        <span class="mark__sub readout">Physics · Philosophy · Books</span>
+      </span>
     </a>
 
-    <nav aria-label="Primary navigation" class="hidden items-center gap-2 lg:flex">
-      {navItems.map((item) => (
-        <a
-          href={item.href}
-          aria-current={isActive(item.href) ? 'page' : undefined}
-          class:list={[
-            'rounded-full px-4 py-2 text-[0.72rem] font-medium uppercase tracking-[0.18em] transition-all duration-200',
-            isActive(item.href)
-              ? 'bg-[rgba(201,154,86,0.14)] text-[var(--text)] ring-1 ring-[rgba(201,154,86,0.22)]'
-              : 'text-[var(--text-muted)] hover:bg-white/5 hover:text-[var(--text)]',
-          ]}
-        >
-          {item.label}
-        </a>
-      ))}
+    <nav class="nav__links" aria-label="Categories">
+      {
+        links.map((link) => (
+          <a
+            href={link.href}
+            class:list={['nav__link', { 'is-active': isActive(link.href) }]}
+            style={`--hue: var(--cat-${link.slug}); --hue-ink: var(--cat-${link.slug}-ink); --hue-glow: var(--cat-${link.slug}-glow);`}
+            aria-current={isActive(link.href) ? 'page' : undefined}
+            data-magnetic
+          >
+            <span class="nav__link-label">{link.label}</span>
+            <span class="nav__link-wave readout">{link.wavelength}</span>
+          </a>
+        ))
+      }
     </nav>
 
-    <button
-      id="nav-toggle"
-      aria-label="Toggle navigation menu"
-      aria-expanded="false"
-      class="group relative flex h-11 w-11 items-center justify-center rounded-full border border-[var(--border)] bg-white/5 text-[var(--text)] transition-transform duration-200 active:scale-95 lg:hidden"
-    >
-      <span class="sr-only">Menu</span>
-      <span id="ham-top" class="absolute h-[1.5px] w-5 -translate-y-1.5 rounded-full bg-current transition-all duration-300"></span>
-      <span id="ham-mid" class="absolute h-[1.5px] w-5 rounded-full bg-current transition-all duration-300"></span>
-      <span id="ham-bot" class="absolute h-[1.5px] w-3 translate-y-1.5 rounded-full bg-current transition-all duration-300"></span>
+    <div class="nav__actions">
+      <ThemeToggle />
+      <button type="button" class="nav__burger" data-menu-open aria-label="Open menu" aria-expanded="false" aria-controls="mobile-menu">
+        <Icon name="menu" size={22} />
+      </button>
+    </div>
+  </div>
+  <div class="nav__rule" aria-hidden="true"></div>
+</header>
+
+<div class="menu" id="mobile-menu" data-menu hidden>
+  <div class="menu__head shell-wide">
+    <span class="readout">Navigate</span>
+    <button type="button" class="nav__burger" data-menu-close aria-label="Close menu">
+      <Icon name="close" size={22} />
     </button>
   </div>
 
-  <div id="mobile-menu" class="pointer-events-none invisible absolute left-4 right-4 top-[5.5rem] z-40 rounded-[1.5rem] border border-[var(--border)] bg-[rgba(10,13,19,0.92)] p-3 opacity-0 shadow-[0_24px_80px_rgba(3,7,16,0.55)] backdrop-blur-2xl transition-all duration-300 lg:hidden">
-    <nav aria-label="Mobile navigation" class="grid gap-2">
-      {navItems.map((item, index) => (
+  <nav class="menu__list shell-wide" aria-label="Categories">
+    <a href="/" class="menu__item" data-menu-item>
+      <span class="menu__item-label">Home</span>
+      <Icon name="arrow-up-right" size={26} strokeWidth={1.4} />
+    </a>
+    {
+      links.map((link) => (
         <a
-          href={item.href}
-          aria-current={isActive(item.href) ? 'page' : undefined}
-          class:list={[
-            'rounded-[1rem] border border-transparent px-4 py-4 text-[0.75rem] font-medium uppercase tracking-[0.18em] transition-all duration-200',
-            `mobile-item mobile-item-${index + 1}`,
-            isActive(item.href)
-              ? 'border-[rgba(201,154,86,0.2)] bg-[rgba(201,154,86,0.1)] text-[var(--text)]'
-              : 'text-[var(--text-muted)] hover:bg-white/5 hover:text-[var(--text)]',
-          ]}
+          href={link.href}
+          class="menu__item"
+          data-menu-item
+          style={`--hue: var(--cat-${link.slug}); --hue-ink: var(--cat-${link.slug}-ink);`}
         >
-          {item.label}
+          <span class="menu__item-label">{link.label}</span>
+          <span class="menu__item-wave readout">{link.wavelength}</span>
+          <Icon name="arrow-up-right" size={26} strokeWidth={1.4} />
         </a>
-      ))}
-    </nav>
-  </div>
-</header>
-
-<script>
-  const toggle = document.getElementById('nav-toggle');
-  const menu   = document.getElementById('mobile-menu');
-  const hamTop = document.getElementById('ham-top');
-  const hamMid = document.getElementById('ham-mid');
-  const hamBot = document.getElementById('ham-bot');
-
-  toggle?.addEventListener('click', () => {
-    const open = menu?.classList.toggle('opacity-0') === false;
-    toggle.setAttribute('aria-expanded', String(open));
-    menu?.classList.toggle('pointer-events-none', !open);
-    menu?.classList.toggle('invisible', !open);
-    if (open) {
-      hamTop?.classList.add('translate-y-0', 'rotate-45');
-      hamMid?.classList.add('opacity-0', 'scale-x-0');
-      hamBot?.classList.add('translate-y-0', '-rotate-45', 'w-5');
-    } else {
-      hamTop?.classList.remove('translate-y-0', 'rotate-45');
-      hamMid?.classList.remove('opacity-0', 'scale-x-0');
-      hamBot?.classList.remove('translate-y-0', '-rotate-45', 'w-5');
+      ))
     }
-  });
-</script>
+  </nav>
+
+  <div class="menu__foot shell-wide">
+    <span class="rule-spectrum menu__foot-rule"></span>
+  </div>
+</div>
+
+<style>
+  .nav {
+    position: fixed;
+    inset: 0 0 auto 0;
+    z-index: 60;
+    will-change: transform;
+  }
+
+  .nav__inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1.5rem;
+    padding-block: 1.1rem;
+  }
+
+  /* A rule rather than a filled bar: the ground shows through until you
+     scroll, then a backdrop fades in behind the whole header. */
+  .nav__rule {
+    height: 1px;
+    background: var(--border);
+    opacity: 0;
+    transition: opacity var(--t-base) var(--ease);
+  }
+
+  .nav::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: color-mix(in oklab, var(--bg) 82%, transparent);
+    backdrop-filter: blur(14px) saturate(1.3);
+    -webkit-backdrop-filter: blur(14px) saturate(1.3);
+    opacity: 0;
+    transition: opacity var(--t-base) var(--ease);
+    pointer-events: none;
+  }
+
+  .nav.is-stuck::before,
+  .nav.is-stuck .nav__rule {
+    opacity: 1;
+  }
+
+  /* The header compacts when stuck. The padding change is deliberately not
+     transitioned: animating a layout property thrashes, and the shift lands
+     under the backdrop fading in, so what you perceive is the backdrop
+     arriving rather than the header jumping. */
+  .nav.is-stuck .nav__inner {
+    padding-block: 0.7rem;
+  }
+
+  /* --- wordmark --- */
+
+  .mark {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.65rem;
+    position: relative;
+    z-index: 1;
+  }
+
+  .mark__glyph {
+    display: grid;
+    place-items: center;
+    width: 2.35rem;
+    height: 2.35rem;
+    flex: none;
+    border-radius: var(--r-sm);
+    color: var(--text);
+    background: var(--surface-2);
+    border: 1px solid var(--border);
+    transition:
+      color var(--t-base) var(--ease),
+      background var(--t-base) var(--ease),
+      border-color var(--t-base) var(--ease);
+  }
+
+  .mark:hover .mark__glyph {
+    color: var(--cat-science);
+    border-color: color-mix(in oklab, var(--cat-science) 45%, transparent);
+    background: var(--cat-science-soft);
+  }
+
+  .mark__text {
+    display: flex;
+    flex-direction: column;
+    gap: 0.1rem;
+    line-height: 1;
+  }
+
+  .mark__name {
+    font-family: var(--font-display);
+    font-size: 0.95rem;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    color: var(--text);
+  }
+
+  .mark__sub {
+    font-size: 0.72rem;
+    letter-spacing: 0.005em;
+  }
+
+  @media (max-width: 460px) {
+    .mark__sub {
+      display: none;
+    }
+  }
+
+  /* --- desktop links --- */
+
+  .nav__links {
+    display: none;
+    align-items: center;
+    gap: 0.15rem;
+    position: relative;
+    z-index: 1;
+  }
+
+  @media (min-width: 1024px) {
+    .nav__links {
+      display: flex;
+    }
+  }
+
+  .nav__link {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.18rem;
+    padding: 0.45rem 0.85rem 0.4rem;
+    border-radius: var(--r-sm);
+    transition: color var(--t-fast) var(--ease);
+  }
+
+  .nav__link-label {
+    font-family: var(--font-display);
+    font-size: 0.875rem;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    color: var(--text-muted);
+    transition: color var(--t-fast) var(--ease);
+  }
+
+  .nav__link-wave {
+    font-size: 0.65rem;
+    letter-spacing: 0;
+    opacity: 0;
+    transform: translateY(-2px);
+    transition:
+      opacity var(--t-base) var(--ease),
+      transform var(--t-base) var(--ease),
+      color var(--t-fast) var(--ease);
+  }
+
+  /* The underline is the hue: it draws in on hover and stays lit when the
+     category page is the one you are on. */
+  .nav__link::after {
+    content: '';
+    position: absolute;
+    left: 0.85rem;
+    right: 0.85rem;
+    bottom: 0;
+    height: 2px;
+    border-radius: 99px;
+    background: var(--hue);
+    box-shadow: 0 0 10px var(--hue-glow);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform var(--t-base) var(--ease);
+  }
+
+  .nav__link:hover .nav__link-label,
+  .nav__link.is-active .nav__link-label {
+    color: var(--text);
+  }
+
+  .nav__link:hover .nav__link-wave,
+  .nav__link.is-active .nav__link-wave {
+    opacity: 1;
+    transform: translateY(0);
+    color: var(--hue-ink);
+  }
+
+  .nav__link:hover::after,
+  .nav__link.is-active::after {
+    transform: scaleX(1);
+  }
+
+  /* --- actions --- */
+
+  .nav__actions {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    position: relative;
+    z-index: 1;
+  }
+
+  .nav__burger {
+    display: grid;
+    place-items: center;
+    width: 2.4rem;
+    height: 2.4rem;
+    border-radius: 99px;
+    border: 1px solid var(--border);
+    color: var(--text-muted);
+    transition:
+      color var(--t-fast) var(--ease),
+      border-color var(--t-fast) var(--ease),
+      background var(--t-fast) var(--ease);
+  }
+
+  .nav__burger:hover {
+    color: var(--text);
+    border-color: var(--border-strong);
+    background: var(--surface-2);
+  }
+
+  @media (min-width: 1024px) {
+    .nav__burger {
+      display: none;
+    }
+  }
+
+  /* --- mobile overlay --- */
+
+  .menu {
+    position: fixed;
+    inset: 0;
+    z-index: 80;
+    display: flex;
+    flex-direction: column;
+    background: var(--bg);
+    overflow-y: auto;
+  }
+
+  .menu[hidden] {
+    display: none;
+  }
+
+  .menu__head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-block: 1.1rem;
+  }
+
+  .menu__head .nav__burger {
+    display: grid;
+  }
+
+  .menu__list {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    justify-content: center;
+    padding-block: 2rem;
+  }
+
+  .menu__item {
+    display: flex;
+    align-items: baseline;
+    gap: 0.6rem;
+    padding-block: 0.7rem;
+    border-bottom: 1px solid var(--border);
+    color: var(--text);
+    min-width: 0;
+  }
+
+  .menu__item:first-child {
+    border-top: 1px solid var(--border);
+  }
+
+  .menu__item-label {
+    font-family: var(--font-display);
+    font-size: clamp(1.75rem, 7.6vw, 3rem);
+    font-weight: 800;
+    letter-spacing: -0.035em;
+    line-height: 1;
+    min-width: 0;
+    transition: color var(--t-base) var(--ease);
+  }
+
+  .menu__item-wave {
+    color: var(--hue-ink);
+    flex: none;
+  }
+
+  @media (max-width: 400px) {
+    .menu__item-wave {
+      display: none;
+    }
+  }
+
+  .menu__item :global(svg) {
+    margin-left: auto;
+    flex: none;
+    align-self: center;
+    color: var(--text-soft);
+    transition:
+      transform var(--t-base) var(--ease),
+      color var(--t-base) var(--ease);
+  }
+
+  .menu__item:hover .menu__item-label,
+  .menu__item:focus-visible .menu__item-label {
+    color: var(--hue-ink);
+  }
+
+  .menu__item:hover :global(svg),
+  .menu__item:focus-visible :global(svg) {
+    color: var(--hue-ink);
+    transform: translate(3px, -3px);
+  }
+
+  .menu__foot {
+    padding-block: 1.5rem 2.25rem;
+  }
+
+  .menu__foot-rule {
+    display: block;
+    width: 100%;
+  }
+</style>

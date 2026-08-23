@@ -1,78 +1,293 @@
 ---
-import MainLayout from '../../layouts/MainLayout.astro';
 import { getCollection } from 'astro:content';
-import { formatPostDate, mapPostEntry, sortPostsByDateDesc } from '../../lib/content';
+import MainLayout from '../../layouts/MainLayout.astro';
+import PostRow from '../../components/PostRow.astro';
+import DispersionMark from '../../components/DispersionMark.astro';
+import Icon from '../../components/Icon.astro';
+import { CATEGORIES, getCategory, isCategorySlug } from '../../lib/categories';
+import { mapPostEntry, sortPostsByDateDesc } from '../../lib/content';
 
 export const prerender = false;
 
-const { category } = Astro.params;
+const { category: slug } = Astro.params;
 
-const CATEGORIES: Record<string, string> = {
-  philosophy: 'Philosophy',
-  science: 'Science',
-  thoughts: 'Thoughts',
-  miscellaneous: 'Miscellaneous',
-};
+// Anything that is not one of the four real sections goes home rather than
+// rendering a convincingly empty page for a category that does not exist.
+if (!isCategorySlug(slug)) return Astro.redirect('/');
 
-const title = category ? CATEGORIES[category as string] || category : 'Category';
-
+const category = getCategory(slug)!;
 const posts = sortPostsByDateDesc(
-  (await getCollection('posts'))
-    .filter((post) => post.data.category === category)
-    .map(mapPostEntry)
+  (await getCollection('posts')).map(mapPostEntry).filter((p) => p.category === slug)
 );
+
+const others = CATEGORIES.filter((c) => c.slug !== slug);
 ---
 
 <MainLayout
-  title={`${title} — The Inkwell`}
-  description={`Browse posts in the ${title.toLowerCase()} category.`}
+  page="category"
+  hue={slug}
+  title={`${category.label} — Sarim Hasan`}
+  description={category.blurb}
 >
-  <section class="fade-in">
-    <div class="max-w-3xl">
-      <p class="eyebrow">Category archive</p>
-      <h1 class="section-heading mt-5 text-[clamp(2.7rem,6vw,4.6rem)] font-semibold tracking-[-0.02em] text-[var(--text)]" data-animate="hero-heading">
-        {title}
-      </h1>
-      <p class="body-copy mt-5 max-w-[48ch]">
-        Posts grouped by topic, sorted with the newest entry first.
-      </p>
-      <a href="/" class="button-primary group mt-8">
-        <span>Back to home</span>
-        <span aria-hidden="true" class="flex h-8 w-8 items-center justify-center rounded-full bg-white/8">←</span>
-      </a>
-    </div>
+  <section class="cat">
+    <div class="cat__wash" aria-hidden="true"></div>
 
-    {posts.length > 0 ? (
-      <section class="mt-10 space-y-4">
-        {posts.map((post, index) => (
-          <article class="surface-shell rounded-[1.5rem] p-3 transition-transform duration-200 hover:-translate-y-0.5" data-scroll-reveal data-hover-card>
-            <div class="surface-inner rounded-[1.2rem] p-5 sm:p-6">
-              <div class="flex flex-wrap items-center gap-3 text-[0.68rem] uppercase tracking-[0.14em] text-[var(--text-soft)]">
-                <span>Entry {String(index + 1).padStart(2, '0')}</span>
-                <span class={`chip chip-${category}`}>{title}</span>
-                <span>{formatPostDate(post.date)}</span>
-              </div>
+    <div class="shell cat__inner">
+      <h1 class="display display-xl cat__title" data-split-lines>{category.label}</h1>
 
-              <a href={`/${post.slug}`} class="group mt-4 block">
-                <h2 class="section-heading max-w-[24ch] text-[clamp(1.35rem,3vw,2rem)] font-medium tracking-[-0.02em] transition-colors duration-200 group-hover:text-[var(--accent)]">
-                  {post.title}
-                </h2>
-                <p class="body-copy mt-3 max-w-[68ch]">{post.excerpt || 'A reflective entry from the journal.'}</p>
-              </a>
-
-              <p class="mt-4 text-[0.68rem] uppercase tracking-[0.14em] text-[var(--text-soft)]">
-                {post.readTime || '5 min read'}
-              </p>
-            </div>
-          </article>
-        ))}
-      </section>
-    ) : (
-      <section class="mt-10 surface-shell rounded-[1.5rem] p-4">
-        <div class="surface-inner rounded-[1.2rem] p-6">
-          <p class="body-copy">No posts in this category yet.</p>
+      <div class="cat__lead">
+        <p class="lede cat__blurb" data-reveal>{category.blurb}</p>
+        <div class="cat__stats" data-reveal>
+          <span class="readout readout-hue cat__wave">{category.wavelength}</span>
+          <span class="readout" data-scramble>
+            {posts.length} {posts.length === 1 ? 'entry' : 'entries'}
+          </span>
         </div>
-      </section>
-    )}
+      </div>
+    </div>
   </section>
+
+  <section class="shell cat__body">
+    {
+      posts.length > 0 ? (
+        <ol class="cat__list">
+          {posts.map((post, i) => (
+            <PostRow post={post} index={i + 1} />
+          ))}
+        </ol>
+      ) : (
+        <div class="void" data-reveal>
+          <div class="void__text">
+            <p class="display display-md void__line">
+              Nothing at {category.wavelength} yet.
+            </p>
+            <p class="copy void__copy">
+              This section is real but unwritten. When something lands here it will carry this
+              colour — until then, the other three wavelengths have more to say.
+            </p>
+          </div>
+          <DispersionMark class="void__mark" />
+        </div>
+      )
+    }
+  </section>
+
+  <nav class="shell cat__jump" aria-label="Other sections">
+    <span class="readout cat__jump-label">Elsewhere</span>
+    <ul class="cat__jump-list">
+      {
+        others.map((c) => (
+          <li>
+            <a
+              href={`/category/${c.slug}`}
+              class="cat__jump-link"
+              style={`--hue: var(--cat-${c.slug}); --hue-ink: var(--cat-${c.slug}-ink); --hue-glow: var(--cat-${c.slug}-glow);`}
+            >
+              <span class="cat__jump-bar" aria-hidden="true" />
+              <span class="cat__jump-name">{c.label}</span>
+              <Icon name="arrow-up-right" size={18} strokeWidth={1.5} />
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+  </nav>
 </MainLayout>
+
+<style>
+  .cat {
+    position: relative;
+    padding-block: 10rem 3rem;
+    isolation: isolate;
+  }
+
+  @media (min-width: 900px) {
+    .cat {
+      padding-block: 12rem 4rem;
+    }
+  }
+
+  /* The section opens on a field of its own wavelength. */
+  .cat__wash {
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    background:
+      radial-gradient(70% 110% at 88% 0%, var(--hue-soft), transparent 66%),
+      linear-gradient(180deg, color-mix(in oklab, var(--hue) 9%, transparent), transparent 82%);
+  }
+
+  .cat::before {
+    content: '';
+    position: absolute;
+    inset: 0 0 auto 0;
+    height: 2px;
+    background: var(--hue);
+    box-shadow: 0 0 24px var(--hue-glow);
+  }
+
+  .cat__inner {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+  }
+
+  .cat__title {
+    color: var(--text);
+  }
+
+  .cat__lead {
+    display: grid;
+    gap: 1.5rem;
+    padding-top: 1.75rem;
+    border-top: 1px solid var(--border);
+  }
+
+  @media (min-width: 800px) {
+    .cat__lead {
+      grid-template-columns: minmax(0, 1fr) auto;
+      align-items: end;
+      gap: 3rem;
+    }
+  }
+
+  .cat__stats {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+  }
+
+  .cat__wave {
+    font-size: 0.8125rem;
+  }
+
+  .cat__body {
+    padding-block: 1rem 3rem;
+  }
+
+  .cat__list {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    border-top: 1px solid var(--border);
+  }
+
+  /* ------------------------------------------------------- empty state */
+
+  .void {
+    display: grid;
+    gap: 2.5rem;
+    align-items: center;
+    padding-block: 3rem 4rem;
+    border-top: 1px solid var(--border);
+  }
+
+  @media (min-width: 880px) {
+    .void {
+      grid-template-columns: 0.9fr 1.1fr;
+      gap: 4rem;
+      padding-block: 4rem 6rem;
+    }
+  }
+
+  .void__line {
+    color: var(--text);
+    max-width: 16ch;
+  }
+
+  .void__copy {
+    margin-top: 1.25rem;
+    max-width: 44ch;
+  }
+
+  .void__mark {
+    max-width: 34rem;
+    margin-inline: auto;
+  }
+
+  /* ---------------------------------------------------------- jump nav */
+
+  .cat__jump {
+    padding-block: 2rem 1rem;
+    border-top: 1px solid var(--border);
+  }
+
+  .cat__jump-label {
+    display: block;
+    margin-bottom: 1.25rem;
+  }
+
+  .cat__jump-list {
+    display: grid;
+    gap: 0;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  @media (min-width: 800px) {
+    .cat__jump-list {
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1px;
+    }
+  }
+
+  .cat__jump-link {
+    display: flex;
+    align-items: center;
+    gap: 0.85rem;
+    padding: 1.1rem 1.25rem 1.1rem 0;
+    border-bottom: 1px solid var(--border);
+    color: var(--text-muted);
+    transition: color var(--t-base) var(--ease);
+  }
+
+  @media (min-width: 800px) {
+    .cat__jump-link {
+      padding-right: 2rem;
+    }
+  }
+
+  /* The bar reserves its full width and scales into it, so it grows without
+     animating layout and without shoving the label sideways on hover. */
+  .cat__jump-bar {
+    display: block;
+    width: 3rem;
+    height: 2px;
+    flex: none;
+    border-radius: 99px;
+    background: var(--hue);
+    box-shadow: 0 0 10px var(--hue-glow);
+    transform: scaleX(0.583);
+    transform-origin: left center;
+    transition: transform var(--t-base) var(--ease);
+  }
+
+  .cat__jump-name {
+    font-family: var(--font-display);
+    font-size: 1.0625rem;
+    font-weight: 600;
+    letter-spacing: -0.015em;
+  }
+
+  .cat__jump-link :global(svg) {
+    margin-left: auto;
+    color: var(--text-soft);
+    transition:
+      transform var(--t-base) var(--ease),
+      color var(--t-base) var(--ease);
+  }
+
+  .cat__jump-link:hover {
+    color: var(--text);
+  }
+
+  .cat__jump-link:hover .cat__jump-bar {
+    transform: scaleX(1);
+  }
+
+  .cat__jump-link:hover :global(svg) {
+    color: var(--hue-ink);
+    transform: translate(3px, -3px);
+  }
+</style>

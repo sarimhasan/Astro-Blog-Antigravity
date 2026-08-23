@@ -1,0 +1,50 @@
+---
+/**
+ * The spectrum spine: a hairline pinned to the left edge of every page that
+ * fills with the dispersion as you scroll. It is the reading-progress
+ * indicator and the site's recurring structural mark at once.
+ *
+ * The wavelength ticks alongside it read as an instrument scale up close and
+ * as fine editorial detail at a glance.
+ */
+---
+
+<div class="spine" aria-hidden="true">
+  <div class="spine__fill" data-spine-fill></div>
+</div>
+
+<div class="spine-scale" aria-hidden="true">
+  <span></span><span></span><span></span><span></span><span></span>
+  <span></span><span></span><span></span><span></span>
+</div>
+
+<style>
+  .spine-scale {
+    position: fixed;
+    left: 3px;
+    top: 0;
+    bottom: 0;
+    z-index: 44;
+    display: none;
+    flex-direction: column;
+    justify-content: space-evenly;
+    pointer-events: none;
+  }
+
+  .spine-scale span {
+    display: block;
+    width: 5px;
+    height: 1px;
+    background: var(--border-strong);
+  }
+
+  .spine-scale span:nth-child(3n + 1) {
+    width: 10px;
+  }
+
+  @media (min-width: 1024px) {
+    .spine-scale {
+      display: flex;
+    }
+  }
+</style>

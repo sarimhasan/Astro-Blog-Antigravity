@@ -1,135 +1,345 @@
 ---
+import { getCollection, getEntry } from 'astro:content';
 import MainLayout from '../layouts/MainLayout.astro';
-import { getEntry } from 'astro:content';
-import { formatPostDate } from '../lib/content';
+import Icon from '../components/Icon.astro';
+import { categoryLabel, getCategory } from '../lib/categories';
+import { mapPostEntry, sortPostsByDateDesc, formatPostDate } from '../lib/content';
 
 const { slug } = Astro.params;
-
-if (!slug) {
-  return Astro.redirect('/');
-}
+if (!slug) return Astro.redirect('/');
 
 const post = await getEntry('posts', slug);
-
-if (!post) {
-  return Astro.redirect('/');
-}
+if (!post) return Astro.redirect('/');
 
 const { Content } = await post.render();
+const data = post.data;
+const category = getCategory(data.category);
 
-const CATEGORIES: Record<string, string> = {
-  philosophy: 'Philosophy',
-  science: 'Science',
-  thoughts: 'Thoughts',
-  miscellaneous: 'Miscellaneous',
-};
+// The next thing to read: the previous entry by date, else the newest other one.
+const all = sortPostsByDateDesc((await getCollection('posts')).map(mapPostEntry));
+const here = all.findIndex((p) => p.slug === slug);
+const next = all[here + 1] ?? all.find((p) => p.slug !== slug);
 
-const categoryName = CATEGORIES[post.data.category] || 'General';
+const cover = data.coverImage;
 
 const jsonLd = {
   '@context': 'https://schema.org',
   '@type': 'BlogPosting',
-  headline: post.data.title,
-  description: post.data.excerpt,
-  image: post.data.coverImage ? [new URL(post.data.coverImage, Astro.url).href] : [],
-  datePublished: post.data.date,
-  author: [
-    {
-      '@type': 'Person',
-      name: post.data.authorName,
-      url: Astro.url.origin,
-    },
-  ],
+  headline: data.title,
+  description: data.excerpt,
+  ...(cover ? { image: [new URL(cover, Astro.url).href] } : {}),
+  datePublished: data.date,
+  author: { '@type': 'Person', name: data.authorName, url: Astro.url.origin }
 };
 ---
 
 <MainLayout
-  title={`${post.data.title} — The Inkwell`}
-  description={post.data.excerpt}
-  image={post.data.coverImage}
+  page="post"
+  hue={data.category}
+  title={`${data.title} — Sarim Hasan`}
+  description={data.excerpt}
+  image={cover}
   type="article"
 >
   <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} is:inline slot="head" />
 
-  <section class="fade-in">
-    <a href="/" class="button-primary group">
-      <span>Back to home</span>
-      <span aria-hidden="true" class="flex h-8 w-8 items-center justify-center rounded-full bg-white/8">←</span>
-    </a>
+  <article class="post">
+    <!-- The header is drenched in the entry's wavelength. -->
+    <header class="post__head">
+      <div class="post__wash" aria-hidden="true"></div>
 
-    <article class="surface-shell mt-6 rounded-[1.75rem] p-4">
-      <div class="surface-inner rounded-[1.5rem] overflow-hidden">
-        <div class="grid lg:grid-cols-[1.05fr_0.95fr]">
-          <div class="p-6 sm:p-8 lg:p-10">
-            <div class="flex flex-wrap items-center gap-2 text-[0.68rem] uppercase tracking-[0.18em] text-[var(--text-soft)]">
-              <span class={`chip chip-${post.data.category}`}>{categoryName}</span>
-              {post.data.featured && <span class="chip border-[rgba(201,154,86,0.28)] bg-[rgba(201,154,86,0.12)] text-[var(--accent-strong)]">Featured</span>}
-              <span>{formatPostDate(post.data.date)}</span>
-              <span>{post.data.readTime}</span>
-            </div>
+      <div class="shell post__head-inner">
+        <a href={`/category/${data.category}`} class="chip post__cat">{categoryLabel(data.category)}</a>
 
-            <h1 class="section-heading mt-6 max-w-[18ch] whitespace-normal break-normal hyphens-none [overflow-wrap:normal] [text-wrap:balance] text-[clamp(3rem,6vw,5.4rem)] font-semibold leading-[1.05] tracking-[-0.03em] text-[var(--text)]" data-animate-text>
-              {post.data.title}
-            </h1>
+        <h1 class="display display-lg post__title" data-split-lines data-split-delay="0.1">
+          {data.title}
+        </h1>
 
-            <p class="body-copy mt-6 max-w-[58ch]">
-              {post.data.excerpt || 'A reflective entry from the archive.'}
-            </p>
+        {data.excerpt && <p class="lede post__excerpt" data-reveal>{data.excerpt}</p>}
 
-            <p class="mt-8 text-[0.72rem] uppercase tracking-[0.16em] text-[var(--text-soft)]">
-              Written by <span class="text-[var(--text-muted)]">{post.data.authorName}</span>
-            </p>
+        <dl class="post__meta" data-reveal-children>
+          <div>
+            <dt class="readout">Published</dt>
+            <dd class="post__meta-val">{formatPostDate(data.date)}</dd>
           </div>
-
-          <div class="relative border-t border-[var(--border)] bg-black/20 lg:border-l lg:border-t-0">
-            {post.data.coverImage ? (
-              <img
-                src={post.data.coverImage}
-                alt={post.data.title}
-                class="h-full min-h-[20rem] w-full object-cover"
-              />
-            ) : (
-              <div class="flex min-h-[20rem] items-center justify-center px-8 text-center text-[0.72rem] uppercase tracking-[0.22em] text-[var(--text-soft)]">
-                No image attached
+          <div>
+            <dt class="readout">Read time</dt>
+            <dd class="post__meta-val">{data.readTime}</dd>
+          </div>
+          <div>
+            <dt class="readout">Written by</dt>
+            <dd class="post__meta-val">{data.authorName}</dd>
+          </div>
+          {
+            category && (
+              <div>
+                <dt class="readout">Wavelength</dt>
+                <dd class="post__meta-val post__meta-hue">{category.wavelength}</dd>
               </div>
-            )}
-          </div>
-        </div>
+            )
+          }
+        </dl>
       </div>
-    </article>
+    </header>
 
-    <section class="mt-6 grid gap-6 lg:grid-cols-[260px_minmax(0,1fr)]">
-      <aside class="surface-shell self-start rounded-[1.5rem] p-4">
-        <div class="surface-inner rounded-[1.2rem] p-5">
-          <p class="eyebrow">Entry details</p>
-          <div class="mt-5 space-y-4 text-[0.76rem] uppercase tracking-[0.18em] text-[var(--text-soft)]">
-            <div>
-              <div class="text-[0.68rem] text-[var(--text-soft)]">Category</div>
-              <div class="mt-1 text-[0.88rem] text-[var(--text)]">{categoryName}</div>
-            </div>
-            <div>
-              <div class="text-[0.68rem] text-[var(--text-soft)]">Read time</div>
-              <div class="mt-1 text-[0.88rem] text-[var(--text)]">{post.data.readTime}</div>
-            </div>
-            <div>
-              <div class="text-[0.68rem] text-[var(--text-soft)]">Author</div>
-              <div class="mt-1 text-[0.88rem] text-[var(--text)]">{post.data.authorName}</div>
-            </div>
-            <div>
-              <div class="text-[0.68rem] text-[var(--text-soft)]">Published</div>
-              <div class="mt-1 text-[0.88rem] text-[var(--text)]">{formatPostDate(post.data.date)}</div>
+    {
+      cover && (
+        <figure class="post__cover">
+          <div class="shell-wide">
+            <div class="frame post__cover-frame">
+              <img src={cover} alt="" loading="eager" decoding="async" data-speed="0.92" />
             </div>
           </div>
-        </div>
-      </aside>
+        </figure>
+      )
+    }
 
-      <div class="surface-shell rounded-[1.5rem] p-4">
-        <div class="surface-inner rounded-[1.2rem] p-6 sm:p-8 lg:p-10" data-scroll-reveal>
-          <div class="article-prose max-w-none">
-            <Content />
-          </div>
-        </div>
+    <div class="shell post__body">
+      <div class="prose" data-reveal>
+        <Content />
       </div>
-    </section>
-  </section>
+    </div>
+
+    <!-- The close: where to go next, in that entry's own colour. -->
+    <nav class="post__next" aria-label="Continue reading">
+      <div class="shell post__next-inner">
+        <span class="readout post__next-label">Read next</span>
+
+        {
+          next ? (
+            <a
+              href={`/${next.slug}`}
+              class="post__next-link"
+              style={`--hue: var(--cat-${next.category}); --hue-ink: var(--cat-${next.category}-ink); --hue-soft: var(--cat-${next.category}-soft); --hue-glow: var(--cat-${next.category}-glow);`}
+            >
+              <span class="post__next-wash" aria-hidden="true" />
+              <span class="post__next-text">
+                <span class="chip">{categoryLabel(next.category)}</span>
+                <span class="display display-md post__next-title">{next.title}</span>
+              </span>
+              <span class="post__next-arrow" aria-hidden="true">
+                <Icon name="arrow-right" size={24} strokeWidth={1.4} />
+              </span>
+            </a>
+          ) : (
+            <div class="post__next-empty">
+              <p class="display display-sm">That is everything, for now.</p>
+              <a href="/reading" class="btn btn-ghost post__next-cta">
+                See what I am reading
+                <Icon name="arrow-right" size={16} />
+              </a>
+            </div>
+          )
+        }
+      </div>
+    </nav>
+  </article>
 </MainLayout>
+
+<style>
+  .post {
+    display: block;
+  }
+
+  /* ------------------------------------------------------------- header */
+
+  .post__head {
+    position: relative;
+    padding-block: 10rem 3.5rem;
+    isolation: isolate;
+  }
+
+  @media (min-width: 900px) {
+    .post__head {
+      padding-block: 12rem 4.5rem;
+    }
+  }
+
+  .post__wash {
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    background:
+      radial-gradient(72% 100% at 82% 0%, var(--hue-soft), transparent 68%),
+      radial-gradient(52% 80% at 0% 24%, var(--hue-soft), transparent 70%),
+      linear-gradient(180deg, color-mix(in oklab, var(--hue) 7%, transparent), transparent 78%);
+  }
+
+  /* The wavelength rule at the very top: the same mark the section bands
+     and the spine use. */
+  .post__head::before {
+    content: '';
+    position: absolute;
+    inset: 0 0 auto 0;
+    height: 2px;
+    background: var(--hue);
+    box-shadow: 0 0 24px var(--hue-glow);
+  }
+
+  .post__head-inner {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1.5rem;
+  }
+
+  .post__title {
+    max-width: min(100%, 62rem);
+    text-wrap: pretty;
+  }
+
+  .post__excerpt {
+    max-width: 54ch;
+  }
+
+  .post__meta {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1.25rem 2rem;
+    margin: 1.5rem 0 0;
+    padding-top: 1.75rem;
+    border-top: 1px solid var(--border);
+    width: 100%;
+  }
+
+  @media (min-width: 720px) {
+    .post__meta {
+      grid-template-columns: repeat(4, minmax(0, auto));
+      justify-content: start;
+      gap: 3.5rem;
+    }
+  }
+
+  .post__meta dt {
+    margin-bottom: 0.35rem;
+  }
+
+  .post__meta-val {
+    margin: 0;
+    font-family: var(--font-display);
+    font-size: 0.9375rem;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    color: var(--text);
+  }
+
+  .post__meta-hue {
+    color: var(--hue-ink);
+  }
+
+  /* -------------------------------------------------------------- cover */
+
+  .post__cover {
+    margin: 0;
+    padding-bottom: 4rem;
+  }
+
+  .post__cover-frame {
+    aspect-ratio: 21 / 9;
+    border-radius: var(--r-lg);
+    box-shadow: var(--shadow-high);
+  }
+
+  @media (max-width: 720px) {
+    .post__cover-frame {
+      aspect-ratio: 4 / 3;
+    }
+  }
+
+  /* --------------------------------------------------------------- body */
+
+  .post__body {
+    padding-block: 1rem 6rem;
+  }
+
+  /* ---------------------------------------------------------- read next */
+
+  .post__next {
+    border-top: 1px solid var(--border);
+    padding-block: 3.5rem 1rem;
+  }
+
+  .post__next-label {
+    display: block;
+    margin-bottom: 1.5rem;
+  }
+
+  .post__next-link {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+    padding: 2rem 0;
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+    isolation: isolate;
+  }
+
+  .post__next-wash {
+    position: absolute;
+    inset: 0 -2rem;
+    z-index: -1;
+    border-radius: var(--r-md);
+    background: linear-gradient(90deg, var(--hue-soft), transparent 68%);
+    opacity: 0;
+    transition: opacity var(--t-base) var(--ease);
+  }
+
+  .post__next-link:hover .post__next-wash,
+  .post__next-link:focus-visible .post__next-wash {
+    opacity: 1;
+  }
+
+  .post__next-text {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.9rem;
+    min-width: 0;
+  }
+
+  .post__next-title {
+    transition: color var(--t-base) var(--ease);
+  }
+
+  .post__next-link:hover .post__next-title {
+    color: var(--hue-ink);
+  }
+
+  .post__next-arrow {
+    display: grid;
+    place-items: center;
+    width: 3.25rem;
+    height: 3.25rem;
+    flex: none;
+    margin-left: auto;
+    border-radius: 99px;
+    border: 1px solid var(--border);
+    color: var(--text-soft);
+    transition:
+      transform var(--t-base) var(--ease),
+      color var(--t-base) var(--ease),
+      background var(--t-base) var(--ease),
+      border-color var(--t-base) var(--ease);
+  }
+
+  .post__next-link:hover .post__next-arrow {
+    transform: translateX(6px);
+    color: var(--bg);
+    background: var(--hue);
+    border-color: var(--hue);
+  }
+
+  .post__next-empty {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1.5rem;
+    padding-block: 2rem 1rem;
+    border-top: 1px solid var(--border);
+  }
+
+  .post__next-cta {
+    align-self: flex-start;
+  }
+</style>

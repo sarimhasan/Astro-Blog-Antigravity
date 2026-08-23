@@ -1,212 +1,841 @@
 ---
-import MainLayout from '../layouts/MainLayout.astro';
 import { getCollection } from 'astro:content';
-import { formatPostDate, getFeaturedPost, mapPostEntry, sortPostsByDateDesc } from '../lib/content';
+import MainLayout from '../layouts/MainLayout.astro';
+import Icon from '../components/Icon.astro';
+import PostRow from '../components/PostRow.astro';
+import DispersionMark from '../components/DispersionMark.astro';
+import { CATEGORIES, hueVars, categoryLabel } from '../lib/categories';
+import { mapPostEntry, sortPostsByDateDesc, getFeaturedPost, formatPostDate } from '../lib/content';
 
-const posts = sortPostsByDateDesc((await getCollection('posts')).map(mapPostEntry));
+// Map before sorting: the helpers read `date`/`featured` off the flattened
+// shape, not off the collection entry's `.data`.
+const entries = await getCollection('posts');
+const posts = sortPostsByDateDesc(entries.map(mapPostEntry));
 const featuredPost = getFeaturedPost(posts);
-const recentPosts = posts.slice(0, 3);
-const archivePosts = posts.slice(3, 6);
-const intelItems = (await getCollection('intel')).map((item) => ({ slug: item.slug, ...item.data }));
-const entryCount = String(posts.length).padStart(3, '0');
 
-const CATEGORIES: Record<string, string> = {
-  philosophy: 'Philosophy',
-  science: 'Science',
-  thoughts: 'Thoughts',
-  miscellaneous: 'Miscellaneous',
-};
+const rest = posts.filter((p) => p.slug !== featuredPost?.slug);
+
+// Newest by date, which is not necessarily the featured one.
+const latest = posts[0];
+
+const countFor = (slug: string) => posts.filter((p) => p.category === slug).length;
+
+const intel = (await getCollection('intel')).map((i) => ({ slug: i.slug, ...i.data }));
+const reading = intel.filter((i) => i.status === 'in-progress').slice(0, 3);
 ---
 
-<MainLayout
-  title="The Inkwell"
-  description="Thoughts written in graphite, stored in silicon. A personal journal for essays, philosophy, and reflections."
->
-  <section class="fade-in grid gap-8 lg:grid-cols-[1.15fr_0.85fr] lg:items-end">
-    <div class="max-w-3xl">
-      <p class="eyebrow">Personal journal · Sarim Hasan</p>
-      <h1 class="section-heading mt-5 max-w-[18ch] whitespace-normal break-normal hyphens-none [overflow-wrap:normal] [text-wrap:balance] text-[clamp(2.9rem,7vw,5.6rem)] font-semibold tracking-[-0.02em] text-[var(--text)]" data-animate="hero-heading">
-        Notes on the universe, the mind, and the quiet in between.
-      </h1>
-      <p class="body-copy mt-6 max-w-[62ch]">
-        A slow-paced archive of essays on space, physics, philosophy, and the natural world — written in search of a little more serenity.
-      </p>
-      <div class="mt-8 flex flex-wrap gap-3 text-[0.72rem] uppercase tracking-[0.16em] text-[var(--text-soft)]">
-        <span class="chip">Essays</span>
-        <span class="chip">Field notes</span>
-        <span class="chip">Reflections</span>
+<MainLayout page="home" hue={featuredPost?.category}>
+  <!-- ======================================================= hero -->
+  <!-- A full-viewport plate. Three registers — rail, headline block,
+       spectrum band — anchor the top, middle and bottom edges, so the air
+       between them reads as composition rather than as leftover space. -->
+  <section class="hero">
+    <div class="hero__field" aria-hidden="true">
+      <canvas data-interference class="hero__canvas"></canvas>
+    </div>
+
+    <div class="shell hero__rail">
+      <div class="rule-ticked hero__rail-rule" data-draw></div>
+      <div class="hero__rail-row">
+        <span class="readout">
+          {posts.length} {posts.length === 1 ? 'entry' : 'entries'} · {CATEGORIES.length} wavelengths
+        </span>
+        <span class="readout hero__rail-end" data-scramble>
+          {latest?.date ? `Latest — ${formatPostDate(latest.date)}` : 'Nothing published yet'}
+        </span>
       </div>
     </div>
 
-    <div class="surface-shell rounded-[1.75rem] p-4 fade-in-delay-1" data-animate="featured-section">
-      <div class="surface-inner rounded-[1.5rem] p-5 sm:p-6">
-        <p class="eyebrow">Featured entry</p>
-        {featuredPost ? (
-          <article class="mt-5 space-y-4">
-            <div class="overflow-hidden rounded-[1.25rem] border border-[var(--border)] bg-black/20">
-              {featuredPost.coverImage ? (
-                <img
-                  src={featuredPost.coverImage}
-                  alt={featuredPost.title}
-                  class="aspect-[4/3] w-full object-cover"
-                />
-              ) : (
-                <div class="flex aspect-[4/3] items-center justify-center px-6 text-center text-[0.72rem] uppercase tracking-[0.22em] text-[var(--text-soft)]">
-                  No cover image attached
-                </div>
+    <div class="shell hero__inner">
+      <h1 class="display display-xl hero__title" data-split-lines data-width-scrub data-width-from="94" data-width-to="62">
+        Physics, philosophy, and books that ruin me.
+      </h1>
+
+      <div class="hero__foot">
+        <p class="lede hero__lede" data-reveal>
+          I am Sarim. I write things down until they make sense — usually about how the universe
+          works, occasionally about how to live in it, frequently about whatever I have just
+          finished reading.
+        </p>
+
+        <a href="#log" class="hero__cue" data-reveal>
+          <span class="readout hero__cue-text">Start reading</span>
+          <span class="hero__cue-line" aria-hidden="true"></span>
+        </a>
+      </div>
+    </div>
+
+    <!-- The site's thesis made literal: four sections, four wavelengths,
+         in spectral order. Holds the bottom edge of the plate. -->
+    <div class="shell hero__spectrum">
+      <div class="spectrum" data-reveal-children>
+        {
+          CATEGORIES.map((c) => (
+            <a href={`/category/${c.slug}`} class="spectrum__seg" style={hueVars(c.slug)}>
+              <span class="spectrum__bar" aria-hidden="true" />
+              <span class="spectrum__line">
+                <span class="spectrum__label">{c.label}</span>
+                <span class="spectrum__arrow" aria-hidden="true">
+                  <Icon name="arrow-up-right" size={15} strokeWidth={1.6} />
+                </span>
+              </span>
+              <span class="readout spectrum__wave">
+                {c.wavelength} · {countFor(c.slug)}
+              </span>
+            </a>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <!-- =================================================== featured -->
+  {
+    featuredPost && (
+      <section class="feature" style={hueVars(featuredPost.category)} aria-labelledby="feature-title">
+        <div class="feature__wash" aria-hidden="true" />
+        <div class="shell feature__inner">
+          <a href={`/${featuredPost.slug}`} class="feature__media group" tabindex="-1" aria-hidden="true" data-speed="0.94">
+            <div class:list={['frame', 'feature__frame', { 'frame-empty': !featuredPost.coverImage }]}>
+              {featuredPost.coverImage && (
+                <img src={featuredPost.coverImage} alt="" loading="eager" decoding="async" />
               )}
             </div>
+          </a>
 
-            <div class="flex flex-wrap items-center gap-2 text-[0.68rem] uppercase tracking-[0.18em] text-[var(--text-soft)]">
-              <span class={`chip chip-${featuredPost.category}`}>{CATEGORIES[featuredPost.category] || featuredPost.category}</span>
-              <span>{formatPostDate(featuredPost.date)}</span>
+          <div class="feature__body" data-reveal>
+            <div class="feature__meta">
+              <span class="chip">{categoryLabel(featuredPost.category)}</span>
+              <span class="readout" data-scramble>
+                {formatPostDate(featuredPost.date)}
+              </span>
+              <span class="readout">{featuredPost.readTime}</span>
             </div>
 
-            <h2 class="section-heading text-[clamp(1.8rem,4vw,2.7rem)] font-semibold tracking-[-0.02em]">
-              {featuredPost.title}
+            <h2 id="feature-title" class="display display-lg feature__title">
+              <a href={`/${featuredPost.slug}`}>{featuredPost.title}</a>
             </h2>
 
-            <p class="body-copy line-clamp-3">{featuredPost.excerpt || 'Flag a post with featured: true to surface it here.'}</p>
+            {featuredPost.excerpt && <p class="copy feature__excerpt">{featuredPost.excerpt}</p>}
 
-            <a href={`/${featuredPost.slug}`} class="button-primary group">
-              <span>Read entry</span>
-              <span aria-hidden="true" class="flex h-8 w-8 items-center justify-center rounded-full bg-white/8 text-[0.9rem] transition-transform duration-200 group-hover:translate-x-0.5">→</span>
+            <a href={`/${featuredPost.slug}`} class="btn feature__cta" data-magnetic>
+              Read this one
+              <Icon name="arrow-right" size={16} />
             </a>
-          </article>
+          </div>
+        </div>
+      </section>
+    )
+  }
+
+  <!-- ======================================================== log -->
+  <section id="log" class="log" aria-labelledby="log-title">
+    <div class="shell">
+      <div class="log__head">
+        <h2 id="log-title" class="display display-md" data-reveal>Everything I have written</h2>
+        <span class="readout log__count">
+          {posts.length} {posts.length === 1 ? 'entry' : 'entries'}
+        </span>
+      </div>
+      <div class="rule-ticked log__rule" data-draw></div>
+
+      {
+        rest.length > 0 ? (
+          <ol class="log__list">
+            {rest.map((post, i) => (
+              <PostRow post={post} index={i + 1} />
+            ))}
+          </ol>
         ) : (
-          <p class="body-copy mt-5">Flag a post with featured: true to surface it here.</p>
-        )}
-      </div>
+          <div class="empty" data-reveal>
+            <div>
+              <p class="empty__line display display-md">
+                One essay so far. The rest are still arguments I am having with myself.
+              </p>
+              <p class="copy empty__copy">
+                New writing lands here first, and takes the colour of whichever section it belongs
+                to. In the meantime, the piece above is the one I would hand you.
+              </p>
+            </div>
+            <DispersionMark class="empty__mark" />
+          </div>
+        )
+      }
     </div>
   </section>
 
-  <section class="mt-10 grid gap-6 lg:grid-cols-[1.2fr_0.8fr]">
-    <div class="surface-shell rounded-[1.75rem] p-4 fade-in-delay-2">
-      <div class="surface-inner rounded-[1.5rem] p-5 sm:p-6">
-        <div class="flex items-center justify-between gap-4">
-          <div>
-            <p class="eyebrow">Recent entries</p>
-            <h3 class="section-heading mt-3 text-[clamp(1.55rem,3vw,2.2rem)] font-semibold tracking-[-0.02em]" data-animate="section-title">Latest writing</h3>
-          </div>
-          <a href="#more-from-archive" class="hidden text-[0.72rem] uppercase tracking-[0.18em] text-[var(--text-soft)] ui-link lg:inline-flex">Archive</a>
-        </div>
-
-        <div class="mt-6 divide-y divide-white/6">
-          {recentPosts.map((post, index) => (
-            <article class="py-5 first:pt-0 last:pb-0">
-              <a href={`/${post.slug}`} class="group grid gap-3 sm:grid-cols-[110px_minmax(0,1fr)] sm:items-start">
-                <div class="text-[0.7rem] uppercase tracking-[0.18em] text-[var(--text-soft)]">
-                  <div>{String(index + 1).padStart(2, '0')}</div>
-                  <div class="mt-2 text-[var(--text-muted)]">{formatPostDate(post.date)}</div>
-                </div>
-
-                <div>
-                  <h4 class="section-heading text-[clamp(1.2rem,2.3vw,1.55rem)] font-medium tracking-[-0.02em] transition-colors duration-200 group-hover:text-[var(--accent)]">
-                    {post.title}
-                  </h4>
-                  <p class="body-copy mt-2 line-clamp-2">{post.excerpt || 'A reflective entry from the journal.'}</p>
-                  <div class="mt-3 flex flex-wrap items-center gap-2">
-                    <span class={`chip chip-${post.category}`}>{CATEGORIES[post.category] || post.category}</span>
-                    {post.featured && <span class="chip border-[rgba(201,154,86,0.28)] bg-[rgba(201,154,86,0.12)] text-[var(--accent-strong)]">Featured</span>}
-                  </div>
-                </div>
-              </a>
-            </article>
-          ))}
-        </div>
-
-        <div class="mt-6 flex justify-start">
-          <a href="#more-from-archive" class="button-primary group">
-            <span>Explore archive</span>
-            <span aria-hidden="true" class="flex h-8 w-8 items-center justify-center rounded-full bg-white/8 text-[0.9rem] transition-transform duration-200 group-hover:translate-x-0.5">→</span>
-          </a>
-        </div>
-      </div>
+  <!-- =================================================== sections -->
+  <section class="sections" aria-labelledby="sections-title">
+    <div class="shell">
+      <h2 id="sections-title" class="display display-md sections__title" data-reveal>
+        Four wavelengths
+      </h2>
+      <p class="copy sections__intro" data-reveal>
+        Colour on this site is not decoration. Each section sits where it would fall if you sent
+        this page through a prism — violet at one end, magenta off the other.
+      </p>
     </div>
 
-    <aside class="surface-shell rounded-[1.75rem] p-4 fade-in-delay-3">
-      <div class="surface-inner rounded-[1.5rem] p-5 sm:p-6">
-        <div class="flex items-start justify-between gap-4">
-          <div>
-            <p class="eyebrow">Reading list</p>
-            <h3 class="section-heading mt-3 text-[clamp(1.3rem,2.7vw,1.9rem)] font-semibold tracking-[-0.02em]" data-animate="section-title">Notes in orbit</h3>
-          </div>
-          <span class="chip">{String(intelItems.length).padStart(2, '0')} items</span>
-        </div>
-
-        <div class="mt-6 space-y-4">
-          {intelItems.length > 0 ? (
-            intelItems.map((entry: any) => (
-              <div class="flex gap-4 rounded-[1.2rem] border border-[var(--border)] bg-white/3 p-3">
-                <div class="flex h-14 w-11 shrink-0 items-center justify-center overflow-hidden rounded-[0.9rem] border border-[var(--border)] bg-white/5">
-                  {entry.coverImage ? (
-                    <img src={entry.coverImage} alt={entry.title} class="h-full w-full object-cover" />
-                  ) : (
-                    <span class="text-[0.7rem] text-[var(--text-soft)]">{entry.itemType === 'book' ? 'Bk' : 'Fm'}</span>
-                  )}
-                </div>
-                <div class="min-w-0">
-                  <p class="truncate text-[0.98rem] font-medium text-[var(--text)]">{entry.title}</p>
-                  <p class="mt-1 text-[0.82rem] text-[var(--text-muted)]">
-                    {entry.creator || 'Unknown'} · {entry.rating || 'N/A'}
-                  </p>
-                </div>
+    <div class="sections__list" data-reveal-children>
+      {
+        CATEGORIES.map((c) => (
+          <a href={`/category/${c.slug}`} class="band" style={hueVars(c.slug)} data-lift>
+            <div class="band__wash" aria-hidden="true" />
+            <div class="shell band__inner">
+              <div class="band__lead">
+                <h3 class="display display-md band__name">{c.label}</h3>
+                <p class="copy band__blurb">{c.blurb}</p>
               </div>
-            ))
-          ) : (
-            <p class="body-copy">No intel entries yet. Add items to the intel collection.</p>
-          )}
-        </div>
-      </div>
-    </aside>
-  </section>
-
-  {archivePosts.length > 0 && (
-    <section id="more-from-archive" class="fade-in mt-10">
-      <div class="flex items-end justify-between gap-4">
-        <div>
-          <p class="eyebrow">Archive</p>
-          <h3 class="section-heading mt-3 text-[clamp(1.35rem,2.7vw,2rem)] font-semibold tracking-[-0.02em]" data-animate="section-title">More writing from the archive</h3>
-        </div>
-        <span class="chip">Entries: {entryCount}</span>
-      </div>
-
-      <div class="mt-6 grid gap-5 md:grid-cols-2 xl:grid-cols-3">
-        {archivePosts.map((post) => (
-          <a href={`/${post.slug}`} class="surface-shell group overflow-hidden rounded-[1.5rem] p-3 transition-transform duration-200 hover:-translate-y-1" data-animate="post-card" data-hover-card>
-            <div class="surface-inner overflow-hidden rounded-[1.2rem]">
-              <div class="relative aspect-[4/3] overflow-hidden border-b border-[var(--border)] bg-black/20">
-                {post.coverImage ? (
-                  <img
-                    src={post.coverImage}
-                    alt={post.title}
-                    class="h-full w-full object-cover transition-transform duration-500 group-hover:scale-[1.03]"
-                  />
-                ) : (
-                  <div class="flex h-full w-full items-center justify-center text-[0.72rem] uppercase tracking-[0.22em] text-[var(--text-soft)]">
-                    No image
-                  </div>
-                )}
-              </div>
-
-              <div class="p-5">
-                <div class="flex items-center justify-between gap-3 text-[0.68rem] uppercase tracking-[0.18em] text-[var(--text-soft)]">
-                  <span class={`chip chip-${post.category}`}>{CATEGORIES[post.category] || post.category}</span>
-                  <span>{formatPostDate(post.date)}</span>
-                </div>
-                <h4 class="section-heading mt-4 text-[1.35rem] font-medium tracking-[-0.02em] transition-colors duration-200 group-hover:text-[var(--accent)]">
-                  {post.title}
-                </h4>
-                <p class="body-copy mt-3 line-clamp-2">{post.excerpt || 'An entry from the journal archive.'}</p>
-                <div class="mt-5 flex items-center justify-between text-[0.68rem] uppercase tracking-[0.18em] text-[var(--text-soft)]">
-                  <span>{post.readTime || '5 min read'}</span>
-                  <span class="ui-link ui-link-underline">Read</span>
-                </div>
+              <div class="band__meta">
+                <span class="readout readout-hue">{c.wavelength}</span>
+                <span class="readout">
+                  {countFor(c.slug)} {countFor(c.slug) === 1 ? 'entry' : 'entries'}
+                </span>
+                <span class="band__arrow" aria-hidden="true">
+                  <Icon name="arrow-right" size={22} strokeWidth={1.4} />
+                </span>
               </div>
             </div>
           </a>
-        ))}
+        ))
+      }
+    </div>
+  </section>
+
+  <!-- ==================================================== reading -->
+  <section class="reading" aria-labelledby="reading-title">
+    <div class="shell reading__inner">
+      <div class="reading__lead">
+        <h2 id="reading-title" class="display display-md" data-reveal>Currently reading</h2>
+        <p class="copy reading__copy" data-reveal>
+          A running log of the books and films I am in the middle of, with notes I did not intend
+          for anyone else to see.
+        </p>
+        <a href="/reading" class="btn btn-ghost reading__cta" data-reveal data-magnetic>
+          Open the reading log
+          <Icon name="arrow-right" size={16} />
+        </a>
       </div>
-    </section>
-  )}
+
+      <div class="reading__stack" data-reveal-children>
+        {
+          reading.length > 0 ? (
+            reading.map((item) => (
+              <a href="/reading" class="reading__item">
+                <span class="reading__item-icon" aria-hidden="true">
+                  <Icon name={item.itemType === 'movie' ? 'film' : 'book'} size={18} />
+                </span>
+                <span class="reading__item-text">
+                  <span class="reading__item-title">{item.title}</span>
+                  <span class="readout">{item.creator || 'Unknown'}</span>
+                </span>
+              </a>
+            ))
+          ) : (
+            <div class="empty empty-inline">
+              <p class="empty__line display display-sm">Nothing logged yet.</p>
+              <p class="copy empty__copy">
+                The shelf is real; the log is new. Books and films will appear here as I finish
+                them.
+              </p>
+            </div>
+          )
+        }
+      </div>
+    </div>
+  </section>
 </MainLayout>
+
+<style>
+  /* ================================================================ hero */
+
+  /* Full-viewport plate. `svh` rather than `vh` so mobile browser chrome
+     cannot push the spectrum band off the bottom of the first screen; the
+     `vh` line above it is the fallback for browsers without the unit.
+     Rows are rail / headline / spectrum, and only the middle row flexes —
+     whatever height is left over is split evenly above and below the
+     headline block instead of collecting in one dead band. */
+  .hero {
+    position: relative;
+    display: grid;
+    grid-template-rows: auto minmax(0, 1fr) auto;
+    row-gap: clamp(1.25rem, 3.2svh, 2.75rem);
+    min-height: 100vh;
+    min-height: 100svh;
+    padding-top: 5.25rem;
+    padding-bottom: clamp(1.25rem, 3svh, 2rem);
+    overflow: hidden;
+  }
+
+  @media (min-width: 900px) {
+    .hero {
+      padding-top: 7rem;
+    }
+  }
+
+  .hero__field {
+    position: absolute;
+    inset: -6% -4%;
+    z-index: -1;
+    pointer-events: none;
+  }
+
+  /* Rendered on a small grid and scaled up here. Only a light blur: the
+     fringes have to stay thin or the field stops reading as interference
+     and becomes a gradient. */
+  .hero__canvas {
+    width: 100%;
+    height: 100%;
+    filter: blur(2px) saturate(1.15) contrast(1.1);
+    opacity: 0.72;
+    mask-image:
+      radial-gradient(86% 74% at 64% 32%, #000 0%, rgba(0, 0, 0, 0.62) 54%, transparent 90%),
+      linear-gradient(184deg, #000 0%, rgba(0, 0, 0, 0.68) 64%, transparent 96%);
+    -webkit-mask-image:
+      radial-gradient(86% 74% at 64% 32%, #000 0%, rgba(0, 0, 0, 0.62) 54%, transparent 90%),
+      linear-gradient(184deg, #000 0%, rgba(0, 0, 0, 0.68) 64%, transparent 96%);
+    mask-composite: intersect;
+    -webkit-mask-composite: source-in;
+  }
+
+  @media (max-width: 767px) {
+    .hero__canvas {
+      opacity: 0.5;
+    }
+  }
+
+  :global([data-theme='light']) .hero__canvas {
+    opacity: 0.4;
+    filter: blur(2px) saturate(1.6) contrast(1.1);
+  }
+
+  /* --- the top rail --- */
+
+  /* The plate's header: a ticked scale and two readouts holding the upper
+     corners, directly under the fixed nav. */
+  .hero__rail {
+    display: grid;
+    gap: 0.9rem;
+  }
+
+  .hero__rail-rule {
+    transform-origin: left;
+  }
+
+  .hero__rail-row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 0.35rem 1.5rem;
+  }
+
+  .hero__rail-end {
+    color: var(--text-muted);
+  }
+
+  /* --- the headline block --- */
+
+  .hero__inner {
+    display: grid;
+    align-content: center;
+    gap: clamp(1.5rem, 3.6svh, 3.25rem);
+  }
+
+  /* A ch-based measure fights the width axis (the ch unit grows with it),
+     so the headline is bounded in absolute terms instead. The size is
+     capped against the viewport *height* as well as its width: on a full
+     screen the type has to grow with the plate or the middle register
+     empties out. */
+  .hero__title {
+    max-width: min(100%, 72rem);
+    font-size: clamp(3rem, min(13vw, 11svh), 6rem);
+    font-weight: 800;
+    /* Balancing fights the width axis and forces extra lines; the headline
+       is short enough to break honestly. */
+    text-wrap: pretty;
+  }
+
+  .hero__foot {
+    display: grid;
+    gap: 1.5rem;
+    align-items: end;
+    border-top: 1px solid var(--border);
+    padding-top: clamp(1rem, 2.2svh, 1.75rem);
+  }
+
+  /* Tablets: the spectrum band collapses to a single row at 720, which
+     frees the height the headline needs to grow into. */
+  @media (min-width: 720px) and (max-width: 899px) {
+    .hero__title {
+      font-size: clamp(3rem, min(13.8vw, 11svh), 8rem);
+    }
+  }
+
+  @media (min-width: 900px) {
+    .hero__foot {
+      grid-template-columns: minmax(0, 1fr) auto;
+      gap: 3rem;
+    }
+
+    /* Wide enough for the width axis to run: the headline can take the
+       viewport height as its ceiling instead of the viewport width. */
+    .hero__title {
+      font-size: clamp(3rem, min(13.8vw, 12.4svh), 11.5rem);
+    }
+  }
+
+  .hero__lede {
+    max-width: 52ch;
+  }
+
+  .hero__cue-text {
+    color: inherit;
+  }
+
+  .hero__cue {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.75rem;
+    color: var(--text-soft);
+    transition: color var(--t-base) var(--ease);
+  }
+
+  .hero__cue-line {
+    display: block;
+    width: 3.5rem;
+    height: 1px;
+    background: currentColor;
+    transform-origin: left;
+    transition: transform var(--t-base) var(--ease);
+  }
+
+  .hero__cue:hover {
+    color: var(--text);
+  }
+
+  .hero__cue:hover .hero__cue-line {
+    transform: scaleX(1.5);
+  }
+
+  /* --- the spectrum band --- */
+
+  .spectrum {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    column-gap: clamp(1rem, 2.6vw, 2.25rem);
+    row-gap: 1rem;
+    border-top: 1px solid var(--border);
+    padding-top: clamp(1rem, 2.4svh, 2.25rem);
+  }
+
+  @media (min-width: 720px) {
+    .spectrum {
+      grid-template-columns: repeat(4, 1fr);
+    }
+  }
+
+  .spectrum__seg {
+    display: grid;
+    align-content: start;
+    gap: 0.6rem;
+  }
+
+  .spectrum__bar {
+    display: block;
+    height: 3px;
+    border-radius: 99px;
+    background: var(--hue);
+    box-shadow: 0 0 12px var(--hue-glow);
+    transform-origin: left;
+    transition: transform var(--t-base) var(--ease);
+  }
+
+  .spectrum__seg:hover .spectrum__bar {
+    transform: scaleY(2.2);
+  }
+
+  .spectrum__line {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.5rem;
+  }
+
+  .spectrum__label {
+    font-family: var(--font-display);
+    font-size: clamp(0.9375rem, 1.1vw, 1.125rem);
+    font-weight: 700;
+    letter-spacing: -0.015em;
+    color: var(--text);
+    transition: color var(--t-fast) var(--ease);
+  }
+
+  .spectrum__seg:hover .spectrum__label {
+    color: var(--hue-ink);
+  }
+
+  .spectrum__arrow {
+    display: grid;
+    place-items: center;
+    color: var(--hue-ink);
+    opacity: 0;
+    transform: translate(-4px, 4px);
+    transition:
+      opacity var(--t-base) var(--ease),
+      transform var(--t-base) var(--ease);
+  }
+
+  .spectrum__seg:hover .spectrum__arrow,
+  .spectrum__seg:focus-visible .spectrum__arrow {
+    opacity: 1;
+    transform: translate(0, 0);
+  }
+
+  .spectrum__wave {
+    font-size: 0.6875rem;
+  }
+
+  /* ============================================================ featured */
+
+  .feature {
+    position: relative;
+    padding-block: 6rem;
+    isolation: isolate;
+  }
+
+  /* Colour owning a whole region rather than trimming a card. */
+  .feature__wash {
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    background:
+      radial-gradient(70% 120% at 78% 0%, var(--hue-soft), transparent 70%),
+      radial-gradient(50% 90% at 4% 100%, var(--hue-soft), transparent 72%);
+  }
+
+  .feature__inner {
+    display: grid;
+    gap: 2.5rem;
+    align-items: center;
+  }
+
+  @media (min-width: 900px) {
+    .feature__inner {
+      grid-template-columns: 0.92fr 1.08fr;
+      gap: 4rem;
+    }
+  }
+
+  .feature__frame {
+    aspect-ratio: 4 / 3;
+    border-radius: var(--r-lg);
+    box-shadow: var(--shadow-high);
+  }
+
+  .feature__title {
+    margin-top: 1.5rem;
+    max-width: 16ch;
+  }
+
+  .feature__title a {
+    background-image: linear-gradient(var(--hue), var(--hue));
+    background-repeat: no-repeat;
+    background-position: 0 100%;
+    background-size: 0% 2px;
+    transition: background-size var(--t-slow) var(--ease);
+  }
+
+  .feature__title a:hover {
+    background-size: 100% 2px;
+  }
+
+  .feature__meta {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.75rem 1.1rem;
+  }
+
+  .feature__excerpt {
+    margin-top: 1.5rem;
+    max-width: 46ch;
+  }
+
+  .feature__cta {
+    margin-top: 2.25rem;
+  }
+
+  /* ================================================================= log */
+
+  .log {
+    padding-block: 5rem 2rem;
+  }
+
+  .log__head {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 1rem;
+  }
+
+  .log__count {
+    color: var(--text-soft);
+  }
+
+  .log__rule {
+    margin-top: 1.5rem;
+  }
+
+  .log__list {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  /* ============================================================ sections */
+
+  .sections {
+    padding-block: 6rem 4rem;
+  }
+
+  .sections__title {
+    max-width: 14ch;
+  }
+
+  .sections__intro {
+    margin-top: 1.25rem;
+    max-width: 52ch;
+  }
+
+  .sections__list {
+    margin-top: 3rem;
+  }
+
+  .band {
+    position: relative;
+    display: block;
+    border-bottom: 1px solid var(--border);
+    isolation: isolate;
+  }
+
+  /* Each band is topped by its own wavelength — the sections list reads as
+     a stack of four spectral rules, the same mark as the hero strip. */
+  .band::before {
+    content: '';
+    position: absolute;
+    inset: 0 0 auto 0;
+    height: 2px;
+    background: var(--hue);
+    box-shadow: 0 0 16px var(--hue-glow);
+    transform-origin: left;
+    transition: box-shadow var(--t-base) var(--ease);
+  }
+
+  .band:hover::before {
+    box-shadow: 0 0 28px var(--hue-glow);
+  }
+
+  .band__wash {
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    background: linear-gradient(100deg, var(--hue-soft), transparent 64%);
+    opacity: 0.5;
+    transition: opacity var(--t-base) var(--ease);
+  }
+
+  .band:hover .band__wash,
+  .band:focus-visible .band__wash {
+    opacity: 1;
+  }
+
+  .band__inner {
+    display: grid;
+    gap: 1.5rem;
+    padding-block: 2.5rem;
+  }
+
+  @media (min-width: 800px) {
+    .band__inner {
+      grid-template-columns: minmax(0, 1fr) auto;
+      align-items: center;
+      gap: 3rem;
+      padding-block: 3rem;
+    }
+  }
+
+  .band__name {
+    transition: color var(--t-base) var(--ease);
+  }
+
+  .band:hover .band__name {
+    color: var(--hue-ink);
+  }
+
+  .band__blurb {
+    margin-top: 0.75rem;
+    max-width: 48ch;
+  }
+
+  .band__meta {
+    display: flex;
+    align-items: center;
+    gap: 1.25rem;
+  }
+
+  @media (min-width: 800px) {
+    .band__meta {
+      flex-direction: column;
+      align-items: flex-end;
+      gap: 0.5rem;
+    }
+  }
+
+  .band__arrow {
+    display: grid;
+    place-items: center;
+    width: 2.75rem;
+    height: 2.75rem;
+    border-radius: 99px;
+    border: 1px solid var(--border);
+    color: var(--text-soft);
+    margin-left: auto;
+    transition:
+      transform var(--t-base) var(--ease),
+      color var(--t-base) var(--ease),
+      border-color var(--t-base) var(--ease),
+      background var(--t-base) var(--ease);
+  }
+
+  @media (min-width: 800px) {
+    .band__arrow {
+      margin-left: 0;
+      margin-top: 0.5rem;
+    }
+  }
+
+  .band:hover .band__arrow {
+    transform: translateX(6px);
+    color: var(--bg);
+    background: var(--hue);
+    border-color: var(--hue);
+  }
+
+  /* ============================================================= reading */
+
+  .reading {
+    padding-block: 4rem 2rem;
+  }
+
+  .reading__inner {
+    display: grid;
+    gap: 2.5rem;
+  }
+
+  @media (min-width: 900px) {
+    .reading__inner {
+      grid-template-columns: 1fr 1fr;
+      gap: 4rem;
+      align-items: start;
+    }
+  }
+
+  .reading__copy {
+    margin-top: 1.25rem;
+  }
+
+  .reading__cta {
+    margin-top: 2rem;
+  }
+
+  .reading__stack {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .reading__item {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding-block: 1.1rem;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .reading__item:first-child {
+    border-top: 1px solid var(--border);
+  }
+
+  .reading__item-icon {
+    display: grid;
+    place-items: center;
+    width: 2.4rem;
+    height: 2.4rem;
+    flex: none;
+    border-radius: var(--r-sm);
+    border: 1px solid var(--border);
+    color: var(--text-soft);
+    transition:
+      color var(--t-fast) var(--ease),
+      border-color var(--t-fast) var(--ease);
+  }
+
+  .reading__item:hover .reading__item-icon {
+    color: var(--hue-ink);
+    border-color: color-mix(in oklab, var(--hue) 45%, transparent);
+  }
+
+  .reading__item-text {
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+    min-width: 0;
+  }
+
+  .reading__item-title {
+    font-family: var(--font-display);
+    font-size: 1.0625rem;
+    font-weight: 600;
+    letter-spacing: -0.015em;
+    color: var(--text);
+  }
+
+  /* ============================================================== empty */
+
+  .empty {
+    display: grid;
+    gap: 2.5rem;
+    align-items: center;
+    padding-block: 3.5rem 4rem;
+    border-bottom: 1px solid var(--border);
+  }
+
+  @media (min-width: 880px) {
+    .empty {
+      grid-template-columns: 0.95fr 1.05fr;
+      gap: 4rem;
+    }
+  }
+
+  .empty__mark {
+    max-width: 32rem;
+    margin-inline: auto;
+  }
+
+  .empty-inline {
+    padding-block: 2rem 0;
+    border-bottom: 0;
+    border-top: 1px solid var(--border);
+  }
+
+  .empty__line {
+    color: var(--text);
+    max-width: 20ch;
+  }
+
+  .empty__copy {
+    margin-top: 1rem;
+    max-width: 44ch;
+  }
+</style>

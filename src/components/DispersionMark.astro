@@ -1,0 +1,83 @@
+---
+/**
+ * The site's diagram: a beam entering a prism and leaving as a spectrum.
+ *
+ * Used wherever a region is genuinely empty. It fills the space with the
+ * idea the site is built on rather than with a grey box or an icon tile,
+ * and its strokes draw themselves in under DrawSVG.
+ */
+
+interface Props {
+  class?: string;
+}
+
+const { class: className = '' } = Astro.props;
+
+// Exit rays, fanned by wavelength. Violet bends most, magenta least —
+// the same order the categories sit in.
+const rays = [
+  { y: 168, colour: 'var(--cat-philosophy)' },
+  { y: 182, colour: '#6f8dff' },
+  { y: 196, colour: 'var(--cat-science)' },
+  { y: 210, colour: '#6fe2a8' },
+  { y: 224, colour: 'var(--cat-thoughts)' },
+  { y: 238, colour: '#ff7d6a' },
+  { y: 252, colour: 'var(--cat-miscellaneous)' }
+];
+---
+
+<svg
+  class={`dispersion ${className}`}
+  viewBox="0 0 640 320"
+  fill="none"
+  aria-hidden="true"
+  preserveAspectRatio="xMidYMid meet"
+>
+  <!-- incoming beam -->
+  <path d="M0 150 H236" stroke="currentColor" stroke-width="1.5" opacity="0.5" data-draw-svg />
+
+  <!-- the prism -->
+  <path
+    d="M300 78 L372 214 H228 Z"
+    stroke="currentColor"
+    stroke-width="1.5"
+    opacity="0.65"
+    data-draw-svg
+  />
+
+  <!-- dispersion -->
+  {
+    rays.map((r) => (
+      <path
+        d={`M318 172 L640 ${r.y}`}
+        stroke={r.colour}
+        stroke-width="2"
+        stroke-linecap="round"
+        data-draw-svg
+      />
+    ))
+  }
+
+  <!-- measurement ticks along the exit plane -->
+  <path
+    d="M604 156 v112"
+    stroke="currentColor"
+    stroke-width="1"
+    opacity="0.28"
+    stroke-dasharray="2 7"
+  />
+</svg>
+
+<style>
+  .dispersion {
+    width: 100%;
+    height: auto;
+    color: var(--text-soft);
+    overflow: visible;
+  }
+
+  .dispersion path[stroke^='var'],
+  .dispersion path[stroke^='#'] {
+    filter: drop-shadow(0 0 6px currentColor);
+  }
+</style>
